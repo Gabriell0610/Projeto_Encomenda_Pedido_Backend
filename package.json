@@ -5,8 +5,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "ts-node-dev --respawn --transpile-only src/infra/server/index.ts",
-    "start": "node dist/infra/server/index.js",
-    "build": "npx tsc --build"
+    "build": "node dist/infra/server/index.js",
+    "compile": "npx tsc --build",
+    "docker:up": "docker-compose up -d"
   },
   "keywords": [],
   "author": "",

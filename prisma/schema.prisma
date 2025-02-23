@@ -32,50 +32,103 @@ enum meioPagamento {
   CARTAO_DEBITO
 }
 
-model usuario {
-  id              String   @id @default(uuid())
-  nome            String   @db.VarChar()
-  email           String   @unique @db.VarChar()
-  senha           String   @db.VarChar()
-  telefone        String   @db.VarChar(11)
-  dataCriacao     DateTime @map("data de cricao")
-  dataAtualizacao DateTime @map("data de atualizacao")
-  role            roles
+model Usuario {
+  id              String     @id @default(uuid())
+  nome            String?    @db.VarChar()
+  email           String?    @unique @db.VarChar()
+  senha           String?    @db.VarChar()
+  telefone        String?    @db.VarChar(11)
+  dataCriacao     DateTime?  @default(now()) @map("data de criacao") @db.Date
+  dataAtualizacao DateTime?  @default(now()) @map("data de atualizacao") @db.Date
+  role            roles?
+  enderecos       Endereco[] @relation("UsuarioEndereco")
+  pedidos         Pedido[]
+  carrinho        Carrinho?
 }
 
-model endereco {
-  id          String @id @default(uuid())
-  cep         String @db.VarChar()
-  rua         String @db.VarChar()
-  bairro      String @db.VarChar()
-  numero      String @db.VarChar()
-  cidade      String @db.VarChar()
-  estado      String @db.VarChar()
-  complemento String @db.VarChar()
+model Endereco {
+  id          String    @id @default(uuid())
+  cep         String?   @db.VarChar()
+  rua         String?   @db.VarChar()
+  bairro      String?   @db.VarChar()
+  numero      String?   @db.VarChar()
+  cidade      String?   @db.VarChar()
+  estado      String?   @db.VarChar()
+  complemento String?   @db.VarChar()
+  usuarios    Usuario[] @relation("UsuarioEndereco")
+  pedidos     Pedido[]
 
   @@map("enderecos")
 }
 
-model pedido {
-  id              String        @id @default(uuid())
-  status          status
-  precoTotal      Decimal
-  meioPagamento   meioPagamento
-  dataCriacao     DateTime      @map("data de cricao")
-  dataAtualizacao DateTime      @map("data de atualizacao")
+model Pedido {
+  id            String         @id @default(uuid())
+  numeroPedido  Int            @unique
+  status        status?
+  precoTotal    Float?         @db.Real
+  meioPagamento meioPagamento?
+
+  dataCriacao     DateTime? @default(now()) @map("data de criacao") @db.Date
+  dataAtualizacao DateTime? @default(now()) @map("data de atualizacao") @db.Date
+  dataAgendamento DateTime? @db.Timestamp()
+
+  usuario    Usuario  @relation(fields: [usuarioId], references: [id])
+  endereco   Endereco @relation(fields: [enderecoId], references: [id])
+  usuarioId  String
+  enderecoId String
+
+  pedidoItens PedidoItem[]
 
   @@map("pedidos")
 }
 
-model item {
-  id              String   @id @default(uuid())
-  nome            String   @db.VarChar()
-  preco           Decimal  @db.Decimal()
-  descricao       String   @db.VarChar()
-  image           String   @db.VarChar()
-  dataCriacao     DateTime @map("data de cricao")
-  dataAtualizacao DateTime @map("data de atualizacao")
-  disponivel      Boolean
+model Item {
+  id              String    @id @default(uuid())
+  nome            String?   @db.VarChar()
+  preco           Float?    @db.Real
+  descricao       String?   @db.VarChar()
+  image           String?   @db.VarChar()
+  dataCriacao     DateTime? @default(now()) @map("data de criacao") @db.Date
+  dataAtualizacao DateTime? @default(now()) @map("data de atualizacao") @db.Date
+  disponivel      Boolean?
+
+  pedidoItens   PedidoItem[]
+  carrinhoItens CarrinhoItens[]
 
   @@map("itens")
+}
+
+model Carrinho {
+  id            String    @id @default(uuid())
+  dataCriacao   DateTime? @default(now()) @map("data de criacao") @db.Date
+  dataExpiracao DateTime? @db.Date
+
+  Usuario   Usuario @relation(fields: [usuarioId], references: [id])
+  usuarioId String  @unique
+
+  carrinhoItens CarrinhoItens[]
+}
+
+model PedidoItem {
+  id         String @id @default(uuid())
+  quantidade Int
+  precoAtual Float  @db.Real
+
+  pedido   Pedido @relation(fields: [pedidoId], references: [id])
+  item     Item   @relation(fields: [itemId], references: [id])
+  pedidoId String
+  itemId   String
+
+  @@map("pedido_itens")
+}
+
+model CarrinhoItens {
+  id         String @id @default(uuid())
+  quantidade Int
+  precoAtual Float  @db.Real
+
+  Carrinho   Carrinho @relation(fields: [carrinhoId], references: [id])
+  Item       Item     @relation(fields: [itemId], references: [id])
+  carrinhoId String
+  itemId     String
 }
