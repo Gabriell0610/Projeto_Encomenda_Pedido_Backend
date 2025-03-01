@@ -1,18 +1,19 @@
-import { IUserService } from "@/service/userService/userService.type";
-import { NextFunction, Request, Response } from "express";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { IUserService } from "../../service/userService/userService.type";
+import { NextFunction, Request } from "express";
+import { CreateUserSchema } from "../../dto/user/UserDto";
+import { HttpStatus } from "@/core/http";
 
 export class UserController {
   constructor(private userService: IUserService) {}
 
-  register = async (req: Request, res: Response) => {
+  register = async (req: Request, res: any, next: NextFunction) => {
     try {
-      //const { name, email, password } = req.body;
-      const data = await this.userService.register(req.body);
-      return res
-        .status(200)
-        .json({ message: "Usuário cadastrado com sucesso!", res: data });
+      const validateData = CreateUserSchema.parse(req.body);
+      const data = await this.userService.register(validateData);
+      return res.status(HttpStatus.OK).json({ message: "Usuário cadastrado com sucesso!", res: data });
     } catch (error) {
-      return res.status(400).json({ message: "Error: " + error.message });
+      next(error);
     }
   };
 }

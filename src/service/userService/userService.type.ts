@@ -1,5 +1,7 @@
+import { CreateUserDto } from "@/dto/user/UserDto";
+
 interface IUserService {
-  register: (data: any) => void | Promise<void>;
+  register: (data: CreateUserDto) => void | CreateUserDto | Promise<CreateUserDto>;
 }
 
 export { IUserService };
