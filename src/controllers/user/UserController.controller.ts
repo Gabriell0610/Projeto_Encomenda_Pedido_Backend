@@ -16,4 +16,13 @@ export class UserController {
       next(error);
     }
   };
+
+  list = async (req: Request, res: any, next: NextFunction) => {
+    try {
+      const data = await this.userService.list();
+      return res.status(HttpStatus.OK).json({ message: "Listando usuários", res: data });
+    } catch (error) {
+      next(error);
+    }
+  };
 }

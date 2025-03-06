@@ -21,11 +21,6 @@ enum status {
   CANCELADO
 }
 
-enum roles {
-  ADMIN
-  CLIENT
-}
-
 enum meioPagamento {
   PIX
   CARTAO_CREDITO
@@ -40,7 +35,7 @@ model Usuario {
   telefone        String?    @db.VarChar(11)
   dataCriacao     DateTime?  @default(now()) @map("data de criacao") @db.Date
   dataAtualizacao DateTime?  @default(now()) @map("data de atualizacao") @db.Date
-  role            roles?
+  role            String?
   enderecos       Endereco[] @relation("UsuarioEndereco")
   pedidos         Pedido[]
   carrinho        Carrinho?

@@ -1,7 +1,7 @@
 services:
   api:
     build: ./ # Diretório onde o Dockerfile do back-end está localizado
-    container_name: api
+    container_name: backend-service
     env_file:
       - .env # Carrega as variáveis de ambiente do arquivo .env
     ports:
