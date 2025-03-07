@@ -10,8 +10,8 @@ const formatZodErroMessage = (error: ZodError) => {
   return error.issues
     .map((issue) => {
       const { path, message } = issue;
-
-      return `${path.join(".")}: ${message}`;
+      const messageError = message || "Campo obrigatório";
+      return `${path.join(".")}: ${messageError}`;
     })
     .join(", ");
 };

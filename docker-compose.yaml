@@ -5,7 +5,7 @@ services:
     env_file:
       - .env # Carrega as variáveis de ambiente do arquivo .env
     ports:
-      - "${PORT}:${PORT}" # Usa a variável PORT do .env
+      - 1338:1338 # Usa a variável PORT do .env
     environment:
       - DATABASE_URL=${DATABASE_URL} # Passa o DATABASE_URL diretamente da variável de ambiente
     depends_on:

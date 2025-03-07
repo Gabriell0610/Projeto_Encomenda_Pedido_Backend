@@ -1,4 +1,4 @@
-import { InvalidErrorsMessages } from "@/core/error/invalid_errors";
+import { InvalidErrorsMessages } from "../../../core/error/invalid_errors";
 import { z } from "zod";
 import { isValidCPF } from "@brazilian-utils/brazilian-utils";
 

@@ -4,12 +4,13 @@
   "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "ts-node-dev -r tsconfig-paths/register src/infra/server/index.ts",
-    "build": "node dist/infra/server/index.js",
-    "compile": "npx tsc --build",
+    "build": "tsc",
+    "start": "node dist/infra/server/index.js",
+    "dev": "ts-node-dev -r tsconfig-paths/register --transpile-only src/infra/server/index.ts",
     "docker:up": "docker-compose up -d",
     "lint": "eslint . --fix",
-    "lint:prettier": "prettier --write ."
+    "lint:prettier": "prettier --write .",
+    "migrate": "npx prisma migrate dev"
   },
   "keywords": [],
   "author": "",
@@ -18,6 +19,8 @@
   "dependencies": {
     "@brazilian-utils/brazilian-utils": "^1.0.0-rc.12",
     "@prisma/client": "^6.3.1",
+    "@types/bcryptjs": "^2.4.6",
+    "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",

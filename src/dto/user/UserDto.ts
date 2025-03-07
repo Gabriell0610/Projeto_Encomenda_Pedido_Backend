@@ -1,4 +1,4 @@
-import { AccessProfile } from "@/constants/access-profile";
+import { AccessProfile } from "../../constants/access-profile";
 import { z } from "zod";
 import { addressSchema } from "./AddressDto";
 

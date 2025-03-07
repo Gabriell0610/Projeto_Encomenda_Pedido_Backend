@@ -1,4 +1,4 @@
-import { CreateUserDto, ListUserDto } from "@/dto/user/UserDto";
+import { CreateUserDto, ListUserDto } from "../../dto/user/UserDto";
 import { Usuario } from "@prisma/client";
 
 interface IUserService {

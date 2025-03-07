@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { HttpStatus } from "@/core/http";
-import { formatZodErroMessage, isZodError } from "@/core/zod";
+import { HttpStatus } from "../../core/http";
+import { formatZodErroMessage, isZodError } from "../../core/zod";
 import { Request, NextFunction } from "express";
 import { ZodError } from "zod";
 

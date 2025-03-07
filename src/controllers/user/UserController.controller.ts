@@ -2,7 +2,7 @@
 import { IUserService } from "../../service/userService/userService.type";
 import { NextFunction, Request } from "express";
 import { CreateUserSchema } from "../../dto/user/UserDto";
-import { HttpStatus } from "@/core/http";
+import { HttpStatus } from "../../core/http";
 
 export class UserController {
   constructor(private userService: IUserService) {}

@@ -1,7 +1,8 @@
 import { IUserService } from "./userService.type";
-import { CreateUserDto } from "@/dto/user/UserDto";
-import { UserRepository } from "@/repository/prisma/user/user.prisma.repository";
+import { CreateUserDto } from "../../dto/user/UserDto";
+import { UserRepository } from "../../repository/prisma/user/user.prisma.repository";
 import { BadRequestException } from "../../core/error/exceptions/bad-request-exception";
+import bcrypt from "bcryptjs";
 
 class UserService implements IUserService {
   constructor(private userRepository: UserRepository) {}
@@ -12,6 +13,10 @@ class UserService implements IUserService {
     if (userExists) {
       throw new BadRequestException("Já existe conta cadastrada com esse email!");
     }
+
+    const hashedPassword = await bcrypt.hash(data.senha, 8);
+
+    data.senha = hashedPassword;
 
     return this.userRepository.create(data);
   };

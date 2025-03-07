@@ -1,7 +1,7 @@
-import { CreateUserDto, ListUserDto } from "@/dto/user/UserDto";
-import { IUserRepository } from "@/repository/interface";
-import { prisma } from "@/libs/prisma";
-import { AccessProfile } from "@/constants/access-profile";
+import { CreateUserDto, ListUserDto } from "../../../dto/user/UserDto";
+import { IUserRepository } from "repository/interface";
+import { prisma } from "../../../libs/prisma";
+import { AccessProfile } from "../../../constants/access-profile";
 
 class UserRepository implements IUserRepository {
   create = async (data: CreateUserDto) => {
@@ -43,7 +43,7 @@ class UserRepository implements IUserRepository {
       email: usuario.email,
       telefone: usuario.telefone,
       role: usuario.role as AccessProfile,
-      endereco: usuario.enderecos, // Caso queira incluir os endereços ou não
+      endereco: usuario.enderecos,
     }));
   };
 
