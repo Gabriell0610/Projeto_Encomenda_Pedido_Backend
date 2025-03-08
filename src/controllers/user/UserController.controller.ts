@@ -3,6 +3,7 @@ import { IUserService } from "../../service/userService/userService.type";
 import { NextFunction, Request } from "express";
 import { CreateUserSchema } from "../../dto/user/UserDto";
 import { HttpStatus } from "../../core/http";
+import { authorizationBodySchema } from "@/helpers/zod/schemas/token";
 
 export class UserController {
   constructor(private userService: IUserService) {}
@@ -19,8 +20,10 @@ export class UserController {
 
   list = async (req: Request, res: any, next: NextFunction) => {
     try {
-      const data = await this.userService.list();
-      return res.status(HttpStatus.OK).json({ message: "Listando usuários", res: data });
+      // const authorizationsData = authorizationBodySchema.parse(req.body);
+      console.log(req.body);
+      const payload = await this.userService.list();
+      return res.status(HttpStatus.OK).json({ message: "Listando usuários", res: payload });
     } catch (error) {
       next(error);
     }

@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { UnauthorizedException } from "@/core/error/exceptions/unauthorized-exception";
 import { HttpStatus } from "../../core/http";
 import { formatZodErroMessage, isZodError } from "../../core/zod";
 import { Request, NextFunction } from "express";
@@ -10,6 +11,7 @@ class ErrorHandlerMiddleware {
     const statusMap: Record<string, HttpStatus> = {
       BadRequestException: HttpStatus.BAD_REQUEST,
       InternalServerException: HttpStatus.INTERNAL_SERVER_ERROR,
+      UnauthorizedException: HttpStatus.UNAUTHORIZED,
     };
 
     const defaultStatus = HttpStatus.INTERNAL_SERVER_ERROR;
