@@ -11,8 +11,8 @@ export class UserController {
   register = async (req: Request, res: any, next: NextFunction) => {
     try {
       const validateData = CreateUserSchema.parse(req.body);
-      const data = await this.userService.register(validateData);
-      return res.status(HttpStatus.OK).json({ message: "Usuário cadastrado com sucesso!", res: data });
+      await this.userService.register(validateData);
+      return res.status(HttpStatus.OK).json({ message: "Usuário cadastrado com sucesso!" });
     } catch (error) {
       next(error);
     }
@@ -20,8 +20,6 @@ export class UserController {
 
   list = async (req: Request, res: any, next: NextFunction) => {
     try {
-      // const authorizationsData = authorizationBodySchema.parse(req.body);
-      console.log(req.body);
       const payload = await this.userService.list();
       return res.status(HttpStatus.OK).json({ message: "Listando usuários", res: payload });
     } catch (error) {

@@ -1,5 +1,5 @@
 import { Usuario } from "@prisma/client";
-import { CreateUserDto, ListUserDto } from "../../dto/user/UserDto";
+import { CreateUserDto } from "../../dto/user/UserDto";
 import { IUserRepository } from "../interface";
 
 class InMemoryUserRepository implements IUserRepository {
@@ -12,13 +12,16 @@ class InMemoryUserRepository implements IUserRepository {
 
   list = async () => {
     const datas = this.userDatabase.map(({ senha, ...userWhithoutPassword }) => {
-      return userWhithoutPassword as ListUserDto;
+      return userWhithoutPassword;
     });
 
     return datas;
   };
 
-  userExistsByEmail!: (email: string) => Promise<Partial<Usuario> | null>;
+  userExistsByEmail = async (email: string) => {
+    const user = this.userDatabase.find((user) => user.email === email);
+    return user || null;
+  };
 }
 
 export { InMemoryUserRepository };

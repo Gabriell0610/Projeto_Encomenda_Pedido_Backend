@@ -57,11 +57,11 @@ model Endereco {
 }
 
 model Pedido {
-  id            String         @id @default(uuid())
-  numeroPedido  Int            @unique
-  status        status?
-  precoTotal    Float?         @db.Real
-  meioPagamento meioPagamento?
+  id            String        @id @default(uuid())
+  numeroPedido  Int           @unique
+  status        status
+  precoTotal    Float         @db.Real
+  meioPagamento meioPagamento
 
   dataCriacao     DateTime? @default(now()) @map("data de criacao") @db.Date
   dataAtualizacao DateTime? @default(now()) @map("data de atualizacao") @db.Date
@@ -79,13 +79,13 @@ model Pedido {
 
 model Item {
   id              String    @id @default(uuid())
-  nome            String?   @db.VarChar()
-  preco           Float?    @db.Real
-  descricao       String?   @db.VarChar()
-  image           String?   @db.VarChar()
+  nome            String    @db.VarChar()
+  preco           Float     @db.Real
+  descricao       String    @db.VarChar()
+  image           String    @db.VarChar()
   dataCriacao     DateTime? @default(now()) @map("data de criacao") @db.Date
   dataAtualizacao DateTime? @default(now()) @map("data de atualizacao") @db.Date
-  disponivel      Boolean?
+  disponivel      Boolean
 
   pedidoItens   PedidoItem[]
   carrinhoItens CarrinhoItens[]

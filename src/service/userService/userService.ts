@@ -25,10 +25,6 @@ class UserService implements IUserService {
   };
 
   list = async () => {
-    // if (data.requesterRole === AccessProfile.CLIENT) {
-    //   throw new UnauthorizedException("Você não possui permissão para acessar essa lista!");
-    // }
-
     const res = this.userRepository.list();
     return res;
   };

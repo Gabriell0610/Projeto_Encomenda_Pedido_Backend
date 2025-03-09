@@ -12,17 +12,6 @@ const CreateUserSchema = z.object({
   endereco: z.array(addressSchema),
 });
 
-const ListUserDtoSchema = z.object({
-  id: z.string(),
-  nome: z.string().nullable(),
-  email: z.string().nullable(),
-  telefone: z.string().nullable(),
-  role: z.enum([AccessProfile.ADMIN, AccessProfile.CLIENT]),
-  endereco: z.array(addressSchema).optional(),
-});
-
-//DTO
-type ListUserDto = z.infer<typeof ListUserDtoSchema>;
 type CreateUserDto = z.infer<typeof CreateUserSchema>;
 
-export { CreateUserDto, CreateUserSchema, ListUserDto };
+export { CreateUserDto, CreateUserSchema };

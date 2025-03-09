@@ -1,4 +1,4 @@
-import { CreateUserDto, ListUserDto } from "../../../dto/user/UserDto";
+import { CreateUserDto } from "../../../dto/user/UserDto";
 import { IUserRepository } from "repository/interface";
 import { prisma } from "../../../libs/prisma";
 import { AccessProfile } from "../../../constants/access-profile";
@@ -31,20 +31,20 @@ class UserRepository implements IUserRepository {
 
   list = async () => {
     const usuarios = await prisma.usuario.findMany({
-      include: {
-        enderecos: true, // Isso inclui os endereços relacionados ao usuário
+      select: {
+        id: true,
+        nome: true,
+        email: true,
+        telefone: true,
+        enderecos: true,
+        dataCriacao: true,
+        dataAtualizacao: true,
+        role: true,
+        senha: false,
       },
     });
 
-    // Transformar os dados no formato do DTO
-    return usuarios.map((usuario) => ({
-      id: usuario.id,
-      nome: usuario.nome,
-      email: usuario.email,
-      telefone: usuario.telefone,
-      role: usuario.role as AccessProfile,
-      endereco: usuario.enderecos,
-    }));
+    return usuarios;
   };
 
   userExistsByEmail = async (email: string) => {
