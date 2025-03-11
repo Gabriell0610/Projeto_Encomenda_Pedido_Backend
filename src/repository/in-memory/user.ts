@@ -1,5 +1,5 @@
 import { Usuario } from "@prisma/client";
-import { CreateUserDto } from "../../dto/user/UserDto";
+import { CreateUserDto } from "../../dto/user/CreateUserDto";
 import { IUserRepository } from "../interface";
 
 class InMemoryUserRepository implements IUserRepository {

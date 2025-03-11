@@ -50,8 +50,8 @@ model Endereco {
   cidade      String    @db.VarChar()
   estado      String    @db.VarChar()
   complemento String?   @db.VarChar()
-  usuarios    Usuario[] @relation("UsuarioEndereco")
   pedidos     Pedido[]
+  usuarios    Usuario[] @relation("UsuarioEndereco")
 
   @@map("enderecos")
 }
@@ -67,8 +67,8 @@ model Pedido {
   dataAtualizacao DateTime? @default(now()) @map("data de atualizacao") @db.Date
   dataAgendamento DateTime? @db.Timestamp()
 
-  usuario    Usuario  @relation(fields: [usuarioId], references: [id])
-  endereco   Endereco @relation(fields: [enderecoId], references: [id])
+  usuario    Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  endereco   Endereco @relation(fields: [enderecoId], references: [id], onDelete: Cascade)
   usuarioId  String
   enderecoId String
 
@@ -109,8 +109,8 @@ model PedidoItem {
   quantidade Int
   precoAtual Float  @db.Real
 
-  pedido   Pedido @relation(fields: [pedidoId], references: [id])
-  item     Item   @relation(fields: [itemId], references: [id])
+  pedido   Pedido @relation(fields: [pedidoId], references: [id], onDelete: Cascade)
+  item     Item   @relation(fields: [itemId], references: [id], onDelete: Cascade)
   pedidoId String
   itemId   String
 
@@ -122,8 +122,8 @@ model CarrinhoItens {
   quantidade Int
   precoAtual Float  @db.Real
 
-  Carrinho   Carrinho @relation(fields: [carrinhoId], references: [id])
-  Item       Item     @relation(fields: [itemId], references: [id])
+  Carrinho   Carrinho @relation(fields: [carrinhoId], references: [id], onDelete: Cascade)
+  Item       Item     @relation(fields: [itemId], references: [id], onDelete: Cascade)
   carrinhoId String
   itemId     String
 }

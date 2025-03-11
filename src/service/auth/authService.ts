@@ -6,6 +6,7 @@ import bcrypt from "bcryptjs";
 import { sign } from "jsonwebtoken";
 import "dotenv/config";
 import { InternalServerException } from "@/core/error/exceptions/internal-server-exception";
+import { UpdateUserDto } from "@/dto/user/UpdateUserDto";
 
 class AuthService implements IAuthService {
   constructor(private userRepository: UserRepository) {}
@@ -38,6 +39,27 @@ class AuthService implements IAuthService {
     );
 
     return token;
+  };
+
+  listById = async (id: string) => {
+    const res = await this.userRepository.findById(id);
+    return res;
+  };
+
+  update = async (dto: UpdateUserDto, userId: string, userEmail: string, addresId: string) => {
+    const verifyUser = await this.listById(userId);
+
+    if (verifyUser?.email !== userEmail) {
+      throw new BadRequestException("Usuário não pode alterar seus dados");
+    }
+
+    const updateUser = await this.userRepository.update(dto, userId, addresId);
+
+    return updateUser;
+  };
+
+  removeAddress = async (userId: string, addresId: string) => {
+    this.userRepository.removeAddress(userId, addresId);
   };
 }
 

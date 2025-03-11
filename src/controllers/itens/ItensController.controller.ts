@@ -1,3 +1,4 @@
+import { HttpStatus } from "@/core/http";
 import { IItensService } from "@/service/itens/itensService.type";
 import { NextFunction, Request } from "express";
 
@@ -7,7 +8,7 @@ class ItensController {
   create = async (req: Request, res: any, next: NextFunction) => {
     try {
       await this.itensService.create(req.body);
-      res.status(201).json({ message: "Item criado com sucesso!" });
+      res.status(HttpStatus.CREATED).json({ message: "Item criado com sucesso!" });
     } catch (error) {
       next(error);
     }
@@ -16,7 +17,7 @@ class ItensController {
   list = async (req: Request, res: any, next: NextFunction) => {
     try {
       const payload = await this.itensService.list();
-      res.json({ message: "Listando itens", res: payload });
+      res.status(HttpStatus.OK).json({ message: "Listando itens", res: payload });
     } catch (error) {
       next(error);
     }
