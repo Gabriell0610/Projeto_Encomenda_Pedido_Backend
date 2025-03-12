@@ -7,18 +7,19 @@ import { sign } from "jsonwebtoken";
 import "dotenv/config";
 import { InternalServerException } from "@/core/error/exceptions/internal-server-exception";
 import { UpdateUserDto } from "@/dto/user/UpdateUserDto";
+import { AddressDto } from "@/dto/user/AddressDto";
 
 class AuthService implements IAuthService {
   constructor(private userRepository: UserRepository) {}
 
-  login = async (data: authDto) => {
-    const userExits = await this.userRepository.userExistsByEmail(data.email);
+  login = async (dto: authDto) => {
+    const userExits = await this.userRepository.userExistsByEmail(dto.email);
 
     if (!userExits) {
-      throw new BadRequestException("Email ou senha incorretos");
+      throw new BadRequestException("Esse usuário não existe");
     }
 
-    const passwordCorrect = await bcrypt.compare(data.senha, userExits.senha);
+    const passwordCorrect = await bcrypt.compare(dto.senha, userExits.senha);
 
     if (!passwordCorrect) {
       throw new BadRequestException("Email ou senha incorretos");
@@ -60,6 +61,10 @@ class AuthService implements IAuthService {
 
   removeAddress = async (userId: string, addresId: string) => {
     this.userRepository.removeAddress(userId, addresId);
+  };
+
+  addAddress = async (dto: AddressDto, userId: string) => {
+    await this.userRepository.addAddress(dto, userId);
   };
 }
 

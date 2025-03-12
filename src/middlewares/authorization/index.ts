@@ -1,5 +1,5 @@
-import { Authorization } from "./authorization";
+import { AuthorizationFactory } from "./authorization-factory";
 
-const authorization = new Authorization();
+const authorization = new AuthorizationFactory();
 
 export { authorization };

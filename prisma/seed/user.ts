@@ -1,6 +1,15 @@
+import bcrypt from "bcryptjs";
 import { AccessProfile } from "../../src/constants/access-profile";
 import { prisma } from "../../src/libs/prisma";
 
+// Função para criptografar as senhas
+async function hashPassword() {
+  for (let user of userDto.users) {
+    user.senha = await bcrypt.hash("Teste123!", 8);
+  }
+}
+
+// Dados do usuário para seeding
 const userDto = {
   users: [
     {
@@ -8,7 +17,7 @@ const userDto = {
       nome: "Colaborador1",
       email: "colab@gmail.com",
       role: AccessProfile.ADMIN,
-      senha: "teste123!",
+      senha: "",
       telefone: "21979736993",
       endereco: [
         {
@@ -28,7 +37,7 @@ const userDto = {
       nome: "Colaborador2",
       email: "colab2@gmail.com",
       role: AccessProfile.CLIENT,
-      senha: "teste123!",
+      senha: "",
       telefone: "21979736993",
       endereco: [
         {
@@ -46,15 +55,19 @@ const userDto = {
   ],
 };
 
+// Função de seeding dos usuários
 const seedUser = async () => {
   try {
-    const userAlredyExist = (await prisma.usuario.count()) > 0;
+    const userAlreadyExist = (await prisma.usuario.count()) > 0;
 
-    if (userAlredyExist) return [];
+    if (userAlreadyExist) return [];
+
+    await hashPassword();
 
     for (const user of userDto.users) {
       await prisma.usuario.create({
         data: {
+          id: user.id,
           nome: user.nome,
           email: user.email,
           senha: user.senha,
@@ -63,13 +76,25 @@ const seedUser = async () => {
           dataCriacao: new Date(),
           dataAtualizacao: new Date(),
           enderecos: {
-            create: user.endereco,
+            create: user.endereco.map((address) => ({
+              endereco: {
+                create: {
+                  bairro: address.bairro,
+                  cep: address.cep,
+                  cidade: address.cidade,
+                  estado: address.estado,
+                  numero: address.numero,
+                  complemento: address.complemento,
+                  rua: address.rua,
+                },
+              },
+            })),
           },
         },
       });
     }
 
-    console.log(`Usuários populados com sucesso!`);
+    console.log("Usuários populados com sucesso!");
   } catch (error) {
     console.error("Erro ao popular usuários:", error);
   }

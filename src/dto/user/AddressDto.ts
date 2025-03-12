@@ -1,7 +1,7 @@
 import { cepValidation } from "../../helpers/zod/validations/cep";
-import { z } from "zod";
+import { Indices, z } from "zod";
 
-const addressSchema = z.object({
+const addressBodySchema = z.object({
   rua: z.string().min(1, "Rua é obrigatório"),
   cep: cepValidation,
   numero: z.coerce
@@ -27,4 +27,6 @@ const updateAddressBodySchema = z.object({
   complemento: z.string().optional().nullable(),
 });
 
-export { addressSchema, updateAddressBodySchema };
+type AddressDto = z.infer<typeof addressBodySchema>;
+
+export { addressBodySchema, updateAddressBodySchema, AddressDto };

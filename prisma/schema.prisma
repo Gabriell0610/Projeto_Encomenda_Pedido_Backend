@@ -28,32 +28,42 @@ enum meioPagamento {
 }
 
 model Usuario {
-  id              String     @id @default(uuid())
-  nome            String     @db.VarChar()
-  email           String     @unique @db.VarChar()
-  senha           String     @db.VarChar()
-  telefone        String     @db.VarChar(11)
-  dataCriacao     DateTime?  @default(now()) @map("data de criacao") @db.Date
-  dataAtualizacao DateTime?  @default(now()) @map("data de atualizacao") @db.Date
+  id              String            @id @default(uuid())
+  nome            String            @db.VarChar()
+  email           String            @unique @db.VarChar()
+  senha           String            @db.VarChar()
+  telefone        String            @db.VarChar(11)
+  dataCriacao     DateTime?         @default(now()) @map("data de criacao") @db.Date
+  dataAtualizacao DateTime?         @default(now()) @map("data de atualizacao") @db.Date
   role            String
-  enderecos       Endereco[] @relation("UsuarioEndereco")
+  enderecos       UsuarioEndereco[]
   pedidos         Pedido[]
   carrinho        Carrinho?
 }
 
 model Endereco {
-  id          String    @id @default(uuid())
-  cep         String    @db.VarChar()
-  rua         String    @db.VarChar()
-  bairro      String    @db.VarChar()
-  numero      String    @db.VarChar()
-  cidade      String    @db.VarChar()
-  estado      String    @db.VarChar()
-  complemento String?   @db.VarChar()
+  id          String            @id @default(uuid())
+  cep         String            @db.VarChar()
+  rua         String            @db.VarChar()
+  bairro      String            @db.VarChar()
+  numero      String            @db.VarChar()
+  cidade      String            @db.VarChar()
+  estado      String            @db.VarChar()
+  complemento String?           @db.VarChar()
   pedidos     Pedido[]
-  usuarios    Usuario[] @relation("UsuarioEndereco")
+  usuarios    UsuarioEndereco[]
 
   @@map("enderecos")
+}
+
+model UsuarioEndereco {
+  usuarioId  String
+  enderecoId String
+  usuario    Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  endereco   Endereco @relation(fields: [enderecoId], references: [id], onDelete: Cascade)
+
+  @@id([usuarioId, enderecoId]) // Chave composta
+  @@map("usuario_endereco") // Nome da tabela no banco de dados
 }
 
 model Pedido {

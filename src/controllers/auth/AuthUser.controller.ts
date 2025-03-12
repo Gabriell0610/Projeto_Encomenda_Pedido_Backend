@@ -4,6 +4,7 @@ import { authSchema } from "@/dto/auth/loginDto";
 import { HttpStatus } from "@/core/http";
 import { authorizationBodySchema } from "@/helpers/zod/schemas/token";
 import { updateUserBodySchema } from "@/dto/user/UpdateUserDto";
+import { addressBodySchema } from "@/dto/user/AddressDto";
 
 class AuthUserController {
   constructor(private authService: IAuthService) {}
@@ -47,6 +48,18 @@ class AuthUserController {
       const { idAddress } = req.params;
       await this.authService.removeAddress(userId, idAddress);
       return res.status(HttpStatus.OK).json({ message: "Endereço removido com sucesso!" });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  addAddress = async (req: Request, res: any, next: NextFunction) => {
+    try {
+      const { requesterId: userId } = authorizationBodySchema.parse(req.body);
+      console.log(req.body);
+      const dto = addressBodySchema.parse(req.body);
+      await this.authService.addAddress(dto, userId);
+      return res.status(HttpStatus.CREATED).json({ message: "Endereço adicionado com sucesso!" });
     } catch (error) {
       next(error);
     }

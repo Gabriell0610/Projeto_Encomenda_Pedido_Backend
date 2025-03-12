@@ -4,11 +4,16 @@ import { authorizationBodySchema } from "@/helpers/zod/schemas/token";
 import { NextFunction, Request } from "express";
 
 class Authorization {
+  public instanceName: string;
   private authorizedRoles: AccessProfile[] = [];
   private authorizedAnyRole: boolean = false;
 
-  ofRoles = (accessProfiles: AccessProfile[]) => {
-    this.authorizedRoles = accessProfiles;
+  constructor(instanceName: string) {
+    this.instanceName = instanceName;
+  }
+
+  ofRoles = (roles: AccessProfile[]) => {
+    this.authorizedRoles = roles;
 
     return this;
   };
@@ -26,6 +31,7 @@ class Authorization {
       if (!this.authorizedRoles.includes(requesterRole) && !this.authorizedAnyRole) {
         throw new UnauthorizedException("Você não tem permissão para executar esta ação.");
       }
+
       next();
     } catch (error) {
       next(error);

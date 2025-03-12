@@ -9,15 +9,10 @@ const itensRouter = Router();
 itensRouter.post(
   "/api/itens",
   jwtAtuhenticator.authenticate,
-  authorization.ofRoles([AccessProfile.CLIENT]).authorize,
+  authorization.ofRoles([AccessProfile.ADMIN]).authorize,
   itensController.create,
 );
 
-itensRouter.get(
-  "/api/itens",
-  jwtAtuhenticator.authenticate,
-  authorization.ofRoles([AccessProfile.CLIENT]).authorize,
-  itensController.list,
-);
+itensRouter.get("/api/itens", jwtAtuhenticator.authenticate, authorization.anyRole().authorize, itensController.list);
 
 export { itensRouter };

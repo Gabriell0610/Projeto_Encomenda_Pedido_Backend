@@ -4,6 +4,7 @@ import { prisma } from "../../../libs/prisma";
 import { AccessProfile } from "../../../constants/access-profile";
 import { Usuario } from "@prisma/client";
 import { UpdateUserDto } from "@/dto/user/UpdateUserDto";
+import { AddressDto } from "@/dto/user/AddressDto";
 
 class UserRepository implements IUserRepository {
   create = async (data: CreateUserDto) => {
@@ -18,13 +19,17 @@ class UserRepository implements IUserRepository {
         dataCriacao: new Date(),
         enderecos: {
           create: data?.endereco?.map((address) => ({
-            bairro: address?.bairro,
-            cep: address?.cep,
-            cidade: address?.cidade,
-            complemento: address?.complemento,
-            estado: address?.estado,
-            numero: address?.numero,
-            rua: address?.rua,
+            endereco: {
+              create: {
+                bairro: address?.bairro,
+                cep: address?.cep,
+                cidade: address?.cidade,
+                complemento: address?.complemento,
+                estado: address?.estado,
+                numero: address?.numero,
+                rua: address?.rua,
+              },
+            },
           })),
         },
       },
@@ -38,7 +43,11 @@ class UserRepository implements IUserRepository {
         nome: true,
         email: true,
         telefone: true,
-        enderecos: true,
+        enderecos: {
+          select: {
+            endereco: true,
+          },
+        },
         dataCriacao: true,
         dataAtualizacao: true,
         role: true,
@@ -62,7 +71,11 @@ class UserRepository implements IUserRepository {
         nome: true,
         email: true,
         telefone: true,
-        enderecos: true,
+        enderecos: {
+          select: {
+            endereco: true,
+          },
+        },
         dataCriacao: true,
         dataAtualizacao: false,
         role: false,
@@ -82,15 +95,19 @@ class UserRepository implements IUserRepository {
         dataAtualizacao: new Date(),
         enderecos: {
           update: {
-            where: { id: addressId }, // Filtra o endereço pelo ID
+            where: { usuarioId_enderecoId: { usuarioId: userId, enderecoId: addressId } }, // Filtra o endereço pelo ID
             data: {
-              rua: data.endereco?.[0]?.rua, // Atualiza os campos necessários
-              numero: data.endereco?.[0]?.numero,
-              cidade: data.endereco?.[0]?.cidade,
-              estado: data.endereco?.[0]?.estado,
-              bairro: data.endereco?.[0].bairro,
-              cep: data.endereco?.[0]?.cep,
-              complemento: data.endereco?.[0]?.complemento,
+              endereco: {
+                update: {
+                  rua: data.endereco?.[0]?.rua,
+                  numero: data.endereco?.[0]?.numero,
+                  cidade: data.endereco?.[0]?.cidade,
+                  estado: data.endereco?.[0]?.estado,
+                  bairro: data.endereco?.[0].bairro,
+                  cep: data.endereco?.[0]?.cep,
+                  complemento: data.endereco?.[0]?.complemento,
+                },
+              },
             },
           },
         },
@@ -100,7 +117,11 @@ class UserRepository implements IUserRepository {
         nome: true,
         email: true,
         telefone: true,
-        enderecos: true,
+        enderecos: {
+          select: {
+            endereco: true,
+          },
+        },
         dataCriacao: true,
         dataAtualizacao: true,
         role: true,
@@ -114,7 +135,30 @@ class UserRepository implements IUserRepository {
       where: { id: userId },
       data: {
         enderecos: {
-          disconnect: { id: idAddress },
+          delete: { usuarioId_enderecoId: { usuarioId: userId, enderecoId: idAddress } },
+        },
+      },
+    });
+  };
+
+  addAddress = async (dto: AddressDto, userId: string) => {
+    await prisma.usuario.update({
+      where: { id: userId },
+      data: {
+        enderecos: {
+          create: {
+            endereco: {
+              create: {
+                rua: dto.rua,
+                numero: dto.numero,
+                cidade: dto.cidade,
+                estado: dto.estado,
+                bairro: dto.bairro,
+                cep: dto.cep,
+                complemento: dto.complemento,
+              },
+            },
+          },
         },
       },
     });
