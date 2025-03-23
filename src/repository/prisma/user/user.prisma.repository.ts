@@ -1,10 +1,9 @@
 import { CreateUserDto } from "../../../dto/user/CreateUserDto";
-import { IUserRepository } from "repository/interface";
+import { IUserRepository } from "repository/interfaces";
 import { prisma } from "../../../libs/prisma";
-import { AccessProfile } from "../../../constants/access-profile";
-import { Usuario } from "@prisma/client";
 import { UpdateUserDto } from "@/dto/user/UpdateUserDto";
-import { AddressDto } from "@/dto/user/AddressDto";
+import { AddressDto, AddressUpdateDto } from "@/dto/user/AddressDto";
+import { Usuario } from "@prisma/client";
 
 class UserRepository implements IUserRepository {
   create = async (data: CreateUserDto) => {
@@ -17,21 +16,6 @@ class UserRepository implements IUserRepository {
         role: data?.role,
         dataAtualizacao: new Date(),
         dataCriacao: new Date(),
-        enderecos: {
-          create: data?.endereco?.map((address) => ({
-            endereco: {
-              create: {
-                bairro: address?.bairro,
-                cep: address?.cep,
-                cidade: address?.cidade,
-                complemento: address?.complemento,
-                estado: address?.estado,
-                numero: address?.numero,
-                rua: address?.rua,
-              },
-            },
-          })),
-        },
       },
     });
   };
@@ -63,7 +47,7 @@ class UserRepository implements IUserRepository {
     return user;
   };
 
-  findById = async (id: string) => {
+  findUserById = async (id: string) => {
     const user = await prisma.usuario.findUnique({
       where: { id },
       select: {
@@ -86,57 +70,20 @@ class UserRepository implements IUserRepository {
     return user;
   };
 
-  update = async (data: UpdateUserDto, userId: string, addressId: string) => {
+  updateUser = async (data: UpdateUserDto, userId: string) => {
     return await prisma.usuario.update({
       where: { id: userId },
       data: {
         nome: data?.nome,
         telefone: data?.telefone,
         dataAtualizacao: new Date(),
-        enderecos: {
-          update: {
-            where: { usuarioId_enderecoId: { usuarioId: userId, enderecoId: addressId } }, // Filtra o endereço pelo ID
-            data: {
-              endereco: {
-                update: {
-                  rua: data.endereco?.[0]?.rua,
-                  numero: data.endereco?.[0]?.numero,
-                  cidade: data.endereco?.[0]?.cidade,
-                  estado: data.endereco?.[0]?.estado,
-                  bairro: data.endereco?.[0].bairro,
-                  cep: data.endereco?.[0]?.cep,
-                  complemento: data.endereco?.[0]?.complemento,
-                },
-              },
-            },
-          },
-        },
       },
       select: {
         id: true,
         nome: true,
         email: true,
         telefone: true,
-        enderecos: {
-          select: {
-            endereco: true,
-          },
-        },
-        dataCriacao: true,
         dataAtualizacao: true,
-        role: true,
-        senha: false,
-      },
-    });
-  };
-
-  removeAddress = async (userId: string, idAddress: string) => {
-    await prisma.usuario.update({
-      where: { id: userId },
-      data: {
-        enderecos: {
-          delete: { usuarioId_enderecoId: { usuarioId: userId, enderecoId: idAddress } },
-        },
       },
     });
   };
@@ -159,6 +106,43 @@ class UserRepository implements IUserRepository {
               },
             },
           },
+        },
+      },
+    });
+  };
+
+  updateAddress = async (dto: AddressUpdateDto, userId: string, addressId: string) => {
+    await prisma.usuario.update({
+      where: { id: userId },
+      data: {
+        enderecos: {
+          update: {
+            where: { usuarioId_enderecoId: { usuarioId: userId, enderecoId: addressId } },
+            data: {
+              endereco: {
+                update: {
+                  rua: dto.rua,
+                  numero: dto.numero,
+                  cidade: dto.cidade,
+                  estado: dto.estado,
+                  bairro: dto.bairro,
+                  cep: dto.cep,
+                  complemento: dto.complemento,
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+  };
+
+  removeAddress = async (userId: string, idAddress: string) => {
+    await prisma.usuario.update({
+      where: { id: userId },
+      data: {
+        enderecos: {
+          delete: { usuarioId_enderecoId: { usuarioId: userId, enderecoId: idAddress } },
         },
       },
     });

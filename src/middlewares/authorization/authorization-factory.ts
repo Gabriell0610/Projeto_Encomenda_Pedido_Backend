@@ -10,9 +10,6 @@ class AuthorizationFactory {
 
   private getInstance(instanceName: string): Authorization {
     let instance = this.instances.find((instance) => instance.instanceName === instanceName);
-    console.log("Instâncias armazenadas:", this.instances);
-    console.log("Buscando instância:", instanceName);
-    console.log("Instância encontrada:", instance);
 
     if (!instance) {
       instance = this.createInstance(instanceName);

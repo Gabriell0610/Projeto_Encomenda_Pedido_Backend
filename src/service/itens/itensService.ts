@@ -1,11 +1,9 @@
-import { IItensRepository } from "@/repository/interface";
-import { IItensService } from "./itensService.type";
+import { IItensRepository } from "@/repository/interfaces";
+import { IItensService } from "./IItensService";
 import { ItensDto } from "@/dto/itens/itensDto";
-import { InMemoryItensRepository } from "@/repository/in-memory/itens";
-import { ItensRepository } from "@/repository/prisma/itens/itens.prisma.repository";
 
 class ItensService implements IItensService {
-  constructor(private itensRepository: ItensRepository) {}
+  constructor(private itensRepository: IItensRepository) {}
 
   create = async (data: ItensDto) => {
     return await this.itensRepository.create(data);

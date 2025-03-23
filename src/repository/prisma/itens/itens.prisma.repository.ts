@@ -1,5 +1,5 @@
 import { ItensDto } from "@/dto/itens/itensDto";
-import { IItensRepository } from "@/repository/interface";
+import { IItensRepository } from "@/repository/interfaces";
 import { Item } from "@prisma/client";
 import { prisma } from "@/libs/prisma";
 

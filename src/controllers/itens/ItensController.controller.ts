@@ -1,5 +1,5 @@
 import { HttpStatus } from "@/core/http";
-import { IItensService } from "@/service/itens/itensService.type";
+import { IItensService } from "@/service/itens/IItensService";
 import { NextFunction, Request } from "express";
 
 class ItensController {

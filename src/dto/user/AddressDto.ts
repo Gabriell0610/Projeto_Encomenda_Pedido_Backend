@@ -28,5 +28,6 @@ const updateAddressBodySchema = z.object({
 });
 
 type AddressDto = z.infer<typeof addressBodySchema>;
+type AddressUpdateDto = z.infer<typeof updateAddressBodySchema>;
 
-export { addressBodySchema, updateAddressBodySchema, AddressDto };
+export { addressBodySchema, updateAddressBodySchema, AddressDto, AddressUpdateDto };

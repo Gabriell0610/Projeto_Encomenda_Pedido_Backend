@@ -6,34 +6,8 @@ import { Router } from "express";
 
 const authRouter = Router();
 
+authRouter.post("/api/auth/register", authUserController.register);
+
 authRouter.post("/api/auth/login", authUserController.login);
-
-authRouter.get(
-  "/api/auth/user",
-  jwtAtuhenticator.authenticate,
-  authorization.ofRoles([AccessProfile.CLIENT]).authorize,
-  authUserController.listUserById,
-);
-
-authRouter.put(
-  "/api/auth/update/:idAddress",
-  jwtAtuhenticator.authenticate,
-  authorization.ofRoles([AccessProfile.CLIENT]).authorize,
-  authUserController.update,
-);
-
-authRouter.delete(
-  "/api/auth/delete/:idAddress",
-  jwtAtuhenticator.authenticate,
-  authorization.ofRoles([AccessProfile.CLIENT]).authorize,
-  authUserController.removeAddress,
-);
-
-authRouter.put(
-  "/api/auth/address",
-  jwtAtuhenticator.authenticate,
-  authorization.ofRoles([AccessProfile.CLIENT]).authorize,
-  authUserController.addAddress,
-);
 
 export { authRouter };

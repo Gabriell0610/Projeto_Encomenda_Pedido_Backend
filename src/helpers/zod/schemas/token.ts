@@ -1,7 +1,7 @@
 import { AccessProfile } from "@/constants/access-profile";
 import { z } from "zod";
 
-const token = z.string().trim();
+const access_token = z.string().trim();
 
 const requesterEmail = z.string().email().trim();
 const requesterId = z.string();
@@ -9,7 +9,7 @@ const requesterId = z.string();
 const requesterRole = z.nativeEnum(AccessProfile);
 
 const authorizationBodySchema = z.object({
-  token,
+  access_token,
   requesterEmail,
   requesterId,
   requesterRole,

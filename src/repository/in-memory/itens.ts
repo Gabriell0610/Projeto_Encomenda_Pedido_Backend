@@ -1,5 +1,5 @@
 import { ItensDto } from "@/dto/itens/itensDto";
-import { IItensRepository } from "../interface";
+import { IItensRepository } from "../interfaces";
 
 class InMemoryItensRepository implements IItensRepository {
   itensDb: ItensDto[] = [];

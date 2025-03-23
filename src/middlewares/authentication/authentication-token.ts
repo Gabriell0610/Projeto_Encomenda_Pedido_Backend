@@ -27,7 +27,7 @@ class JWTAuthenticator {
       req.body.requesterId = id;
       req.body.requesterEmail = email;
       req.body.requesterRole = role as AccessProfile;
-      req.body.token = token;
+      req.body.access_token = token;
 
       next();
     } catch (error) {
