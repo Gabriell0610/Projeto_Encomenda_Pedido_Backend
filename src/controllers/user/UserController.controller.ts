@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { IUserService } from "../../service/user/IUserServcie";
+import { IUserService } from "../../service/user/IUserService";
 import { NextFunction, Request } from "express";
 import { HttpStatus } from "../../core/http";
 import { authorizationBodySchema } from "@/helpers/zod/schemas/token";
 import { updateUserBodySchema } from "@/dto/user/UpdateUserDto";
-import { addressBodySchema, updateAddressBodySchema } from "@/dto/user/AddressDto";
+import { addressBodySchema, updateAddressBodySchema } from "@/dto/address/AddressDto";
 import { BadRequestException } from "@/core/error/exceptions/bad-request-exception";
 
 export class UserController {

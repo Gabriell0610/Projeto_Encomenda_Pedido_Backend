@@ -1,8 +1,8 @@
-import { CreateUserDto } from "../../../dto/user/CreateUserDto";
+import { CreateUserDto } from "../../../dto/auth/CreateUserDto";
 import { IUserRepository } from "repository/interfaces";
 import { prisma } from "../../../libs/prisma";
 import { UpdateUserDto } from "@/dto/user/UpdateUserDto";
-import { AddressDto, AddressUpdateDto } from "@/dto/user/AddressDto";
+import { AddressDto, AddressUpdateDto } from "@/dto/address/AddressDto";
 import { Usuario } from "@prisma/client";
 
 class UserRepository implements IUserRepository {
@@ -17,6 +17,21 @@ class UserRepository implements IUserRepository {
         dataAtualizacao: new Date(),
         dataCriacao: new Date(),
       },
+      select: {
+        id: true,
+        nome: true,
+        email: true,
+        telefone: true,
+        enderecos: {
+          select: {
+            endereco: true,
+          },
+        },
+        dataCriacao: true,
+        dataAtualizacao: true,
+        role: true,
+        senha: false,
+      }
     });
   };
 
@@ -43,8 +58,27 @@ class UserRepository implements IUserRepository {
   };
 
   userExistsByEmail = async (email: string) => {
-    const user = await prisma.usuario.findUnique({ where: { email } });
-    return user;
+    const user = await prisma.usuario.findUnique({ 
+      where: { email },
+      select: {
+        id: true,
+        nome: true,
+        email: true,
+        telefone: true,
+        enderecos: {
+          select: {
+            endereco: true,
+          },
+        },
+        dataCriacao: true,
+        dataAtualizacao: false,
+        role: true,
+        senha: false,
+      }
+    });
+
+    return user
+    
   };
 
   findUserById = async (id: string) => {
@@ -62,7 +96,7 @@ class UserRepository implements IUserRepository {
         },
         dataCriacao: true,
         dataAtualizacao: false,
-        role: false,
+        role: true,
         senha: false,
       },
     });

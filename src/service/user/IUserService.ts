@@ -1,8 +1,8 @@
 import { AuthorizationBodyDto } from "@/helpers/zod/schemas/token";
-import { CreateUserDto } from "../../dto/user/CreateUserDto";
+import { CreateUserDto } from "../../dto/auth/CreateUserDto";
 import { Usuario } from "@prisma/client";
 import { UpdateUserDto } from "@/dto/user/UpdateUserDto";
-import { AddressDto, AddressUpdateDto } from "@/dto/user/AddressDto";
+import { AddressDto, AddressUpdateDto } from "@/dto/address/AddressDto";
 
 interface IUserService {
   list: () => Promise<Partial<Usuario>[]>;

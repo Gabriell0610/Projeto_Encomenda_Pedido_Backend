@@ -1,7 +1,7 @@
 import { Usuario } from "@prisma/client";
-import { CreateUserDto } from "../../../dto/user/CreateUserDto";
+import { CreateUserDto } from "../../../dto/auth/CreateUserDto";
 import { UpdateUserDto } from "@/dto/user/UpdateUserDto";
-import { AddressDto, AddressUpdateDto } from "@/dto/user/AddressDto";
+import { AddressDto, AddressUpdateDto } from "@/dto/address/AddressDto";
 
 interface IUserRepository {
   create: (dto: CreateUserDto) => CreateUserDto | Promise<Partial<Usuario>>;

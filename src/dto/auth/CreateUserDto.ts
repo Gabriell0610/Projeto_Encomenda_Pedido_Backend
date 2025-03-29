@@ -1,6 +1,5 @@
 import { AccessProfile } from "../../constants/access-profile";
 import { z } from "zod";
-import { addressBodySchema } from "./AddressDto";
 import { passwordValidation } from "@/helpers/zod/validations/password";
 
 //SCHEMAS
@@ -10,7 +9,6 @@ const CreateUserBodySchema = z.object({
   senha: passwordValidation,
   telefone: z.string().min(11, "O telefone possui menos de 21 caracteres").min(1, "O telefone é obrigatório"),
   role: z.enum([AccessProfile.ADMIN, AccessProfile.CLIENT]).default(AccessProfile.CLIENT),
-  //endereco: z.array(addressBodySchema),
 });
 
 type CreateUserDto = z.infer<typeof CreateUserBodySchema>;

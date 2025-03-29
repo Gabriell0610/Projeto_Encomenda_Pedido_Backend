@@ -1,15 +1,15 @@
-import { authDto } from "@/dto/auth/loginDto";
+import { authDto } from "@/dto/auth/LoginDto";
 import { IAuthService } from "./IAuthService";
-import { UserRepository } from "@/repository/prisma/user/user.prisma.repository";
 import { BadRequestException } from "@/core/error/exceptions/bad-request-exception";
 import bcrypt from "bcryptjs";
 import { sign } from "jsonwebtoken";
 import "dotenv/config";
 import { InternalServerException } from "@/core/error/exceptions/internal-server-exception";
-import { CreateUserDto } from "@/dto/user/CreateUserDto";
+import { CreateUserDto } from "@/dto/auth/CreateUserDto";
+import { IUserRepository } from "@/repository/interfaces";
 
 class AuthService implements IAuthService {
-  constructor(private userRepository: UserRepository) {}
+  constructor(private userRepository: IUserRepository) {}
 
   register = async (data: CreateUserDto) => {
     const userExists = await this.userRepository.userExistsByEmail(data.email);
@@ -32,14 +32,10 @@ class AuthService implements IAuthService {
       throw new BadRequestException("Esse usuário não existe");
     }
 
-    const passwordCorrect = await bcrypt.compare(dto.senha, userExits.senha);
+    const passwordCorrect = await bcrypt.compare(dto.senha, userExits.senha as string);
 
     if (!passwordCorrect) {
       throw new BadRequestException("Email ou senha incorretos");
-    }
-
-    if (!process.env.JWT_SECRET) {
-      throw new InternalServerException("JWT_SECRET não está definido");
     }
 
     const token = sign(
@@ -48,7 +44,7 @@ class AuthService implements IAuthService {
         email: userExits.email,
         role: userExits.role,
       },
-      process.env.JWT_SECRET,
+      process.env.JWT_SECRET || 'secret',
       { expiresIn: "1d", algorithm: "HS256" },
     );
 
