@@ -24,6 +24,9 @@ jobs:
         with:
           node-version: '18.x'
 
+      - name: Verificar arquivos compilados
+        run: ls -la dist    
+
       - name: Run install build and tests
         run: |
           npm install

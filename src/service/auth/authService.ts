@@ -1,6 +1,6 @@
 import { authDto } from "../../dto/auth/LoginDto";
 import { IAuthService } from "./IAuthService";
-import { BadRequestException } from "@/core/error/exceptions/bad-request-exception";
+import { BadRequestException } from "../../core/error/exceptions/bad-request-exception";
 import bcrypt from "bcryptjs";
 import { sign } from "jsonwebtoken";
 import "dotenv/config";
