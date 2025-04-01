@@ -1,6 +1,6 @@
 import { NextFunction, Request } from "express";
 import { IAuthService } from "../../service/auth/IAuthService";
-import { authSchema } from "../../dto/auth/LoginDto";
+import { authSchema } from "@/dto/auth/LoginDto"
 import { HttpStatus } from "../../core/http";
 import { CreateUserBodySchema } from "../../dto/auth/CreateUserDto";
 
