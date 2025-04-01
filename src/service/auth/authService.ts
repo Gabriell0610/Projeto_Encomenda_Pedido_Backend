@@ -1,12 +1,11 @@
-import { authDto } from "@/dto/auth/LoginDto";
+import { authDto } from "../../dto/auth/LoginDto";
 import { IAuthService } from "./IAuthService";
 import { BadRequestException } from "@/core/error/exceptions/bad-request-exception";
 import bcrypt from "bcryptjs";
 import { sign } from "jsonwebtoken";
 import "dotenv/config";
-import { InternalServerException } from "@/core/error/exceptions/internal-server-exception";
-import { CreateUserDto } from "@/dto/auth/CreateUserDto";
-import { IUserRepository } from "@/repository/interfaces";
+import { CreateUserDto } from "../../dto/auth/CreateUserDto";
+import { IUserRepository } from "../../repository/interfaces";
 
 class AuthService implements IAuthService {
   constructor(private userRepository: IUserRepository) {}
