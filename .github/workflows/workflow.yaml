@@ -24,11 +24,12 @@ jobs:
         with:
           node-version: '18.x'
 
-      - name: Verificar arquivos compilados
-        run: ls -la dist    
 
       - name: Run install build and tests
         run: |
           npm install
           npm run build
-          npm test    
+          npm test   
+           
+      - name: Verificar arquivos compilados
+        run: ls -la dist    
