@@ -1,8 +1,8 @@
-import { CreateUserDto } from "../../../dto/auth/CreateUserDto";
+import { CreateUserDto } from "../../../dto/auth/createUserDto";
 import { IUserRepository } from "repository/interfaces";
 import { prisma } from "../../../libs/prisma";
-import { UpdateUserDto } from "@/dto/user/UpdateUserDto";
-import { AddressDto, AddressUpdateDto } from "@/dto/address/AddressDto";
+import { UpdateUserDto } from "@/dto/user/updateUserDto";
+import { AddressDto, AddressUpdateDto } from "@/dto/address/addressDto";
 import { Usuario } from "@prisma/client";
 
 class UserRepository implements IUserRepository {
