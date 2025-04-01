@@ -2,10 +2,7 @@ import { NextFunction, Request } from "express";
 import { IAuthService } from "../../service/auth/IAuthService";
 import { authSchema } from "@/dto/auth/LoginDto";
 import { HttpStatus } from "@/core/http";
-import { authorizationBodySchema } from "@/helpers/zod/schemas/token";
-import { updateUserBodySchema } from "@/dto/address/UpdateUserDto";
-import { addressBodySchema } from "@/dto/address/AddressDto";
-import { CreateUserBodySchema } from "@/dto/user/CreateUserDto";
+import { CreateUserBodySchema } from "../../dto/auth/CreateUserDto";
 
 class AuthUserController {
   constructor(private authService: IAuthService) {}
