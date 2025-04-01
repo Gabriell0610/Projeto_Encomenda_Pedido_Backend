@@ -7,11 +7,13 @@
     "outDir": "./dist",
     "baseUrl": "./src",
     "paths": {
-      "@/*": ["*"]
+      "@/*": ["./*"]
     },
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true
   },
   "include": ["src/**/*", "prisma/seed/**/*"]
+  ,
+  "exclude": ["node_modules"]
 }
