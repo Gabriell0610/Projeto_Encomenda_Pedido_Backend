@@ -3,7 +3,6 @@ import { IUserRepository } from "../../repository/interfaces";
 import { BadRequestException } from "../../core/error/exceptions/bad-request-exception";
 import { UpdateUserDto } from "@/dto/user/UpdateUserDto";
 import { AddressDto, AddressUpdateDto } from "@/dto/address/AddressDto";
-import { Usuario } from "@prisma/client";
 
 class UserService implements IUserService {
   constructor(private userRepository: IUserRepository) {}

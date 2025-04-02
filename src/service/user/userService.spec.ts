@@ -1,5 +1,5 @@
 import { InMemoryUserRepository } from "@/repository/in-memory/user"
-import { CreateUserDto } from "@/dto/auth/areateUserDto"
+import { CreateUserDto } from "@/dto/auth/CreateUserDto"
 import { AuthService } from "../auth"
 import { AccessProfile } from "@/constants/access-profile"
 import { BadRequestException } from "@/core/error/exceptions/bad-request-exception"
