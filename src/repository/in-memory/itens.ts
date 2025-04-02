@@ -1,4 +1,4 @@
-import { ItensDto } from "@/dto/itens/ItensDto";
+import { ItensDto } from "@/dto/itens/itensDto";
 import { IItensRepository } from "../interfaces";
 
 class InMemoryItensRepository implements IItensRepository {
