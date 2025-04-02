@@ -1,8 +1,8 @@
 import { NextFunction, Request } from "express";
 import { IAuthService } from "../../service/auth/IAuthService";
-import { authSchema } from "@/dto/auth/loginDto"
+import { authSchema } from "@/dto/auth/LoginDto"
 import { HttpStatus } from "../../core/http";
-import { CreateUserBodySchema } from "../../dto/auth/createUserDto";
+import { CreateUserBodySchema } from "../../dto/auth/CreateUserDto";
 
 class AuthUserController {
   constructor(private authService: IAuthService) {}

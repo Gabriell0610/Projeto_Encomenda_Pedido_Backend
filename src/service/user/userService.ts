@@ -1,8 +1,8 @@
 import { IUserService } from "./IUserService";
 import { IUserRepository } from "../../repository/interfaces";
 import { BadRequestException } from "../../core/error/exceptions/bad-request-exception";
-import { UpdateUserDto } from "@/dto/user/updateUserDto";
-import { AddressDto, AddressUpdateDto } from "@/dto/address/addressDto";
+import { UpdateUserDto } from "@/dto/user/UpdateUserDto";
+import { AddressDto, AddressUpdateDto } from "@/dto/address/AddressDto";
 import { Usuario } from "@prisma/client";
 
 class UserService implements IUserService {

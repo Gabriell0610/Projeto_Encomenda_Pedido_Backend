@@ -1,4 +1,4 @@
-import { ItensDto } from "@/dto/itens/itensDto";
+import { ItensDto } from "../../../dto/itens/itensDto"
 import { Item } from "@prisma/client";
 
 interface IItensRepository {

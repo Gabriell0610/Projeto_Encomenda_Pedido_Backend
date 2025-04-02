@@ -1,8 +1,8 @@
 import { Usuario } from "@prisma/client";
-import { CreateUserDto } from "../../dto/auth/createUserDto";
+import { CreateUserDto } from "../../dto/auth/CreateUserDto";
 import { IUserRepository } from "../interfaces";
-import { AddressDto, AddressUpdateDto, } from "@/dto/address/addressDto";
-import { UpdateUserDto } from "@/dto/user/updateUserDto";
+import { AddressDto, AddressUpdateDto, } from "@/dto/address/AddressDto";
+import { UpdateUserDto } from "@/dto/user/UpdateUserDto";
 
 class InMemoryUserRepository implements IUserRepository {
 

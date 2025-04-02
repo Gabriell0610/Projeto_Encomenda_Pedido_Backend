@@ -1,6 +1,6 @@
 import { IItensRepository } from "@/repository/interfaces";
 import { IItensService } from "./IItensService";
-import { ItensDto } from "@/dto/itens/itensDto";
+import { ItensDto } from "@/dto/itens/ItensDto";
 
 //ADICIONAR REGRA DE NEGÓCIO 
 class ItensService implements IItensService {
