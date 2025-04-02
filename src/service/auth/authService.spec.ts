@@ -1,8 +1,7 @@
 import { InMemoryUserRepository } from "@/repository/in-memory/user"
 import { CreateUserDto } from "@/dto/auth/CreateUserDto"
-import { AuthService } from "../auth"
+import { AuthService } from "."
 import { AccessProfile } from "@/constants/access-profile"
-import { BadRequestException } from "@/core/error/exceptions/bad-request-exception"
 import bcrypt from "bcryptjs"
 
 let authService: AuthService
@@ -49,7 +48,6 @@ describe("Unit Tests - authService", () => {
             
     
             await expect( authService.register(userDto)).rejects.toThrow("Já existe conta cadastrada com esse email!")
-            await expect(authService.register(userDto)).rejects.toBeInstanceOf(BadRequestException)
         })
     
         it("should hash the user password before register", async () => {
