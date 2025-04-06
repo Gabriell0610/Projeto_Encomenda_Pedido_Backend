@@ -31,7 +31,7 @@ class AuthService implements IAuthService {
       throw new BadRequestException("Esse usuário não existe");
     }
 
-    const passwordCorrect = await bcrypt.compare(dto.senha, userExits.senha as string);
+    const passwordCorrect = await bcrypt.compare(dto.password, userExits.senha as string);
 
     if (!passwordCorrect) {
       throw new BadRequestException("Email ou senha incorretos");

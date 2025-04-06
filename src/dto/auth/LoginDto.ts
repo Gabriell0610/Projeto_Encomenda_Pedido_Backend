@@ -3,7 +3,7 @@ import { z } from "zod";
 
 const authSchema = z.object({
   email: z.string().email("Email escrito de forma errada").min(1, "Email é obrigatório"),
-  senha: passwordValidation
+  password: passwordValidation
 });
 
 type authDto = z.infer<typeof authSchema>;

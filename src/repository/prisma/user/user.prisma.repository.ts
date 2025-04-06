@@ -73,7 +73,7 @@ class UserRepository implements IUserRepository {
         dataCriacao: true,
         dataAtualizacao: false,
         role: true,
-        senha: false,
+        senha: true,
       }
     });
 
