@@ -1,4 +1,4 @@
-import { AccessProfile } from "@/constants/access-profile";
+import { AccessProfile } from "@/constants/accessProfile";
 import { authUserController } from "@/controllers/auth";
 import { jwtAtuhenticator } from "@/middlewares/authentication";
 import { authorization } from "@/middlewares/authorization";

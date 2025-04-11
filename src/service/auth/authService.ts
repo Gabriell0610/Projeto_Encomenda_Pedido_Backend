@@ -26,6 +26,7 @@ class AuthService implements IAuthService {
 
   login = async (dto: authDto) => {
     const userExits = await this.userRepository.userExistsByEmail(dto.email);
+    console.log(userExits)
 
     if (!userExits) {
       throw new BadRequestException("Esse usuário não existe");

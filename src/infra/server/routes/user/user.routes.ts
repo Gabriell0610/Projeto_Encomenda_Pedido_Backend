@@ -3,7 +3,7 @@ import { userController } from "../../../../controllers/user";
 import { jwtAtuhenticator } from "@/middlewares/authentication";
 import { authorization } from "@/middlewares/authorization";
 import { authUserController } from "@/controllers/auth";
-import { AccessProfile } from "@/constants/access-profile";
+import { AccessProfile } from "@/constants/accessProfile";
 
 const userRouter = Router();
 

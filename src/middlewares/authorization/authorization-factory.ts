@@ -1,4 +1,4 @@
-import { AccessProfile } from "@/constants/access-profile";
+import { AccessProfile } from "@/constants/accessProfile";
 import { Authorization } from "./authorization";
 
 class AuthorizationFactory {

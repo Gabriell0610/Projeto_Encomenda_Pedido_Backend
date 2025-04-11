@@ -1,4 +1,4 @@
-import { AccessProfile } from "../../constants/access-profile";
+import { AccessProfile } from "../../constants/accessProfile";
 import { z } from "zod";
 import { passwordValidation } from "@/helpers/zod/validations/password";
 

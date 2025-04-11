@@ -1,7 +1,7 @@
 import { InMemoryUserRepository } from "@/repository/in-memory/user"
 import { CreateUserDto } from "@/dto/auth/CreateUserDto"
 import { AuthService } from "."
-import { AccessProfile } from "@/constants/access-profile"
+import { AccessProfile } from "@/constants/accessProfile"
 import bcrypt from "bcryptjs"
 
 let authService: AuthService

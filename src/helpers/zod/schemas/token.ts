@@ -1,4 +1,4 @@
-import { AccessProfile } from "@/constants/access-profile";
+import { AccessProfile } from "@/constants/accessProfile";
 import { z } from "zod";
 
 const access_token = z.string().trim();
