@@ -6,9 +6,13 @@ import { sign } from "jsonwebtoken";
 import "dotenv/config";
 import { CreateUserDto } from "../../dto/auth/CreateUserDto";
 import { IUserRepository } from "../../repository/interfaces";
+import { ForgotPasswordDto } from "@/dto/auth/ForgotPasswordDto";
+import { sendResetPasswordEmail } from "../mail/MailService";
+import { generateTokenAuth } from "@/utils/generateToken";
 
 class AuthService implements IAuthService {
   constructor(private userRepository: IUserRepository) {}
+  forgetPassword!: (dto: ForgotPasswordDto) => Promise<string>;
 
   register = async (data: CreateUserDto) => {
     const userExists = await this.userRepository.userExistsByEmail(data.email);
@@ -50,6 +54,22 @@ class AuthService implements IAuthService {
 
     return token;
   };
+
+  // forgetPassword = async (data: ForgotPasswordDto) => {
+  //   const userExists = this.userRepository.userExistsByEmail(data.email)
+
+  //   if(!userExists) {
+  //     throw new BadRequestException("Esse usuário não foi encontrado!")
+  //   }
+
+  //   const token = generateTokenAuth()
+  //   //SALVAR TOKEN E ID DO USUÁRIO NA TABELA tokenResets
+
+  //   /*    */
+    
+  //   //ENVIAR EMAIL PARA O USUÁRIO COM O TOKEN ACIMA
+  //   //sendResetPasswordEmail()
+  // }
 }
 
 export { AuthService };

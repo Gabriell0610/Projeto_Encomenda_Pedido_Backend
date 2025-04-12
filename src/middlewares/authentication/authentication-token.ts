@@ -3,7 +3,7 @@ import { NextFunction, Request } from "express";
 import { verify, decode, JwtPayload, TokenExpiredError } from "jsonwebtoken";
 import "dotenv/config";
 import { InternalServerException } from "@/core/error/exceptions/internal-server-exception";
-import { AccessProfile } from "@/constants/accessProfile";
+import { AccessProfile } from "@/utils/constants/accessProfile";
 
 class JWTAuthenticator {
   authenticate = (req: Request, res: any, next: NextFunction) => {

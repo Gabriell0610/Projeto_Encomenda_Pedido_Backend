@@ -39,6 +39,18 @@ model Usuario {
   enderecos       UsuarioEndereco[]
   pedidos         Pedido[]
   carrinho        Carrinho?
+  tokenResets     tokenResets[]
+}
+
+model tokenResets {
+  id        String   @id @default(uuid())
+  token     String   @unique @db.VarChar()
+  expiraEm  DateTime @db.Timestamp()
+  status    Boolean
+  usuarioId String
+  usuario   Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+
+  @@map("token_resets")
 }
 
 model Endereco {

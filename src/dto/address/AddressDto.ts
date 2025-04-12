@@ -1,4 +1,4 @@
-import { cepValidation } from "../../helpers/zod/validations/cep";
+import { cepValidation } from "../../utils/helpers/zod/validations/cep";
 import { Indices, z } from "zod";
 
 const addressBodySchema = z.object({

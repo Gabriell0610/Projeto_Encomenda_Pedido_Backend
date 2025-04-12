@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import { AccessProfile } from "../../src/constants/accessProfile";
+import { AccessProfile } from "../../src/utils/constants/accessProfile";
 import { prisma } from "../../src/libs/prisma";
 
 // Função para criptografar as senhas

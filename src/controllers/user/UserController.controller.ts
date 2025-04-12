@@ -2,7 +2,7 @@
 import { IUserService } from "../../service/user/IUserService";
 import { NextFunction, Request } from "express";
 import { HttpStatus } from "../../core/http";
-import { authorizationBodySchema } from "@/helpers/zod/schemas/token";
+import { authorizationBodySchema } from "@/utils/helpers/zod/schemas/token";
 import { updateUserBodySchema } from "@/dto/user/UpdateUserDto";
 import { addressBodySchema, updateAddressBodySchema } from "@/dto/address/AddressDto";
 import { BadRequestException } from "@/core/error/exceptions/bad-request-exception";

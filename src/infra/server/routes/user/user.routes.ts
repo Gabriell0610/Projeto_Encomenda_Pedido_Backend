@@ -3,7 +3,7 @@ import { userController } from "../../../../controllers/user";
 import { jwtAtuhenticator } from "@/middlewares/authentication";
 import { authorization } from "@/middlewares/authorization";
 import { authUserController } from "@/controllers/auth";
-import { AccessProfile } from "@/constants/accessProfile";
+import { AccessProfile } from "@/utils/constants/accessProfile";
 
 const userRouter = Router();
 
@@ -34,7 +34,7 @@ userRouter.post(
 userRouter.put(
   "/api/users/:idAddress/address",
   jwtAtuhenticator.authenticate,
-  authorization.ofRoles([AccessProfile.CLIENT]).authorize,
+  authorization.anyRole().authorize,
   userController.updateUserAddress,
 );
 
