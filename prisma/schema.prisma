@@ -43,27 +43,30 @@ model Usuario {
 }
 
 model tokenResets {
-  id        String   @id @default(uuid())
-  token     String   @unique @db.VarChar()
-  expiraEm  DateTime @db.Timestamp()
-  status    Boolean
-  usuarioId String
-  usuario   Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  id          String    @id @default(uuid())
+  token       String    @unique @db.VarChar()
+  expiraEm    DateTime  @db.Timestamp()
+  status      String
+  dataCriacao DateTime? @default(now()) @map("data de criacao") @db.Date
+  usuarioId   String
+  usuario     Usuario   @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
 
   @@map("token_resets")
 }
 
 model Endereco {
-  id          String            @id @default(uuid())
-  cep         String            @db.VarChar()
-  rua         String            @db.VarChar()
-  bairro      String            @db.VarChar()
-  numero      String            @db.VarChar()
-  cidade      String            @db.VarChar()
-  estado      String            @db.VarChar()
-  complemento String?           @db.VarChar()
-  pedidos     Pedido[]
-  usuarios    UsuarioEndereco[]
+  id              String            @id @default(uuid())
+  cep             String            @db.VarChar()
+  rua             String            @db.VarChar()
+  bairro          String            @db.VarChar()
+  numero          String            @db.VarChar()
+  cidade          String            @db.VarChar()
+  estado          String            @db.VarChar()
+  complemento     String?           @db.VarChar()
+  dataCriacao     DateTime?         @default(now()) @map("data de criacao") @db.Date
+  dataAtualizacao DateTime?         @default(now()) @map("data de atualizacao") @db.Date
+  pedidos         Pedido[]
+  usuarios        UsuarioEndereco[]
 
   @@map("enderecos")
 }

@@ -1,6 +1,6 @@
 import { NextFunction, Request } from "express";
 import { IAuthService } from "../../service/auth/IAuthService";
-import { loginSchema } from "@/dto/auth/LoginDto"
+import { loginSchema } from "@/dto/auth/LoginDto";
 import { HttpStatus } from "../../core/http";
 import { CreateUserBodySchema } from "../../dto/auth/CreateUserDto";
 import { forgotPasswordSchema } from "@/dto/auth/ForgotPasswordDto";
@@ -30,9 +30,19 @@ class AuthUserController {
 
   forgetPassword = async (req: Request, res: any, next: NextFunction) => {
     try {
-      const dto = forgotPasswordSchema.parse(req.body)
-      await this.authService.forgetPassword(dto)
-      res.status(HttpStatus.OK).json({message: 'Aguarde para ser redirecionado' })
+      const dto = forgotPasswordSchema.parse(req.body);
+      await this.authService.forgetPassword(dto);
+      res.status(HttpStatus.OK).json({ message: "Aguarde para ser redirecionado" });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  validateToken = async (req: Request, res: any, next: NextFunction) => {
+    try {
+      const {token, email} = req.body
+      const tokenValidated = await this.authService.validateToken(token, email);
+      res.status(HttpStatus.OK).json({ message: "Token válido", data: tokenValidated});
     } catch (error) {
       next(error)
     }

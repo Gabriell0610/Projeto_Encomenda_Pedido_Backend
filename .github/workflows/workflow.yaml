@@ -1,35 +1,34 @@
 name: CI Pipeline
 
-on: 
-  push: 
+on:
+  push:
     branches:
       - main
       - develop
-      - 'feat/*'
+      - "feat/*"
   pull_request:
     branches:
       - main
       - develop
 
-jobs: 
-  continuous-integration: 
+jobs:
+  continuous-integration:
     runs-on: ubuntu-latest
 
-    steps: 
+    steps:
       - name: checar o código do repositório
         uses: actions/checkout@v3
 
-      - name: Using node.js 
+      - name: Using node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18.x'
-
+          node-version: "18.x"
 
       - name: Run install build and tests
         run: |
           npm install
           npm run build
-          npm test   
-           
+          npm test
+
       - name: Verificar arquivos compilados
-        run: ls -la dist    
+        run: ls -la dist

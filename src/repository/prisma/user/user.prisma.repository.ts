@@ -31,7 +31,7 @@ class UserRepository implements IUserRepository {
         dataAtualizacao: true,
         role: true,
         senha: false,
-      }
+      },
     });
   };
 
@@ -58,7 +58,7 @@ class UserRepository implements IUserRepository {
   };
 
   userExistsByEmail = async (email: string) => {
-    const user = await prisma.usuario.findUnique({ 
+    const user = await prisma.usuario.findUnique({
       where: { email },
       select: {
         id: true,
@@ -74,11 +74,10 @@ class UserRepository implements IUserRepository {
         dataAtualizacao: false,
         role: true,
         senha: true,
-      }
+      },
     });
 
-    return user
-    
+    return user;
   };
 
   findUserById = async (id: string) => {

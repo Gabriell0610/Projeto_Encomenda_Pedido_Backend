@@ -20,7 +20,7 @@ class JWTAuthenticator {
         throw new InternalServerException("JWT_SECRET não está definido");
       }
 
-      verify(token, process.env.JWT_SECRET || 'secret');
+      verify(token, process.env.JWT_SECRET || "secret");
 
       const { id, email, role } = decode(token) as JwtPayload;
 

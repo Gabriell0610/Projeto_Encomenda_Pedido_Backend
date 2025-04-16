@@ -1,11 +1,10 @@
 import { Usuario } from "@prisma/client";
 import { CreateUserDto } from "../../dto/auth/CreateUserDto";
 import { IUserRepository } from "../interfaces";
-import { AddressDto, AddressUpdateDto, } from "@/dto/address/AddressDto";
+import { AddressDto, AddressUpdateDto } from "@/dto/address/AddressDto";
 import { UpdateUserDto } from "@/dto/user/UpdateUserDto";
 
 class InMemoryUserRepository implements IUserRepository {
-
   userDatabase: CreateUserDto[] = [];
 
   create = async (data: CreateUserDto) => {
@@ -26,7 +25,6 @@ class InMemoryUserRepository implements IUserRepository {
     return user || null;
   };
 
-  
   findUserById!: (id: string) => Promise<Partial<Usuario> | null>;
   updateUser!: (dto: UpdateUserDto, userId: string) => Promise<Partial<Usuario>>;
   updateAddress!: (dto: AddressUpdateDto, userId: string, addressId: string) => Promise<Partial<void>>;

@@ -7,12 +7,18 @@ import "dotenv/config";
 import { CreateUserDto } from "../../dto/auth/CreateUserDto";
 import { IUserRepository } from "../../repository/interfaces";
 import { ForgotPasswordDto } from "@/dto/auth/ForgotPasswordDto";
-import { sendResetPasswordEmail } from "../mail/MailService";
 import { generateTokenAuth } from "@/utils/generateToken";
+import { ITokenResets } from "@/repository/interfaces/tokenResets/ITokenResets";
+import { InternalServerException } from "@/core/error/exceptions/internal-server-exception";
+import { IEmailService } from "../email/nodemailer.type";
+import { StatusToken } from "@/utils/constants/statusToken";
 
 class AuthService implements IAuthService {
-  constructor(private userRepository: IUserRepository) {}
-  forgetPassword!: (dto: ForgotPasswordDto) => Promise<string>;
+  constructor(
+    private  userRepository: IUserRepository,
+    private  tokenResetsRepository: ITokenResets,
+    private  emailService: IEmailService
+  ) {}
 
   register = async (data: CreateUserDto) => {
     const userExists = await this.userRepository.userExistsByEmail(data.email);
@@ -30,7 +36,7 @@ class AuthService implements IAuthService {
 
   login = async (dto: authDto) => {
     const userExits = await this.userRepository.userExistsByEmail(dto.email);
-    console.log(userExits)
+    console.log(userExits);
 
     if (!userExits) {
       throw new BadRequestException("Esse usuário não existe");
@@ -48,28 +54,55 @@ class AuthService implements IAuthService {
         email: userExits.email,
         role: userExits.role,
       },
-      process.env.JWT_SECRET || 'secret',
+      process.env.JWT_SECRET || "secret",
       { expiresIn: "1d", algorithm: "HS256" },
     );
 
     return token;
   };
 
-  // forgetPassword = async (data: ForgotPasswordDto) => {
-  //   const userExists = this.userRepository.userExistsByEmail(data.email)
+  forgetPassword = async (data: ForgotPasswordDto) => {
+    const userExists = await this.userRepository.userExistsByEmail(data.email);
 
-  //   if(!userExists) {
-  //     throw new BadRequestException("Esse usuário não foi encontrado!")
-  //   }
+    if (!userExists) {
+      throw new BadRequestException("Esse usuário não foi encontrado!");
+    }
 
-  //   const token = generateTokenAuth()
-  //   //SALVAR TOKEN E ID DO USUÁRIO NA TABELA tokenResets
+    //SALVAR TOKEN E ID DO USUÁRIO NA TABELA tokenResets
+    const token = generateTokenAuth();
+    console.log(token)
+    const createdToken = await this.tokenResetsRepository.createToken(token, userExists.id!);
+    console.log(createdToken);
 
-  //   /*    */
+    if(!createdToken) {
+      throw new BadRequestException("Falha ao salvar token!");
+    }
+
+    //ENVIAR EMAIL PARA O USUÁRIO COM O TOKEN ACIMA
+    this.emailService.sendEmail(data.email, createdToken.token!)
+  };
+
+  validateToken = async (token: string, email: string) => {
+    const userExists = await this.userRepository.userExistsByEmail(email);
+
+    if (!userExists) {
+      throw new BadRequestException("Esse usuário não foi encontrado!");
+    }
+
+    const tokenRecord = await this.tokenResetsRepository.findByToken(token)
+
+    if(!tokenRecord || tokenRecord.usuarioId !== userExists.id) {
+      throw new BadRequestException("Token inválido. Gere outro token!");
+    }
+
+    const isExpired = tokenRecord.expiraEm < new Date()
+    if(isExpired) {
+      await this.tokenResetsRepository.updateStatus(StatusToken.EXPIRADO, tokenRecord.id!)
+      throw new BadRequestException("Token expirado. Gere outro token!");
+    }
     
-  //   //ENVIAR EMAIL PARA O USUÁRIO COM O TOKEN ACIMA
-  //   //sendResetPasswordEmail()
-  // }
+    return tokenRecord
+  }
 }
 
 export { AuthService };

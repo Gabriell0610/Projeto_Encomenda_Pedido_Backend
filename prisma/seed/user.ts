@@ -4,7 +4,7 @@ import { prisma } from "../../src/libs/prisma";
 
 // Função para criptografar as senhas
 async function hashPassword() {
-  for (let user of userDto.users) {
+  for (const user of userDto.users) {
     user.senha = await bcrypt.hash("Teste123!", 8);
   }
 }
