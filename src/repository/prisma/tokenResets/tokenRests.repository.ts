@@ -21,7 +21,13 @@ class TokenResetsRepository implements ITokenResets {
     return await prisma.tokenResets.findUnique({
       where: { token },
       include: {
-        usuario: true,
+        usuario: {
+          select:{
+            email: true,
+            nome: true,
+            id: true
+          }
+        }
       },
     })
   }

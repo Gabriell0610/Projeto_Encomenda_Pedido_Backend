@@ -9,8 +9,7 @@ authRouter.post("/api/auth/register", authUserController.register);
 authRouter.post("/api/auth/login", authUserController.login);
 
 authRouter.post("/api/auth/forgot-password", authUserController.forgetPassword);
-
 authRouter.post("/api/auth/validate-token", authUserController.validateToken);
-authRouter.post("/api/auth/reset-password");
+authRouter.post("/api/auth/reset-password", authUserController.resetPassword);
 
 export { authRouter };

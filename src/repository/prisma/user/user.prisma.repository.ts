@@ -110,6 +110,7 @@ class UserRepository implements IUserRepository {
         nome: data?.nome,
         telefone: data?.telefone,
         dataAtualizacao: new Date(),
+        senha: data?.senha
       },
       select: {
         id: true,

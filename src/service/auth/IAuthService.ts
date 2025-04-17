@@ -7,7 +7,8 @@ interface IAuthService {
   login: (dto: authDto) => Promise<string>;
   register: (data: CreateUserDto) => CreateUserDto | Promise<Partial<Usuario>>;
   forgetPassword: (dto: ForgotPasswordDto) => Promise<void>;
-  validateToken: (token: string, email: string) => Promise<tokenResets>;
+  validateToken: (dto: ForgotPasswordDto) => Promise<tokenResets>;
+  resetPassword: (dto: ForgotPasswordDto) => Promise<void>;
 }
 
 export { IAuthService };

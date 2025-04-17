@@ -32,7 +32,7 @@ class AuthUserController {
     try {
       const dto = forgotPasswordSchema.parse(req.body);
       await this.authService.forgetPassword(dto);
-      res.status(HttpStatus.OK).json({ message: "Aguarde para ser redirecionado" });
+      return res.status(HttpStatus.OK).json({ message: "Um token foi enviado para seu email!" });
     } catch (error) {
       next(error);
     }
@@ -40,11 +40,21 @@ class AuthUserController {
 
   validateToken = async (req: Request, res: any, next: NextFunction) => {
     try {
-      const {token, email} = req.body
-      const tokenValidated = await this.authService.validateToken(token, email);
-      res.status(HttpStatus.OK).json({ message: "Token válido", data: tokenValidated});
+      const dto = forgotPasswordSchema.parse(req.body)
+      const tokenValidated = await this.authService.validateToken(dto);
+      return res.status(HttpStatus.OK).json({ message: "Token válido", data: tokenValidated});
     } catch (error) {
       next(error)
+    }
+  }
+
+  resetPassword = async (req: Request, res: any, next: NextFunction) => {
+    try {
+      const dto = forgotPasswordSchema.parse(req.body)
+      await this.authService.resetPassword(dto);
+      return res.status(HttpStatus.OK).json({message: "Senha alterada com sucesso!"})
+    } catch (error) {
+      next(error);
     }
   }
 }

@@ -15,34 +15,25 @@ import { StatusToken } from "@/utils/constants/statusToken";
 
 class AuthService implements IAuthService {
   constructor(
-    private  userRepository: IUserRepository,
-    private  tokenResetsRepository: ITokenResets,
-    private  emailService: IEmailService
+    private readonly userRepository: IUserRepository,
+    private readonly tokenResetsRepository: ITokenResets,
+    private readonly emailService: IEmailService
   ) {}
 
-  register = async (data: CreateUserDto) => {
-    const userExists = await this.userRepository.userExistsByEmail(data.email);
+  register = async (dto: CreateUserDto) => {
+    await this.verifyUserExistsByEmail(dto.email)
 
-    if (userExists) {
-      throw new BadRequestException("Já existe conta cadastrada com esse email!");
-    }
+    const hashedPassword = await bcrypt.hash(dto.senha, 8);
 
-    const hashedPassword = await bcrypt.hash(data.senha, 8);
+    dto.senha = hashedPassword;
 
-    data.senha = hashedPassword;
-
-    return this.userRepository.create(data);
+    return this.userRepository.create(dto);
   };
 
   login = async (dto: authDto) => {
-    const userExits = await this.userRepository.userExistsByEmail(dto.email);
-    console.log(userExits);
+    const userExist = await this.verifyUserExistsByEmail(dto.email)
 
-    if (!userExits) {
-      throw new BadRequestException("Esse usuário não existe");
-    }
-
-    const passwordCorrect = await bcrypt.compare(dto.password, userExits.senha as string);
+    const passwordCorrect = await bcrypt.compare(dto.password, userExist.senha as string);
 
     if (!passwordCorrect) {
       throw new BadRequestException("Email ou senha incorretos");
@@ -50,9 +41,9 @@ class AuthService implements IAuthService {
 
     const token = sign(
       {
-        id: userExits.id,
-        email: userExits.email,
-        role: userExits.role,
+        id: userExist.id,
+        email: userExist.email,
+        role: userExist.role,
       },
       process.env.JWT_SECRET || "secret",
       { expiresIn: "1d", algorithm: "HS256" },
@@ -61,35 +52,25 @@ class AuthService implements IAuthService {
     return token;
   };
 
-  forgetPassword = async (data: ForgotPasswordDto) => {
-    const userExists = await this.userRepository.userExistsByEmail(data.email);
-
-    if (!userExists) {
-      throw new BadRequestException("Esse usuário não foi encontrado!");
-    }
+  forgetPassword = async (dto: ForgotPasswordDto) => {
+    const userExists = await this.verifyUserExistsByEmail(dto.email)
 
     //SALVAR TOKEN E ID DO USUÁRIO NA TABELA tokenResets
     const token = generateTokenAuth();
-    console.log(token)
     const createdToken = await this.tokenResetsRepository.createToken(token, userExists.id!);
-    console.log(createdToken);
 
     if(!createdToken) {
       throw new BadRequestException("Falha ao salvar token!");
     }
 
     //ENVIAR EMAIL PARA O USUÁRIO COM O TOKEN ACIMA
-    this.emailService.sendEmail(data.email, createdToken.token!)
+    this.emailService.sendEmail(dto.email, createdToken.token!)
   };
 
-  validateToken = async (token: string, email: string) => {
-    const userExists = await this.userRepository.userExistsByEmail(email);
+  validateToken = async (dto: ForgotPasswordDto) => {
+    const userExists = await this.verifyUserExistsByEmail(dto.email)
 
-    if (!userExists) {
-      throw new BadRequestException("Esse usuário não foi encontrado!");
-    }
-
-    const tokenRecord = await this.tokenResetsRepository.findByToken(token)
+    const tokenRecord = await this.tokenResetsRepository.findByToken(dto.token!)
 
     if(!tokenRecord || tokenRecord.usuarioId !== userExists.id) {
       throw new BadRequestException("Token inválido. Gere outro token!");
@@ -102,6 +83,30 @@ class AuthService implements IAuthService {
     }
     
     return tokenRecord
+  }
+
+  resetPassword = async(dto:ForgotPasswordDto) => {
+    const userExists = await this.verifyUserExistsByEmail(dto.email)
+
+    const hashedPassword = await bcrypt.hash(dto.newPassword!, 8);
+    userExists.senha = hashedPassword;
+    await this.userRepository.updateUser(userExists, userExists.id!);
+
+    const tokenRecord = await this.tokenResetsRepository.findByToken(dto.token!)
+    
+    if(!tokenRecord) {
+      throw new BadRequestException("Token não existe");
+    }
+    await this.tokenResetsRepository.updateStatus(StatusToken.EXPIRADO, tokenRecord.id!)
+  }
+
+  private async verifyUserExistsByEmail(email: string) {
+    const userExists = await this.userRepository.userExistsByEmail(email);
+    if (!userExists) {
+      throw new BadRequestException("Esse usuário não foi encontrado!");
+    }
+
+    return userExists;
   }
 }
 
