@@ -31,7 +31,7 @@ class AuthUserController {
   forgetPassword = async (req: Request, res: any, next: NextFunction) => {
     try {
       const dto = forgotPasswordSchema.parse(req.body);
-      await this.authService.forgetPassword(dto);
+      await this.authService.createToken(dto);
       return res.status(HttpStatus.OK).json({ message: "Um token foi enviado para seu email!" });
     } catch (error) {
       next(error);

@@ -13,7 +13,7 @@ class NodemailerService implements IEmailService {
   sendEmail = async (to: string, token : string) => {
     try {
       await this.transporter.sendMail({
-        from: '"Projeto Z - Suporte" <gabrielbarbosaa432@gmail.com>',
+        from: '"Empadão Da Aline - Suporte" <gabrielbarbosaa432@gmail.com>',
         to,
         subject: "Redefinção de senha",
         html: `<p>Seu código de recuperação é <b>${token}</b></p>`,

@@ -56,7 +56,7 @@ class AuthService implements IAuthService {
     return token;
   };
 
-  forgetPassword = async (dto: ForgotPasswordDto) => {
+  createToken = async (dto: ForgotPasswordDto) => {
     const userExists = await this.verifyUserExistsByEmail(dto.email)
 
     //SALVAR TOKEN E ID DO USUÁRIO NA TABELA tokenResets

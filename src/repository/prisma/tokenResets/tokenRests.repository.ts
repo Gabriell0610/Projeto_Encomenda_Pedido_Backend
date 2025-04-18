@@ -6,7 +6,18 @@ import { StatusToken } from "@/utils/constants/statusToken";
 class TokenResetsRepository implements ITokenResets {
 
   createToken = async (token: string, userId: string) => {
-    const expiresIn = new Date(Date.now() + 8 * 60 * 1000); // 8 minutos em milissegundos
+    const expiresIn = new Date(Date.now() + 5 * 60 * 1000); // 5 minutos em milissegundos
+    // Ao gerar um novo token, expire os anteriores:
+    await prisma.tokenResets.updateMany({
+      where: {
+        usuarioId: userId,
+        status: StatusToken.ATIVO,
+      },
+      data: {
+        status: StatusToken.EXPIRADO,
+      },
+    });
+
     return await prisma.tokenResets.create({
       data: {
         expiraEm: expiresIn,
