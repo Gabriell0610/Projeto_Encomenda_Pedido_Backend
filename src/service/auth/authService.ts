@@ -21,7 +21,11 @@ class AuthService implements IAuthService {
   ) {}
 
   register = async (dto: CreateUserDto) => {
-    await this.verifyUserExistsByEmail(dto.email)
+    const userExist = await this.userRepository.userExistsByEmail(dto.email)
+
+    if(userExist) {
+      throw new BadRequestException("Já existe conta cadastrada com esse email!");
+    }
 
     const hashedPassword = await bcrypt.hash(dto.senha, 8);
 

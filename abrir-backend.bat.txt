@@ -1,0 +1,1 @@
+code . "%USERPROFILE%\Desktop\estudos\projeto-pessoal\backend"
