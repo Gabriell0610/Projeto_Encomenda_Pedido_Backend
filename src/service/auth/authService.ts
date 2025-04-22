@@ -31,7 +31,9 @@ class AuthService implements IAuthService {
 
     dto.senha = hashedPassword;
 
-    return this.userRepository.create(dto);
+    const userCreated = await this.userRepository.create(dto);
+
+    return userCreated
   };
 
   login = async (dto: authDto) => {

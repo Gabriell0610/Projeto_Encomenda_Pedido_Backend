@@ -3,13 +3,20 @@ import { CreateUserDto } from "../../dto/auth/CreateUserDto";
 import { IUserRepository } from "../interfaces";
 import { AddressDto, AddressUpdateDto } from "@/dto/address/AddressDto";
 import { UpdateUserDto } from "@/dto/user/UpdateUserDto";
+import { randomUUID } from "crypto";
 
 class InMemoryUserRepository implements IUserRepository {
-  userDatabase: CreateUserDto[] = [];
+  userDatabase: Partial<Usuario>[] = [];
 
   create = async (data: CreateUserDto) => {
-    this.userDatabase.push(data);
-    return data;
+    const user: Partial<Usuario> = {
+      id: randomUUID(),
+      dataCriacao: new Date(),
+
+      ...data
+    }
+    this.userDatabase.push(user);
+    return user;
   };
 
   list = async () => {

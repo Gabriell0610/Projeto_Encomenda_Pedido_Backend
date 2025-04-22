@@ -4,6 +4,7 @@
   "main": "index.ts",
   "scripts": {
     "test": "jest",
+    "test:coverage": "jest --coverage",
     "build": "tsc",
     "start": "node dist/infra/server/index.js",
     "dev": "ts-node-dev -r tsconfig-paths/register --transpile-only src/infra/server/index.ts",
