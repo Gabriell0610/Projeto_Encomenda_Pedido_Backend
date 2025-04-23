@@ -22,11 +22,22 @@ class InMemoryTokenResets implements ITokenResets {
 
         return tokenResets
     }
-    
-    verifyToken!: (token: string) => Promise<boolean>;
-    findByToken!: (token: string) => Promise<tokenResets>;
+
+    findByToken = async (token: string) => {
+        const findToken = this.tokenDb.find(t => t.token === token)
+        return findToken || null
+    }
+
+    updateStatus = async (statusToken: StatusToken, idToken: string) => {
+        const findToken = this.tokenDb.find(t => t.id === idToken)
+        if(!findToken) {
+            return
+        }
+
+        findToken.status = statusToken
+    }
+
     listAllTokens!: () => Promise<tokenResets[]>;
-    updateStatus!: (statusToken: StatusToken, idToken: string) => Promise<void>;
 }
 
 export { InMemoryTokenResets };

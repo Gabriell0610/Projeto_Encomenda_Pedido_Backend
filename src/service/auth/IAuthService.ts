@@ -6,8 +6,8 @@ import { ForgotPasswordDto } from "@/dto/auth/ForgotPasswordDto";
 interface IAuthService {
   login: (dto: authDto) => Promise<string>;
   register: (data: CreateUserDto) => CreateUserDto | Promise<Partial<Usuario>>;
-  createToken: (dto: ForgotPasswordDto) => Promise<void>;
-  validateToken: (dto: ForgotPasswordDto) => Promise<tokenResets>;
+  createToken: (dto: ForgotPasswordDto) => Promise<tokenResets | void>;
+  validateToken: (dto: ForgotPasswordDto) => Promise<tokenResets | void>;
   resetPassword: (dto: ForgotPasswordDto) => Promise<void>;
 }
 

@@ -32,8 +32,21 @@ class InMemoryUserRepository implements IUserRepository {
     return user || null;
   };
 
+  updateUser = async (dto: UpdateUserDto, userId: string) =>  {
+    const findUser = this.userDatabase.find((user) => user.id === userId);
+
+    if(!findUser) throw new Error("usuário nao encontrado")
+
+    findUser.senha = dto?.senha 
+    findUser.nome = dto?.nome  
+    findUser.telefone = dto?.telefone  
+    findUser.dataAtualizacao = new Date()
+
+    return findUser
+  }
+
   findUserById!: (id: string) => Promise<Partial<Usuario> | null>;
-  updateUser!: (dto: UpdateUserDto, userId: string) => Promise<Partial<Usuario>>;
+
   updateAddress!: (dto: AddressUpdateDto, userId: string, addressId: string) => Promise<Partial<void>>;
   removeAddress!: (userId: string, idAddress: string) => Promise<void>;
   addAddress!: (dto: AddressDto, userId: string) => Promise<void>;

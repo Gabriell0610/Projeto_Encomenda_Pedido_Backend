@@ -4,17 +4,20 @@ import { AuthService } from ".";
 import { AccessProfile } from "@/utils/constants/accessProfile";
 import bcrypt from "bcryptjs";
 import { InMemoryTokenResets } from "@/repository/in-memory/token-resets";
-import { NodemailerService } from "../email/nodemailer";
 import { authDto } from "@/dto/auth/LoginDto";
 import { ForgotPasswordDto } from "@/dto/auth/ForgotPasswordDto";
+import { tokenResets, Usuario } from "@prisma/client";
+import { BadRequestException } from "@/core/error/exceptions/bad-request-exception";
+import { MockEmailService } from "../email/mockNodemailer";
 
 let authService: AuthService;
 let userRepositoryInMemory: InMemoryUserRepository;
-let tokenResetsInMemory: InMemoryTokenResets
-let nodemailerService: NodemailerService
+let tokenResetsInMemory: InMemoryTokenResets;
+let mockNodemailer: MockEmailService;
 describe("Unit Tests - authService", () => {
   const RAW_PASSWORD = "Teste123!"
-  const createUserDto = (overrides: Partial<CreateUserDto> = {}): CreateUserDto => ({
+  
+  const createUserDto = (overrides: Partial<CreateUserDto> = {}) => ({
     nome: "Gabriel",
     email: "gabriel@gmail.com",
     senha: RAW_PASSWORD,
@@ -26,14 +29,13 @@ describe("Unit Tests - authService", () => {
   beforeEach(async () => {
     userRepositoryInMemory = new InMemoryUserRepository();
     tokenResetsInMemory = new InMemoryTokenResets();
-    nodemailerService = new NodemailerService();
-    authService = new AuthService(userRepositoryInMemory, tokenResetsInMemory, nodemailerService);
+    mockNodemailer = new MockEmailService();
+    authService = new AuthService(userRepositoryInMemory, tokenResetsInMemory, mockNodemailer);
   });
 
   describe("Testing method register", () => {
     it("Should create a user", async () => {
       //Arrange
-
       const userDto = createUserDto()
 
       //Act
@@ -61,7 +63,7 @@ describe("Unit Tests - authService", () => {
 
       const response = await authService.register(userDto);
 
-      const isPasswordHashed = await bcrypt.compare(RAW_PASSWORD, response.senha as string);
+      const isPasswordHashed = await bcrypt.compare(RAW_PASSWORD, response.senha!);
       expect(isPasswordHashed).toBe(true);
     });
   });
@@ -109,22 +111,99 @@ describe("Unit Tests - authService", () => {
     });
   })
 
-  describe("testing forgot passwords", () => {
+  describe("testing forgot password", () => {
+    let userToken: string | undefined;
+    let userExist: Partial<Usuario>
+    let tokenResets: tokenResets | undefined
+
+    beforeEach(async () => {
+      const userDto = createUserDto();
+      userExist = await authService.register(userDto);
+      tokenResets = await authService.createToken({ email: userExist.email! });
+      userToken = tokenResets?.token
+    });
+
+   describe("method createToken", () => {
     it("should send an email to user", async () => {
-      const userDto = createUserDto()
+      mockNodemailer.sendEmail.mockClear(); // limpa chamadas anteriores
+      await authService.createToken({ email: userExist.email! });
 
-      const userExist = await authService.register(userDto);
-      
-      // MOCK do método sendEmail
-      const sendEmailMock = jest.spyOn(nodemailerService, 'sendEmail').mockImplementation(async () => {});
-      await authService.createToken({email: userExist.email as string})
-
-      
-      expect(sendEmailMock).toHaveBeenCalledTimes(1);
-      expect(sendEmailMock).toHaveBeenCalledWith(
+      expect(mockNodemailer.sendEmail).toHaveBeenCalledTimes(1);
+      expect(mockNodemailer.sendEmail).toHaveBeenCalledWith(
         userExist.email,
-        expect.any(String) // porque o token é gerado dinamicamente
+        expect.any(String)
       );
-    })  
+    })
+
+    it("should throw BadRequestError if token is not saved", async () => {
+      jest
+      .spyOn(tokenResetsInMemory, "createToken")
+      .mockResolvedValue(null as any);
+  
+      await expect(
+        authService.createToken({ email: userExist.email as string })
+      ).rejects.toThrow("Falha ao salvar token!");
+    })
+   })
+
+   
+   describe("method validateToken", () => {
+    it("should validate token with success", async () => {
+      const tokenValid = await authService.validateToken({email: userExist.email!, token: userToken })
+
+      expect(tokenValid?.token).toEqual(userToken)
+    });
+
+    it("should throw BadRequestError if token is invalid", async () => {
+      jest
+      .spyOn(tokenResetsInMemory, "findByToken")
+      .mockResolvedValue(null)
+      
+      const userDto = createUserDto({email: "teste@gmail.com"});
+      const otherUser = await authService.register(userDto);
+
+      await expect(authService.validateToken({email: otherUser.email!, token: userToken })).rejects.toThrow("Token inválido. Gere outro token!")
+    })
+
+    it("should throw BadRequestError if token is expired", async () => {
+      tokenResets!.expiraEm = new Date(Date.now() - 1000)
+      userToken = tokenResets?.token
+      
+      await expect(authService.validateToken({email: userExist.email!, token: userToken }))
+        .rejects.toThrow("Token expirado. Gere outro token!")
+    })
+   })
+
+  describe("method resetPasswords", () => {
+    it("should reset password with success", async () => {
+
+      const forgotPasswordDto: ForgotPasswordDto = {
+        email: userExist.email!,
+        token: userToken,
+        newPassword: "novaSenha123!",
+      }
+      
+      await authService.resetPassword(forgotPasswordDto)
+      const updatedUser = await userRepositoryInMemory.userExistsByEmail(userExist.email!)
+      const isPasswordHashed = await bcrypt.compare(forgotPasswordDto.newPassword!, updatedUser!.senha!);
+
+      expect(isPasswordHashed).toBe(true)
+     
+    })
+
+    it("should throw BadRequestError if token not exist", async () => {
+      jest
+      .spyOn(tokenResetsInMemory, "findByToken")
+      .mockResolvedValue(null)
+
+      const forgotPasswordDto: ForgotPasswordDto = {
+        email: userExist.email!,
+        token: userToken,
+        newPassword: "novaSenha123!",
+      }
+
+      await expect(authService.resetPassword(forgotPasswordDto)).rejects.toThrow("Token inválido")
+    })
+  })
   })
 });

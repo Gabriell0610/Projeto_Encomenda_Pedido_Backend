@@ -41,8 +41,8 @@ class AuthUserController {
   validateToken = async (req: Request, res: any, next: NextFunction) => {
     try {
       const dto = forgotPasswordSchema.parse(req.body)
-      const tokenValidated = await this.authService.validateToken(dto);
-      return res.status(HttpStatus.OK).json({ message: "Token válido", data: tokenValidated});
+      await this.authService.validateToken(dto);
+      return res.status(HttpStatus.OK).json({ message: "Token válido"});
     } catch (error) {
       next(error)
     }
