@@ -101,7 +101,7 @@ class AuthService implements IAuthService {
 
     const hashedPassword = await bcrypt.hash(dto.newPassword!, 8);
     userExists.senha = hashedPassword;
-    const userUpdated = await this.userRepository.updateUser(userExists, userExists.id!);
+    await this.userRepository.updateUser(userExists, userExists.id!);
 
     const tokenRecord = await this.tokenResetsRepository.findByToken(dto.token!)
     

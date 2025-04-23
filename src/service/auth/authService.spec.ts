@@ -109,6 +109,28 @@ describe("Unit Tests - authService", () => {
     
       await expect(authService.login(loginDto)).rejects.toThrow("Email ou senha incorretos");
     });
+
+    it('should use default secret if JWT_SECRET is not defined', async () => {
+      // remove temporariamente a variável de ambiente
+      const originalEnv = process.env.JWT_SECRET;
+      delete process.env.JWT_SECRET;
+    
+      const userDto = createUserDto();
+      await authService.register(userDto)
+
+      const loginDto: authDto = {
+        email: "gabriel@gmail.com",
+        password: RAW_PASSWORD,
+      };
+    
+      const token = await authService.login(loginDto);
+    
+      expect(typeof token).toBe("string");
+    
+      // restaura o valor original
+      process.env.JWT_SECRET = originalEnv;
+    });
+    
   })
 
   describe("testing forgot password", () => {
@@ -162,7 +184,8 @@ describe("Unit Tests - authService", () => {
       const userDto = createUserDto({email: "teste@gmail.com"});
       const otherUser = await authService.register(userDto);
 
-      await expect(authService.validateToken({email: otherUser.email!, token: userToken })).rejects.toThrow("Token inválido. Gere outro token!")
+      await expect(authService.validateToken({email: otherUser.email!, token: userToken }))
+      .rejects.toThrow("Token inválido. Gere outro token!")
     })
 
     it("should throw BadRequestError if token is expired", async () => {

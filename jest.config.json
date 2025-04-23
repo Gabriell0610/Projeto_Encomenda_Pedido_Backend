@@ -1,11 +1,19 @@
 {
   "preset": "ts-jest",
   "testEnvironment": "node",
-  "testMatch": ["**/__tests__/**/*.+(js|jsx|ts|tsx)", "**/?(*.)+(spec|test).+(js|jsx|ts|tsx)"],
+  "testMatch": [
+    "**/__tests__/**/*.+(ts|tsx)",
+    "**/?(*.)+(spec|test).+(ts|tsx)"
+  ],
+
   "moduleNameMapper": {
     "^@/(.*)$": "<rootDir>/src/$1"
   },
   "transform": {
     "^.+\\.ts$": "ts-jest"
-  }
+  },
+  "collectCoverageFrom": [
+    "src/service/auth/authService.ts"
+  ],
+  "testPathIgnorePatterns": ["/node_modules/", "/dist/"]
 }
