@@ -14,8 +14,8 @@ itensRouter.post(
 );
 
 itensRouter.get("/api/itens", 
- jwtAtuhenticator.authenticate,
-  authorization.anyRole().authorize, 
+  // jwtAtuhenticator.authenticate,
+  // authorization.anyRole().authorize, 
   itensController.list
 );
 

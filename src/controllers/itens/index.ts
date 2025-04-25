@@ -1,6 +1,6 @@
 import { InMemoryItensRepository } from "@/repository/in-memory/itens";
 import { ItensService } from "@/service/itens/itensService";
-import { ItensController } from "./ItensController.controller";
+import { ItensController } from "./Itens.controller";
 import { ItensRepository } from "@/repository/prisma/itens/itens.prisma.repository";
 
 const itensRepository = new ItensRepository();

@@ -32,6 +32,12 @@ enum meioPagamento {
   CARTAO_DEBITO
 }
 
+enum StatusCart {
+  ATIVO
+  INATIVO
+  FECHADO
+}
+
 model Usuario {
   id              String            @id @default(uuid())
   nome            String            @db.VarChar()
@@ -124,9 +130,10 @@ model Item {
 }
 
 model Carrinho {
-  id            String    @id @default(uuid())
-  dataCriacao   DateTime? @default(now()) @map("data de criacao") @db.Date
-  dataExpiracao DateTime? @db.Date
+  id            String     @id @default(uuid())
+  dataCriacao   DateTime?  @default(now()) @map("data de criacao") @db.Date
+  dataExpiracao DateTime?  @db.Date
+  status        StatusCart
 
   Usuario   Usuario @relation(fields: [usuarioId], references: [id])
   usuarioId String  @unique
