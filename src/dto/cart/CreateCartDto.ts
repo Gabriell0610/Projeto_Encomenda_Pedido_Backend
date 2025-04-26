@@ -9,13 +9,7 @@ const createCartSchema = z.object({
     quantity: z.number().default(1),
 })
 
-const createCartItemSchema = z.object({
-    itemId: z.string(),
-    quantity: z.number().default(1),
-    cartId: z.string(),
-})
 
 type CreateCartDto = z.infer<typeof createCartSchema>
-type CreateCartItemDto = z.infer<typeof createCartItemSchema>
 
-export { createCartSchema, createCartItemSchema, CreateCartDto, CreateCartItemDto }
+export { createCartSchema, CreateCartDto }

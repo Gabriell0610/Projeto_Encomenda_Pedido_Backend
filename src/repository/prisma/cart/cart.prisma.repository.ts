@@ -77,6 +77,12 @@ class CartRepository implements ICartRepository  {
         })
     }
 
+    removeItemCart = async (itemId: string, cartId: string) => {
+        await prisma.carrinhoItens.delete({
+            where: {id: cartId, itemId: itemId}
+        })
+    }
+
     
 
 }
