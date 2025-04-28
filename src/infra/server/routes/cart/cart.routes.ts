@@ -13,6 +13,13 @@ cartRouter.post(
     cartController.createCart
 )
 
+cartRouter.get(
+    "/api/cart",
+    jwtAtuhenticator.authenticate, 
+    authorization.ofRoles([AccessProfile.CLIENT]).authorize,
+    cartController.listCart
+)
+
 cartRouter.patch(
     "/api/cart/item/:itemId/increment",
     jwtAtuhenticator.authenticate, 

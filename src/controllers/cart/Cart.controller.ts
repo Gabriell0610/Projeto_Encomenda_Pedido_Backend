@@ -19,6 +19,16 @@ class CartController {
         }
     }
 
+    listCart = async (req: Request, res: any, next: NextFunction) => {
+        try {
+            const {requesterId} = authorizationBodySchema.parse(req.body)
+            const data = await this.cartService.listCart(requesterId)
+            return res.status(HttpStatus.OK).json({message: "Listando carrinho com sucesso!", res: data})
+        } catch (error) {
+            next(error)
+        }
+    }
+
     //TESTAR O ID VINDO DO REQ.BODY - SE DER B.O MUDAR PARA VIR DO FRONT
     incremetItemQuantity = async (req: Request, res: any, next: NextFunction) => {
         try {
