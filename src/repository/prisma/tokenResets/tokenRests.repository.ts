@@ -43,6 +43,15 @@ class TokenResetsRepository implements ITokenResets {
     })
   }
 
+  findTokenByStatus = async (userId: string) => {
+    return await prisma.tokenResets.findFirst({
+      where: {
+        usuarioId: userId,
+        status: StatusToken.ATIVO,
+      },
+    })
+  }
+
   updateStatus = async (statusToken: StatusToken, idToken: string) => {
     await prisma.tokenResets.update({
       where: { id: idToken },

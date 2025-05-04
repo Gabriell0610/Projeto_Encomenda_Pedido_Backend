@@ -11,8 +11,8 @@ class AuthUserController {
   register = async (req: Request, res: any, next: NextFunction) => {
     try {
       const dto = CreateUserBodySchema.parse(req.body);
-      const payload = await this.authService.register(dto);
-      return res.status(HttpStatus.OK).json({ message: "Usuário cadastrado com sucesso!", data: payload });
+      const data = await this.authService.register(dto);
+      return res.status(HttpStatus.OK).json({ message: "Usuário cadastrado com sucesso!", data: data });
     } catch (error) {
       next(error);
     }

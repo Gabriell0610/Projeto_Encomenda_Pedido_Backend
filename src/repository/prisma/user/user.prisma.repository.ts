@@ -14,8 +14,6 @@ class UserRepository implements IUserRepository {
         senha: data?.senha,
         telefone: data?.telefone,
         role: data?.role,
-        dataAtualizacao: new Date(),
-        dataCriacao: new Date(),
       },
       select: {
         id: true,

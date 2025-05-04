@@ -8,9 +8,9 @@ class ItensController {
 
   create = async (req: Request, res: any, next: NextFunction) => {
     try {
-      const data = itemCreateBodySchema.parse(req.body);
-      const payload = await this.itensService.create(data);
-      return res.status(HttpStatus.CREATED).json({ message: "Item criado com sucesso!", data: payload });
+      const dto = itemCreateBodySchema.parse(req.body);
+      const data = await this.itensService.create(dto);
+      return res.status(HttpStatus.CREATED).json({ message: "Item criado com sucesso!", data: data });
     } catch (error) {
       next(error);
     }
@@ -18,8 +18,8 @@ class ItensController {
 
   list = async (req: Request, res: any, next: NextFunction) => {
     try {
-      const payload = await this.itensService.listAll();
-      res.status(HttpStatus.OK).json({ message: "Listando itens", data: payload });
+      const data = await this.itensService.listAll();
+      res.status(HttpStatus.OK).json({ message: "Listando itens", data: data });
     } catch (error) {
       next(error);
     }
@@ -27,8 +27,8 @@ class ItensController {
 
   listActiveItens = async (req: Request, res: any, next: NextFunction) => {
     try {
-      const payload = await this.itensService.listActiveItens();
-      res.status(HttpStatus.OK).json({ message: "Listando itens ativos", data: payload });
+      const data = await this.itensService.listActiveItens();
+      res.status(HttpStatus.OK).json({ message: "Listando itens ativos", data: data });
     } catch (error) {
       next(error);
     }
@@ -36,10 +36,10 @@ class ItensController {
 
   update = async (req: Request, res: any, next: NextFunction) => {
     try {
-      const data = itemUpdateBodySchema.parse(req.body);
+      const dto = itemUpdateBodySchema.parse(req.body);
       const { id: itemId } = req.params;
-      const payload = await this.itensService.update(data, itemId);
-      return res.status(HttpStatus.CREATED).json({ message: "Item atualizado com sucesso!", data: payload });
+      const data = await this.itensService.update(dto, itemId);
+      return res.status(HttpStatus.CREATED).json({ message: "Item atualizado com sucesso!", data: data });
     } catch (error) {
       next(error);
     }
@@ -48,8 +48,8 @@ class ItensController {
   inactiveItem = async (req: Request, res: any, next: NextFunction) => {
     try {
       const { id: itemId } = req.params;
-      const payload = await this.itensService.inactiveItem(itemId);
-      return res.status(HttpStatus.OK).json({ message: "Item inativado com sucesso!", data: payload });
+      const data = await this.itensService.inactiveItem(itemId);
+      return res.status(HttpStatus.OK).json({ message: "Item inativado com sucesso!", data: data });
     } catch (error) {
       next(error);
     }

@@ -68,8 +68,12 @@ class AuthService implements IAuthService {
       throw new BadRequestException("Falha ao salvar token!");
     }
 
-    //ENVIAR EMAIL PARA O USUÁRIO COM O TOKEN ACIMA
-    this.emailService.sendEmail(dto.email, createdToken.token!)
+    try {
+      await this.emailService.sendEmail(dto.email, createdToken.token!);
+    } catch (error) {
+      console.error("Erro ao enviar e-mail:", error);
+      throw error; // repropaga o erro para o controller capturar
+    }
 
     if (process.env.NODE_ENV === "test") {
       return createdToken;
