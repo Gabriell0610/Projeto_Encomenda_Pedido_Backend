@@ -38,6 +38,7 @@ class InMemoryTokenResets implements ITokenResets {
     }
 
     listAllTokens!: () => Promise<tokenResets[]>;
+    findTokenByStatus!: (status: string) => Promise<tokenResets>
 }
 
 export { InMemoryTokenResets };
