@@ -2,15 +2,14 @@ import { CreateCartDto } from "@/dto/cart/CreateCartDto"
 import { prisma } from "@/libs/prisma"
 import { ICartRepository } from "@/repository/interfaces/cart"
 import { Carrinho, CarrinhoItens, StatusCart } from "@prisma/client"
+import { Decimal} from "@prisma/client/runtime/library"
 
 class CartRepository implements ICartRepository  {
-    createCart = async (dto: CreateCartDto, itemPrice: number) => {
-        const expireIn = new Date(Date.now() + 60 * 60 * 1000)
+    createCart = async (dto: CreateCartDto, itemPrice: Decimal) => {
         const cart = await prisma.carrinho.create({
             data: {
                 status: dto.status,
                 dataCriacao: new Date(),
-                dataExpiracao: expireIn,
                 usuarioId: dto.userId,
             }
         })
@@ -18,7 +17,7 @@ class CartRepository implements ICartRepository  {
         return this.createCartItem(dto, itemPrice, cart.id)
     }
 
-    createCartItem = async (dto: CreateCartDto, itemPrice: number, cartId: string) => {
+    createCartItem = async (dto: CreateCartDto, itemPrice: Decimal, cartId: string) => {
         return await prisma.carrinhoItens.create({
             data: {
                 quantidade: dto.quantity,
