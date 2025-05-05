@@ -1,4 +1,3 @@
-
 import { authUserController } from "@/controllers/auth";
 import { Router } from "express";
 

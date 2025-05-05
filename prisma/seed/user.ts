@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import { AccessProfile } from "../../src/utils/constants/accessProfile";
 import { prisma } from "../../src/libs/prisma";
+import { randomUUID } from "crypto";
 
 // Função para criptografar as senhas
 async function hashPassword() {
@@ -49,6 +50,26 @@ const userDto = {
           numero: "100",
           complemento: "Apto 2",
           rua: "Rua 2",
+        },
+      ],
+    },
+    {
+      id: "3",
+      nome: "Gabriel",
+      email: "gabriell.vieira432@gmail.com",
+      role: AccessProfile.CLIENT,
+      senha: "",
+      telefone: "21979736993",
+      endereco: [
+        {
+          id: "3",
+          bairro: "Bairro 3",
+          cep: "01334567",
+          cidade: "Cidade 3",
+          estado: "SP",
+          numero: "100",
+          complemento: "Apto 3",
+          rua: "Rua 3",
         },
       ],
     },

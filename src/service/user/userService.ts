@@ -17,9 +17,13 @@ class UserService implements IUserService {
   };
 
   updateUser = async (dto: UpdateUserDto, userId: string, userEmail: string) => {
-    const verifyUser = await this.listUserById(userId);
+    const userExist = await this.listUserById(userId);
 
-    if (verifyUser?.email !== userEmail) {
+    if (!userExist) {
+      throw new BadRequestException("Usuário não encontrado");
+    }
+
+    if (userExist?.email !== userEmail) {
       throw new BadRequestException("Usuário não pode alterar seus dados");
     }
 

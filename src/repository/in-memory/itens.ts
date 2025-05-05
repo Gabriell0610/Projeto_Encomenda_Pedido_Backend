@@ -1,20 +1,16 @@
-import { ItensDto } from "@/dto/itens/ItensDto";
+import { ItemCreateDto, ItemUpdateDto } from "@/dto/itens/ItensDto";
 import { IItensRepository } from "../interfaces";
+import { Item } from "@prisma/client";
 
 class InMemoryItensRepository implements IItensRepository {
-  itensDb: ItensDto[] = [];
+  itensDb: ItemCreateDto[] = [];
 
-  create = async (data: ItensDto) => {
-    this.itensDb.push(data);
-  };
-
-  list = async () => {
-    const res = this.itensDb.map((data) => {
-      return data;
-    });
-
-    return res;
-  };
+  create!: (data: ItemCreateDto) => Promise<Item>;
+  update!: (data: ItemUpdateDto, itemId: string) => Promise<Partial<Item>>;
+  listAll!: () => Promise<Partial<Item>[]>;
+  listById!: (id: string) => Promise<Item | null>;
+  inactiveItem!: (idItem: string) => Promise<Partial<Item>>;
+  listActiveItens!: () => Promise<Item[]>;
 }
 
 export { InMemoryItensRepository };

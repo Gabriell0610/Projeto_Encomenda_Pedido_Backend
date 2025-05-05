@@ -12,8 +12,8 @@ export class UserController {
 
   list = async (req: Request, res: any, next: NextFunction) => {
     try {
-      const payload = await this.userService.list();
-      return res.status(HttpStatus.OK).json({ message: "Listando usuários", res: payload });
+      const data = await this.userService.list();
+      return res.status(HttpStatus.OK).json({ message: "Listando usuários", res: data });
     } catch (error) {
       next(error);
     }
@@ -68,9 +68,9 @@ export class UserController {
       const { requesterId: userId } = authorizationBodySchema.parse(req.body);
       const { idAddress } = req.params;
 
-      if (Array.isArray(req.body) || typeof req.body !== "object") {
-        throw new BadRequestException("Payload Formatado errado");
-      }
+      // if (Array.isArray(req.body) || typeof req.body !== "object") {
+      //   throw new BadRequestException("Payload Formatado errado");
+      // }
 
       const dto = updateAddressBodySchema.parse(req.body);
 

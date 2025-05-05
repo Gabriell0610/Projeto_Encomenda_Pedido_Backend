@@ -21,10 +21,20 @@ enum status {
   CANCELADO
 }
 
+enum statusItem {
+  ATIVO
+  INATIVO
+}
+
 enum meioPagamento {
   PIX
   CARTAO_CREDITO
   CARTAO_DEBITO
+}
+
+enum StatusCart {
+  ATIVO
+  FINALIZADO
 }
 
 model Usuario {
@@ -38,20 +48,8 @@ model Usuario {
   role            String
   enderecos       UsuarioEndereco[]
   pedidos         Pedido[]
-  carrinho        Carrinho?
+  carrinho        Carrinho[]
   tokenResets     tokenResets[]
-}
-
-model tokenResets {
-  id          String    @id @default(uuid())
-  token       String    @unique @db.VarChar()
-  expiraEm    DateTime  @db.Timestamp()
-  status      String
-  dataCriacao DateTime? @default(now()) @map("data de criacao") @db.Date
-  usuarioId   String
-  usuario     Usuario   @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
-
-  @@map("token_resets")
 }
 
 model Endereco {
@@ -85,7 +83,7 @@ model Pedido {
   id            String        @id @default(uuid())
   numeroPedido  Int           @unique
   status        status
-  precoTotal    Float         @db.Real
+  precoTotal    Decimal       @db.Decimal(10, 2)
   meioPagamento meioPagamento
 
   dataCriacao     DateTime? @default(now()) @map("data de criacao") @db.Date
@@ -94,61 +92,59 @@ model Pedido {
 
   usuario    Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
   endereco   Endereco @relation(fields: [enderecoId], references: [id], onDelete: Cascade)
+  carrinho   Carrinho @relation(fields: [carrinhoId], references: [id], onDelete: Cascade)
+  carrinhoId String   @unique
   usuarioId  String
   enderecoId String
-
-  pedidoItens PedidoItem[]
 
   @@map("pedidos")
 }
 
-model Item {
-  id              String    @id @default(uuid())
-  nome            String    @db.VarChar()
-  preco           Float     @db.Real
-  descricao       String    @db.VarChar()
-  image           String    @db.VarChar()
-  dataCriacao     DateTime? @default(now()) @map("data de criacao") @db.Date
-  dataAtualizacao DateTime? @default(now()) @map("data de atualizacao") @db.Date
-  disponivel      Boolean
+model Carrinho {
+  id          String     @id @default(uuid())
+  dataCriacao DateTime?  @default(now()) @map("data de criacao") @db.Date
+  status      StatusCart
 
-  pedidoItens   PedidoItem[]
+  usuario   Usuario @relation(fields: [usuarioId], references: [id])
+  usuarioId String
+  pedido    Pedido?
+
+  carrinhoItens CarrinhoItens[]
+}
+
+model Item {
+  id              String     @id @default(uuid())
+  nome            String     @db.VarChar()
+  preco           Decimal    @db.Decimal(10, 2)
+  descricao       String     @db.VarChar()
+  image           String     @db.VarChar()
+  dataCriacao     DateTime?  @default(now()) @map("data de criacao") @db.Date
+  dataAtualizacao DateTime?  @default(now()) @map("data de atualizacao") @db.Date
+  disponivel      statusItem
+
   carrinhoItens CarrinhoItens[]
 
   @@map("itens")
 }
 
-model Carrinho {
-  id            String    @id @default(uuid())
-  dataCriacao   DateTime? @default(now()) @map("data de criacao") @db.Date
-  dataExpiracao DateTime? @db.Date
-
-  Usuario   Usuario @relation(fields: [usuarioId], references: [id])
-  usuarioId String  @unique
-
-  carrinhoItens CarrinhoItens[]
-}
-
-model PedidoItem {
-  id         String @id @default(uuid())
-  quantidade Int
-  precoAtual Float  @db.Real
-
-  pedido   Pedido @relation(fields: [pedidoId], references: [id], onDelete: Cascade)
-  item     Item   @relation(fields: [itemId], references: [id], onDelete: Cascade)
-  pedidoId String
-  itemId   String
-
-  @@map("pedido_itens")
-}
-
 model CarrinhoItens {
-  id         String @id @default(uuid())
+  id         String   @id @default(uuid())
   quantidade Int
-  precoAtual Float  @db.Real
-
+  precoAtual Decimal  @db.Decimal(10, 2)
   Carrinho   Carrinho @relation(fields: [carrinhoId], references: [id], onDelete: Cascade)
   Item       Item     @relation(fields: [itemId], references: [id], onDelete: Cascade)
   carrinhoId String
   itemId     String
+}
+
+model tokenResets {
+  id          String    @id @default(uuid())
+  token       String    @unique @db.VarChar()
+  expiraEm    DateTime  @db.Timestamp()
+  status      String
+  dataCriacao DateTime? @default(now()) @map("data de criacao") @db.Date
+  usuarioId   String
+  usuario     Usuario   @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+
+  @@map("token_resets")
 }

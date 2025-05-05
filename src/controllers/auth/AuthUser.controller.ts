@@ -11,8 +11,8 @@ class AuthUserController {
   register = async (req: Request, res: any, next: NextFunction) => {
     try {
       const dto = CreateUserBodySchema.parse(req.body);
-      await this.authService.register(dto);
-      return res.status(HttpStatus.OK).json({ message: "Usuário cadastrado com sucesso!" });
+      const data = await this.authService.register(dto);
+      return res.status(HttpStatus.OK).json({ message: "Usuário cadastrado com sucesso!", data: data });
     } catch (error) {
       next(error);
     }
@@ -40,23 +40,23 @@ class AuthUserController {
 
   validateToken = async (req: Request, res: any, next: NextFunction) => {
     try {
-      const dto = forgotPasswordSchema.parse(req.body)
-      const tokenValidated = await this.authService.validateToken(dto);
-      return res.status(HttpStatus.OK).json({ message: "Token válido", data: tokenValidated});
-    } catch (error) {
-      next(error)
-    }
-  }
-
-  resetPassword = async (req: Request, res: any, next: NextFunction) => {
-    try {
-      const dto = forgotPasswordSchema.parse(req.body)
-      await this.authService.resetPassword(dto);
-      return res.status(HttpStatus.OK).json({message: "Senha alterada com sucesso!"})
+      const dto = forgotPasswordSchema.parse(req.body);
+      await this.authService.validateToken(dto);
+      return res.status(HttpStatus.OK).json({ message: "Token válido" });
     } catch (error) {
       next(error);
     }
-  }
+  };
+
+  resetPassword = async (req: Request, res: any, next: NextFunction) => {
+    try {
+      const dto = forgotPasswordSchema.parse(req.body);
+      await this.authService.resetPassword(dto);
+      return res.status(HttpStatus.OK).json({ message: "Senha alterada com sucesso!" });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 export { AuthUserController };

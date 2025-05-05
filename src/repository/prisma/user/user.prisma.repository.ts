@@ -14,8 +14,6 @@ class UserRepository implements IUserRepository {
         senha: data?.senha,
         telefone: data?.telefone,
         role: data?.role,
-        dataAtualizacao: new Date(),
-        dataCriacao: new Date(),
       },
       select: {
         id: true,
@@ -110,7 +108,7 @@ class UserRepository implements IUserRepository {
         nome: data?.nome,
         telefone: data?.telefone,
         dataAtualizacao: new Date(),
-        senha: data?.senha
+        senha: data?.senha,
       },
       select: {
         id: true,
