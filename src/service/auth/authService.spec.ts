@@ -16,7 +16,7 @@ let userRepositoryInMemory: InMemoryUserRepository;
 let tokenResetsInMemory: InMemoryTokenResets;
 let mockNodemailer: MockEmailService;
 describe("Unit Tests - authService", () => {
-  const testUserPassword = "Teste123!"
+  const testUserPassword = process.env.TEST_PASSOWRD || randomUUID()
 
   const createUserDto = (overrides: Partial<CreateUserDto> = {}) => ({
     nome: "Gabriel",
