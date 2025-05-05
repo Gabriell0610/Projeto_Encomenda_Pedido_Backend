@@ -60,7 +60,7 @@ class CartService implements ICartService {
       act === "increment" ? itemExistInCartItens?.quantidade! + 1 : itemExistInCartItens?.quantidade! - 1;
 
     if (newQuantity <= 0) {
-      newQuantity = 1;
+      newQuantity = 1; // bem provável que depois eu tenha que remover o item chamando o removeItemCart
     }
 
     return await this.cartRepository.updateCartItemQuantity(itemExistInCartItens?.id!, newQuantity);
@@ -68,15 +68,19 @@ class CartService implements ICartService {
 
   removeItemCart = async (itemId: string, userId: string) => {
     const itemExistInCartItens = await this.findItemAlredyExistInCart(userId, itemId);
-    if (!itemExistInCartItens) {
-      throw new BadRequestException("Item nao encontrado no carrinho ativo no momento");
-    }
-    await this.cartRepository.removeItemCart(itemExistInCartItens?.itemId!, itemExistInCartItens?.id!);
+    await this.cartRepository.removeItemCart(itemExistInCartItens.itemId, itemExistInCartItens.id);
   };
 
   private async findItemAlredyExistInCart(userId: string, itemId: string) {
     const cartAlredyActive = await this.cartRepository.findCartActiveByUser(userId);
+    if(!cartAlredyActive) {
+      throw new BadRequestException("Usuário nao possui um carrinho ativo no momento");
+    }
+
     const itemExistInCartItens = cartAlredyActive?.carrinhoItens.find((item) => item.itemId === itemId);
+    if (!itemExistInCartItens) {
+      throw new BadRequestException("Item nao encontrado no carrinho ativo");
+    }
     return itemExistInCartItens;
   }
 }

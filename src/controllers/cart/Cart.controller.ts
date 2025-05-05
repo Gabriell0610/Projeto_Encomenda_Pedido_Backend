@@ -56,7 +56,9 @@ class CartController {
       const { requesterId: userId } = authorizationBodySchema.parse(req.body);
       await this.cartService.removeItemCart(itemId, userId);
       return res.status(HttpStatus.OK).json({ message: "Item removido do carrinho com sucesso!" });
-    } catch (error) {}
+    } catch (error) {
+      next(error)
+    }
   };
 }
 

@@ -58,9 +58,29 @@ class CartRepository implements ICartRepository {
         usuarioId: userId,
         status: StatusCart.ATIVO,
       },
-      include: {
-        carrinhoItens: true,
-      },
+      select: {
+        id: true,
+        status: true,
+        dataCriacao: true,
+        usuarioId: true,
+        carrinhoItens: {
+          select: {
+            id: true,
+            quantidade: true,
+            itemId: true,
+            carrinhoId: true,
+            precoAtual: true,
+            Item: {
+              select: {
+                id: true,
+                nome: true,
+                preco: true,
+                image: true,
+              },
+            },
+          },
+        },
+      }
     });
   };
 
