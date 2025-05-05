@@ -16,7 +16,7 @@ let userRepositoryInMemory: InMemoryUserRepository;
 let tokenResetsInMemory: InMemoryTokenResets;
 let mockNodemailer: MockEmailService;
 describe("Unit Tests - authService", () => {
-  const testUserPassword = process.env.TEST_PASSOWRD || randomUUID()
+  const testUserPassword = "Teste123!"
 
   const createUserDto = (overrides: Partial<CreateUserDto> = {}) => ({
     nome: "Gabriel",
@@ -88,7 +88,7 @@ describe("Unit Tests - authService", () => {
       it("should throw error when user does not exist", async () => {
         const loginDto: authDto = {
           email: "naoexiste@email.com",
-          password: randomUUID(),
+          password: "qualquerSenha",
         };
 
         await expect(authService.login(loginDto)).rejects.toThrow("Esse usuário não foi encontrado!");
@@ -100,7 +100,7 @@ describe("Unit Tests - authService", () => {
 
         const loginDto: authDto = {
           email: "gabriel@gmail.com",
-          password: randomUUID(),
+          password: "senhaErrada!",
         };
 
         await expect(authService.login(loginDto)).rejects.toThrow("Email ou senha incorretos");
@@ -191,7 +191,7 @@ describe("Unit Tests - authService", () => {
         const forgotPasswordDto: ForgotPasswordDto = {
           email: userExist.email!,
           token: userToken,
-          newPassword: process.env.TEST_NEW_PASSWORD,
+          newPassword: "novaSenha123!",
         };
 
         await authService.resetPassword(forgotPasswordDto);
