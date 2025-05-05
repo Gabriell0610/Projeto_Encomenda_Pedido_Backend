@@ -16,13 +16,13 @@ let userRepositoryInMemory: InMemoryUserRepository;
 let tokenResetsInMemory: InMemoryTokenResets;
 let mockNodemailer: MockEmailService;
 describe("Unit Tests - authService", () => {
-  const testUserPassword = "Teste123!"
+  const testUserPassword = "ValidPass123!"
 
   const createUserDto = (overrides: Partial<CreateUserDto> = {}) => ({
     nome: "Gabriel",
-    email: "gabriel@gmail.com",
+    email: "user@example.com",
     senha: testUserPassword,
-    telefone: "21979736993",
+    telefone: "00000000000",
     role: AccessProfile.CLIENT,
     ...overrides,
   });
@@ -74,7 +74,7 @@ describe("Unit Tests - authService", () => {
       const userDto = createUserDto();
 
       const loginDto: authDto = {
-        email: "gabriel@gmail.com",
+        email: "user@example.com",
         password: testUserPassword,
       };
 
@@ -99,8 +99,8 @@ describe("Unit Tests - authService", () => {
         await authService.register(userDto);
 
         const loginDto: authDto = {
-          email: "gabriel@gmail.com",
-          password: "senhaErrada!",
+          email: "user@example.com",
+          password: "ValidPass12!",
         };
 
         await expect(authService.login(loginDto)).rejects.toThrow("Email ou senha incorretos");
@@ -115,7 +115,7 @@ describe("Unit Tests - authService", () => {
       await authService.register(userDto);
 
       const loginDto: authDto = {
-        email: "gabriel@gmail.com",
+        email: "user@example.com",
         password: testUserPassword,
       };
 
@@ -191,7 +191,7 @@ describe("Unit Tests - authService", () => {
         const forgotPasswordDto: ForgotPasswordDto = {
           email: userExist.email!,
           token: userToken,
-          newPassword: "novaSenha123!",
+          newPassword: "ValidPass12333!",
         };
 
         await authService.resetPassword(forgotPasswordDto);
@@ -207,7 +207,7 @@ describe("Unit Tests - authService", () => {
         const forgotPasswordDto: ForgotPasswordDto = {
           email: userExist.email!,
           token: userToken,
-          newPassword: "novaSenha123!",
+          newPassword: "ValidPass1233!",
         };
 
         await expect(authService.resetPassword(forgotPasswordDto)).rejects.toThrow("Token inválido");
