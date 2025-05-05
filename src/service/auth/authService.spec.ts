@@ -7,20 +7,21 @@ import { InMemoryTokenResets } from "@/repository/in-memory/token-resets";
 import { authDto } from "@/dto/auth/LoginDto";
 import { ForgotPasswordDto } from "@/dto/auth/ForgotPasswordDto";
 import { tokenResets, Usuario } from "@prisma/client";
-import { BadRequestException } from "@/core/error/exceptions/bad-request-exception";
 import { MockEmailService } from "../email/mockNodemailer";
+import 'dotenv/config';
+import { randomUUID } from "crypto";
 
 let authService: AuthService;
 let userRepositoryInMemory: InMemoryUserRepository;
 let tokenResetsInMemory: InMemoryTokenResets;
 let mockNodemailer: MockEmailService;
 describe("Unit Tests - authService", () => {
-  const RAW_PASSWORD = "Teste123!";
+  const testUserPassword = "Teste123!"
 
   const createUserDto = (overrides: Partial<CreateUserDto> = {}) => ({
     nome: "Gabriel",
     email: "gabriel@gmail.com",
-    senha: RAW_PASSWORD,
+    senha: testUserPassword,
     telefone: "21979736993",
     role: AccessProfile.CLIENT,
     ...overrides,
@@ -63,7 +64,7 @@ describe("Unit Tests - authService", () => {
 
       const response = await authService.register(userDto);
 
-      const isPasswordHashed = await bcrypt.compare(RAW_PASSWORD, response.senha!);
+      const isPasswordHashed = await bcrypt.compare(testUserPassword, response.senha!);
       expect(isPasswordHashed).toBe(true);
     });
   });
@@ -74,7 +75,7 @@ describe("Unit Tests - authService", () => {
 
       const loginDto: authDto = {
         email: "gabriel@gmail.com",
-        password: RAW_PASSWORD,
+        password: testUserPassword,
       };
 
       //Act
@@ -115,7 +116,7 @@ describe("Unit Tests - authService", () => {
 
       const loginDto: authDto = {
         email: "gabriel@gmail.com",
-        password: RAW_PASSWORD,
+        password: testUserPassword,
       };
 
       const token = await authService.login(loginDto);
