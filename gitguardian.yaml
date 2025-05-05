@@ -1,0 +1,2 @@
+paths-igonore: 
+  - src/service/auth/authService.spec.ts
