@@ -88,7 +88,7 @@ describe("Unit Tests - authService", () => {
       it("should throw error when user does not exist", async () => {
         const loginDto: authDto = {
           email: "naoexiste@email.com",
-          password: "qualquerSenha",
+          password: randomUUID(),
         };
 
         await expect(authService.login(loginDto)).rejects.toThrow("Esse usuário não foi encontrado!");
@@ -100,7 +100,7 @@ describe("Unit Tests - authService", () => {
 
         const loginDto: authDto = {
           email: "gabriel@gmail.com",
-          password: "senhaErrada!",
+          password: randomUUID(),
         };
 
         await expect(authService.login(loginDto)).rejects.toThrow("Email ou senha incorretos");
@@ -191,7 +191,7 @@ describe("Unit Tests - authService", () => {
         const forgotPasswordDto: ForgotPasswordDto = {
           email: userExist.email!,
           token: userToken,
-          newPassword: "novaSenha123!",
+          newPassword: process.env.TEST_NEW_PASSWORD,
         };
 
         await authService.resetPassword(forgotPasswordDto);
