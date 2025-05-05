@@ -4,19 +4,19 @@ import { nodemailerTransporter } from "@/libs/nodemailer";
 import { BadRequestException } from "@/core/error/exceptions/bad-request-exception";
 
 class NodemailerService implements IEmailService {
-  private readonly transporter: Transporter
+  private readonly transporter: Transporter;
 
-  constructor(){
-    this.transporter = nodemailerTransporter
+  constructor() {
+    this.transporter = nodemailerTransporter;
   }
-  
-  sendEmail = async (to: string, token : string) => {
+
+  sendEmail = async (to: string, token: string) => {
     try {
       await this.transporter.sendMail({
         from: '"Empadão Da Aline - Suporte" <gabrielbarbosaa432@gmail.com>',
         to,
         subject: "Redefinção de senha",
-        html:`
+        html: `
         <div style="background-color: #F8F8F8; padding: 40px; font-family: Arial, sans-serif; color: #222;">
           <div style="max-width: 600px; margin: auto; background-color: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 0 10px rgba(0,0,0,0.05);">
             <div style="background-color: #247301; padding: 20px; text-align: center;">
@@ -45,9 +45,9 @@ class NodemailerService implements IEmailService {
       });
     } catch (error) {
       console.error(error);
-      throw new BadRequestException("Não foi possível enviar o e-mail")
+      throw new BadRequestException("Não foi possível enviar o e-mail");
     }
-  }
+  };
 }
 
-export {NodemailerService}
+export { NodemailerService };

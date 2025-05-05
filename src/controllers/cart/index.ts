@@ -3,11 +3,10 @@ import { ItensRepository } from "@/repository/prisma/itens/itens.prisma.reposito
 import { CartController } from "./Cart.controller";
 import { CartService } from "@/service/cart/CartService";
 
+const itemRepository = new ItensRepository();
+const cartRepository = new CartRepository();
+const cartService = new CartService(cartRepository, itemRepository);
 
-const itemRepository = new ItensRepository()
-const cartRepository = new CartRepository()
-const cartService = new CartService(cartRepository, itemRepository)
+const cartController = new CartController(cartService);
 
-const cartController = new CartController(cartService)
-
-export {cartController}
+export { cartController };

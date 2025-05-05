@@ -1,1 +1,1 @@
-export * from "./cart.routes"
+export * from "./cart.routes";

@@ -1,4 +1,4 @@
 export enum StatusToken {
-    ATIVO = "ATIVO",
-    EXPIRADO = "EXPIRADO",
+  ATIVO = "ATIVO",
+  EXPIRADO = "EXPIRADO",
 }

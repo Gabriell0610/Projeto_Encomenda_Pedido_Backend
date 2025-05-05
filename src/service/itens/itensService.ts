@@ -31,8 +31,8 @@ class ItensService implements IItensService {
 
   listActiveItens = async () => {
     const data = await this.itensRepository.listActiveItens();
-    return data
-  }
+    return data;
+  };
 
   inactiveItem = async (itemId: string) => {
     await this.verifyItemExist(itemId);

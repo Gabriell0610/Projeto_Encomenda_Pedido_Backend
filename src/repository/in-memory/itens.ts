@@ -10,7 +10,7 @@ class InMemoryItensRepository implements IItensRepository {
   listAll!: () => Promise<Partial<Item>[]>;
   listById!: (id: string) => Promise<Item | null>;
   inactiveItem!: (idItem: string) => Promise<Partial<Item>>;
-  listActiveItens!: () => Promise<Item[]>
+  listActiveItens!: () => Promise<Item[]>;
 }
 
 export { InMemoryItensRepository };

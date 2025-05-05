@@ -6,7 +6,7 @@ interface IItensService {
   update: (data: ItemUpdateDto, itemId: string) => Promise<Partial<Item>>;
   listAll: () => Promise<Partial<Item>[]>;
   inactiveItem: (itemId: string) => Promise<Partial<Item>>;
-  listActiveItens: () => Promise<Item[]>
+  listActiveItens: () => Promise<Item[]>;
 }
 
 export { IItensService };

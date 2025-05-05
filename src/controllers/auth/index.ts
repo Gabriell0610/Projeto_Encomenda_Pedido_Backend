@@ -6,7 +6,7 @@ import { NodemailerService } from "@/service/email/nodemailer";
 
 const userRepository = new UserRepository();
 const tokenResetsRepository = new TokenResetsRepository();
-const nodemailerService = new NodemailerService()
+const nodemailerService = new NodemailerService();
 
 const authService = new AuthService(userRepository, tokenResetsRepository, nodemailerService);
 

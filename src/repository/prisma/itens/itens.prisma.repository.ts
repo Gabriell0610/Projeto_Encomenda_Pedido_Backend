@@ -48,7 +48,7 @@ class ItensRepository implements IItensRepository {
 
   listActiveItens = async () => {
     return await prisma.item.findMany({
-      where: {disponivel: statusItem.ATIVO}, 
+      where: { disponivel: statusItem.ATIVO },
       select: {
         id: true,
         nome: true,
@@ -59,8 +59,8 @@ class ItensRepository implements IItensRepository {
         dataAtualizacao: true,
         disponivel: true,
       },
-    })
-  }
+    });
+  };
 
   update = async (dto: ItemUpdateDto, itemId: string) => {
     const item = await prisma.item.update({

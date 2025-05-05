@@ -1,3 +1,3 @@
 export interface IEmailService {
-    sendEmail: (to: string, token: string) => Promise<void>
+  sendEmail: (to: string, token: string) => Promise<void>;
 }

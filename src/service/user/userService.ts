@@ -19,7 +19,7 @@ class UserService implements IUserService {
   updateUser = async (dto: UpdateUserDto, userId: string, userEmail: string) => {
     const userExist = await this.listUserById(userId);
 
-    if(!userExist) {
+    if (!userExist) {
       throw new BadRequestException("Usuário não encontrado");
     }
 
@@ -29,7 +29,7 @@ class UserService implements IUserService {
 
     const updateUser = await this.userRepository.updateUser(dto, userId);
 
-    return updateUser
+    return updateUser;
   };
 
   addAddress = async (dto: AddressDto, userId: string) => {

@@ -15,8 +15,8 @@ let userRepositoryInMemory: InMemoryUserRepository;
 let tokenResetsInMemory: InMemoryTokenResets;
 let mockNodemailer: MockEmailService;
 describe("Unit Tests - authService", () => {
-  const RAW_PASSWORD = "Teste123!"
-  
+  const RAW_PASSWORD = "Teste123!";
+
   const createUserDto = (overrides: Partial<CreateUserDto> = {}) => ({
     nome: "Gabriel",
     email: "gabriel@gmail.com",
@@ -36,7 +36,7 @@ describe("Unit Tests - authService", () => {
   describe("Testing method register", () => {
     it("Should create a user", async () => {
       //Arrange
-      const userDto = createUserDto()
+      const userDto = createUserDto();
 
       //Act
       const response = await authService.register(userDto);
@@ -51,7 +51,7 @@ describe("Unit Tests - authService", () => {
     });
 
     it("Should throw a BadRequestException when user already exists", async () => {
-      const userDto = createUserDto()
+      const userDto = createUserDto();
 
       await authService.register(userDto);
 
@@ -59,7 +59,7 @@ describe("Unit Tests - authService", () => {
     });
 
     it("should hash the user password before register", async () => {
-      const userDto = createUserDto()
+      const userDto = createUserDto();
 
       const response = await authService.register(userDto);
 
@@ -69,164 +69,148 @@ describe("Unit Tests - authService", () => {
   });
 
   describe("Testing method login", () => {
-
     it("should make login with success", async () => {
+      const userDto = createUserDto();
 
-      const userDto = createUserDto()
-
-      const loginDto : authDto = {
+      const loginDto: authDto = {
         email: "gabriel@gmail.com",
         password: RAW_PASSWORD,
-      }
+      };
 
       //Act
       await authService.register(userDto);
-      const token = await authService.login(loginDto)
-      
+      const token = await authService.login(loginDto);
+
       //Assert
       expect(typeof token).toBe("string");
-
     }),
+      it("should throw error when user does not exist", async () => {
+        const loginDto: authDto = {
+          email: "naoexiste@email.com",
+          password: "qualquerSenha",
+        };
 
-    it("should throw error when user does not exist", async () => {
-      const loginDto: authDto = {
-        email: "naoexiste@email.com",
-        password: "qualquerSenha",
-      };
-    
-      await expect(authService.login(loginDto)).rejects.toThrow("Esse usuário não foi encontrado!" );
-    }),
+        await expect(authService.login(loginDto)).rejects.toThrow("Esse usuário não foi encontrado!");
+      }),
+      it("should throw error when password is incorrect", async () => {
+        const userDto = createUserDto();
 
-    it("should throw error when password is incorrect", async () => {
-      const userDto = createUserDto()
-    
-      await authService.register(userDto);
-    
-      const loginDto: authDto = {
-        email: "gabriel@gmail.com",
-        password: "senhaErrada!",
-      };
-    
-      await expect(authService.login(loginDto)).rejects.toThrow("Email ou senha incorretos");
-    });
+        await authService.register(userDto);
 
-    it('should use default secret if JWT_SECRET is not defined', async () => {
+        const loginDto: authDto = {
+          email: "gabriel@gmail.com",
+          password: "senhaErrada!",
+        };
+
+        await expect(authService.login(loginDto)).rejects.toThrow("Email ou senha incorretos");
+      });
+
+    it("should use default secret if JWT_SECRET is not defined", async () => {
       // remove temporariamente a variável de ambiente
       const originalEnv = process.env.JWT_SECRET;
       delete process.env.JWT_SECRET;
-    
+
       const userDto = createUserDto();
-      await authService.register(userDto)
+      await authService.register(userDto);
 
       const loginDto: authDto = {
         email: "gabriel@gmail.com",
         password: RAW_PASSWORD,
       };
-    
+
       const token = await authService.login(loginDto);
-    
+
       expect(typeof token).toBe("string");
-    
+
       // restaura o valor original
       process.env.JWT_SECRET = originalEnv;
     });
-    
-  })
+  });
 
   describe("testing forgot password", () => {
     let userToken: string | undefined;
-    let userExist: Partial<Usuario>
-    let tokenResets: tokenResets | undefined
+    let userExist: Partial<Usuario>;
+    let tokenResets: tokenResets | undefined;
 
     beforeEach(async () => {
       const userDto = createUserDto();
       userExist = await authService.register(userDto);
       tokenResets = await authService.createToken({ email: userExist.email! });
-      userToken = tokenResets?.token
+      userToken = tokenResets?.token;
     });
 
-   describe("method createToken", () => {
-    it("should send an email to user", async () => {
-      mockNodemailer.sendEmail.mockClear(); // limpa chamadas anteriores
-      await authService.createToken({ email: userExist.email! });
+    describe("method createToken", () => {
+      it("should send an email to user", async () => {
+        mockNodemailer.sendEmail.mockClear(); // limpa chamadas anteriores
+        await authService.createToken({ email: userExist.email! });
 
-      expect(mockNodemailer.sendEmail).toHaveBeenCalledTimes(1);
-      expect(mockNodemailer.sendEmail).toHaveBeenCalledWith(
-        userExist.email,
-        expect.any(String)
-      );
-    })
+        expect(mockNodemailer.sendEmail).toHaveBeenCalledTimes(1);
+        expect(mockNodemailer.sendEmail).toHaveBeenCalledWith(userExist.email, expect.any(String));
+      });
 
-    it("should throw BadRequestError if token is not saved", async () => {
-      jest
-      .spyOn(tokenResetsInMemory, "createToken")
-      .mockResolvedValue(null as any);
-  
-      await expect(
-        authService.createToken({ email: userExist.email as string })
-      ).rejects.toThrow("Falha ao salvar token!");
-    })
-   })
+      it("should throw BadRequestError if token is not saved", async () => {
+        jest.spyOn(tokenResetsInMemory, "createToken").mockResolvedValue(null as any);
 
-   
-   describe("method validateToken", () => {
-    it("should validate token with success", async () => {
-      const tokenValid = await authService.validateToken({email: userExist.email!, token: userToken })
-
-      expect(tokenValid?.token).toEqual(userToken)
+        await expect(authService.createToken({ email: userExist.email as string })).rejects.toThrow(
+          "Falha ao salvar token!",
+        );
+      });
     });
 
-    it("should throw BadRequestError if token is invalid", async () => {
-      jest
-      .spyOn(tokenResetsInMemory, "findByToken")
-      .mockResolvedValue(null)
-      
-      const userDto = createUserDto({email: "teste@gmail.com"});
-      const otherUser = await authService.register(userDto);
+    describe("method validateToken", () => {
+      it("should validate token with success", async () => {
+        const tokenValid = await authService.validateToken({ email: userExist.email!, token: userToken });
 
-      await expect(authService.validateToken({email: otherUser.email!, token: userToken }))
-      .rejects.toThrow("Token inválido. Gere outro token!")
-    })
+        expect(tokenValid?.token).toEqual(userToken);
+      });
 
-    it("should throw BadRequestError if token is expired", async () => {
-      tokenResets!.expiraEm = new Date(Date.now() - 1000)
-      userToken = tokenResets?.token
-      
-      await expect(authService.validateToken({email: userExist.email!, token: userToken }))
-        .rejects.toThrow("Token expirado. Gere outro token!")
-    })
-   })
+      it("should throw BadRequestError if token is invalid", async () => {
+        jest.spyOn(tokenResetsInMemory, "findByToken").mockResolvedValue(null);
 
-  describe("method resetPasswords", () => {
-    it("should reset password with success", async () => {
+        const userDto = createUserDto({ email: "teste@gmail.com" });
+        const otherUser = await authService.register(userDto);
 
-      const forgotPasswordDto: ForgotPasswordDto = {
-        email: userExist.email!,
-        token: userToken,
-        newPassword: "novaSenha123!",
-      }
-      
-      await authService.resetPassword(forgotPasswordDto)
-      const updatedUser = await userRepositoryInMemory.userExistsByEmail(userExist.email!)
-      const isPasswordHashed = await bcrypt.compare(forgotPasswordDto.newPassword!, updatedUser!.senha!);
+        await expect(authService.validateToken({ email: otherUser.email!, token: userToken })).rejects.toThrow(
+          "Token inválido. Gere outro token!",
+        );
+      });
 
-      expect(isPasswordHashed).toBe(true)
-     
-    })
+      it("should throw BadRequestError if token is expired", async () => {
+        tokenResets!.expiraEm = new Date(Date.now() - 1000);
+        userToken = tokenResets?.token;
 
-    it("should throw BadRequestError if token not exist", async () => {
-      jest
-      .spyOn(tokenResetsInMemory, "findByToken")
-      .mockResolvedValue(null)
+        await expect(authService.validateToken({ email: userExist.email!, token: userToken })).rejects.toThrow(
+          "Token expirado. Gere outro token!",
+        );
+      });
+    });
 
-      const forgotPasswordDto: ForgotPasswordDto = {
-        email: userExist.email!,
-        token: userToken,
-        newPassword: "novaSenha123!",
-      }
+    describe("method resetPasswords", () => {
+      it("should reset password with success", async () => {
+        const forgotPasswordDto: ForgotPasswordDto = {
+          email: userExist.email!,
+          token: userToken,
+          newPassword: "novaSenha123!",
+        };
 
-      await expect(authService.resetPassword(forgotPasswordDto)).rejects.toThrow("Token inválido")
-    })
-  })
-  })
+        await authService.resetPassword(forgotPasswordDto);
+        const updatedUser = await userRepositoryInMemory.userExistsByEmail(userExist.email!);
+        const isPasswordHashed = await bcrypt.compare(forgotPasswordDto.newPassword!, updatedUser!.senha!);
+
+        expect(isPasswordHashed).toBe(true);
+      });
+
+      it("should throw BadRequestError if token not exist", async () => {
+        jest.spyOn(tokenResetsInMemory, "findByToken").mockResolvedValue(null);
+
+        const forgotPasswordDto: ForgotPasswordDto = {
+          email: userExist.email!,
+          token: userToken,
+          newPassword: "novaSenha123!",
+        };
+
+        await expect(authService.resetPassword(forgotPasswordDto)).rejects.toThrow("Token inválido");
+      });
+    });
+  });
 });

@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(userRouter);
 app.use(authRouter);
 app.use(itensRouter);
-app.use(cartRouter)
+app.use(cartRouter);
 app.use(errorHandlerMiddleware.handle);
 
 export default app;

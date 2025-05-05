@@ -13,8 +13,8 @@ class InMemoryUserRepository implements IUserRepository {
       id: randomUUID(),
       dataCriacao: new Date(),
 
-      ...data
-    }
+      ...data,
+    };
     this.userDatabase.push(user);
     return user;
   };
@@ -32,18 +32,18 @@ class InMemoryUserRepository implements IUserRepository {
     return user || null;
   };
 
-  updateUser = async (dto: UpdateUserDto, userId: string) =>  {
+  updateUser = async (dto: UpdateUserDto, userId: string) => {
     const findUser = this.userDatabase.find((user) => user.id === userId);
 
-    if(!findUser) throw new Error("usuário nao encontrado")
+    if (!findUser) throw new Error("usuário nao encontrado");
 
-    findUser.senha = dto?.senha 
-    findUser.nome = dto?.nome  
-    findUser.telefone = dto?.telefone  
-    findUser.dataAtualizacao = new Date()
+    findUser.senha = dto?.senha;
+    findUser.nome = dto?.nome;
+    findUser.telefone = dto?.telefone;
+    findUser.dataAtualizacao = new Date();
 
-    return findUser
-  }
+    return findUser;
+  };
 
   findUserById!: (id: string) => Promise<Partial<Usuario> | null>;
 

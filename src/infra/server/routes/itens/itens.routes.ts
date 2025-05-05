@@ -13,19 +13,19 @@ itensRouter.post(
   itensController.create,
 );
 
-itensRouter.get("/api/itens", 
+itensRouter.get(
+  "/api/itens",
   // jwtAtuhenticator.authenticate,
-  // authorization.anyRole().authorize, 
-  itensController.list
+  // authorization.anyRole().authorize,
+  itensController.list,
 );
 
-
-itensRouter.get("/api/itens/active", 
+itensRouter.get(
+  "/api/itens/active",
   jwtAtuhenticator.authenticate,
-  authorization.anyRole().authorize, 
-  itensController.listActiveItens
+  authorization.anyRole().authorize,
+  itensController.listActiveItens,
 );
-
 
 itensRouter.put(
   "/api/itens/:id",
@@ -40,7 +40,5 @@ itensRouter.patch(
   authorization.ofRoles([AccessProfile.ADMIN]).authorize,
   itensController.inactiveItem,
 );
-
-
 
 export { itensRouter };

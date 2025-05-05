@@ -40,23 +40,23 @@ class AuthUserController {
 
   validateToken = async (req: Request, res: any, next: NextFunction) => {
     try {
-      const dto = forgotPasswordSchema.parse(req.body)
+      const dto = forgotPasswordSchema.parse(req.body);
       await this.authService.validateToken(dto);
-      return res.status(HttpStatus.OK).json({ message: "Token válido"});
-    } catch (error) {
-      next(error)
-    }
-  }
-
-  resetPassword = async (req: Request, res: any, next: NextFunction) => {
-    try {
-      const dto = forgotPasswordSchema.parse(req.body)
-      await this.authService.resetPassword(dto);
-      return res.status(HttpStatus.OK).json({message: "Senha alterada com sucesso!"})
+      return res.status(HttpStatus.OK).json({ message: "Token válido" });
     } catch (error) {
       next(error);
     }
-  }
+  };
+
+  resetPassword = async (req: Request, res: any, next: NextFunction) => {
+    try {
+      const dto = forgotPasswordSchema.parse(req.body);
+      await this.authService.resetPassword(dto);
+      return res.status(HttpStatus.OK).json({ message: "Senha alterada com sucesso!" });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 export { AuthUserController };
