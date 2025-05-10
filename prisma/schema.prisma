@@ -87,9 +87,10 @@ model Pedido {
   meioPagamento meioPagamento
   observacao    String?       @db.VarChar()
 
-  dataCriacao     DateTime? @default(now()) @map("data de criacao") @db.Date
-  dataAtualizacao DateTime? @default(now()) @map("data de atualizacao") @db.Date
-  dataAgendamento DateTime? @db.Timestamp()
+  dataCriacao      DateTime? @default(now()) @map("data de criacao") @db.Date
+  dataAtualizacao  DateTime? @default(now()) @map("data de atualizacao") @db.Date
+  dataAgendamento  DateTime? @db.Timestamp()
+  horarioDeEntrega String
 
   usuario    Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
   endereco   Endereco @relation(fields: [enderecoId], references: [id], onDelete: Cascade)

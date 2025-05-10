@@ -1,5 +1,5 @@
 import { cepValidation } from "../../utils/helpers/zod/validations/cep";
-import { Indices, z } from "zod";
+import { z } from "zod";
 
 const addressBodySchema = z.object({
   rua: z.string().min(1, "Rua é obrigatório"),

@@ -16,9 +16,24 @@ const orderSchema = z.object({
       message: "A data de agendamento deve ser uma data válida",
     })
     .transform((val) => new Date(val)),
-  totalPrice: z.number(),
+  deliveryTime: z.string() 
+});
+
+const updateOrderSchema = z.object({
+  paymentMethod: z.nativeEnum(meioPagamento).default(meioPagamento.CARTAO_DEBITO).optional(),
+  schedulingDate: z
+    .string({
+      required_error: "A data de agendamento é obrigatória",
+      invalid_type_error: "A data de agendamento deve ser uma string no formato ISO (YYYY-MM-DD)",
+    })
+    .refine((val) => !isNaN(Date.parse(val)), {
+      message: "A data de agendamento deve ser uma data válida",
+    })
+    .transform((val) => new Date(val)).optional(),
+  deliveryTime: z.string().optional()
 });
 
 type OrderDto = z.infer<typeof orderSchema>;
+type UpdateOrderDto = z.infer<typeof updateOrderSchema>
 
-export { orderSchema, OrderDto };
+export { orderSchema, OrderDto, UpdateOrderDto, updateOrderSchema };
