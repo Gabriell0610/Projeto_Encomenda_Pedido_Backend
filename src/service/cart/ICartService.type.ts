@@ -1,5 +1,4 @@
 import { CreateCartDto } from "@/dto/cart/CreateCartDto";
-import { cartAndCartItens } from "@/repository/interfaces/cart";
 import { Carrinho, CarrinhoItens } from "@prisma/client";
 
 interface ICartService {

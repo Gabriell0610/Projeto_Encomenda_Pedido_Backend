@@ -8,15 +8,14 @@ import { authDto } from "@/dto/auth/LoginDto";
 import { ForgotPasswordDto } from "@/dto/auth/ForgotPasswordDto";
 import { tokenResets, Usuario } from "@prisma/client";
 import { MockEmailService } from "../email/mockNodemailer";
-import 'dotenv/config';
-import { randomUUID } from "crypto";
+import "dotenv/config";
 
 let authService: AuthService;
 let userRepositoryInMemory: InMemoryUserRepository;
 let tokenResetsInMemory: InMemoryTokenResets;
 let mockNodemailer: MockEmailService;
 describe("Unit Tests - authService", () => {
-  const testUserPassword = "ValidPass123!"
+  const testUserPassword = "ValidPass123!";
 
   const createUserDto = (overrides: Partial<CreateUserDto> = {}) => ({
     nome: "Gabriel",
@@ -84,27 +83,27 @@ describe("Unit Tests - authService", () => {
 
       //Assert
       expect(typeof token).toBe("string");
-    }),
-      it("should throw error when user does not exist", async () => {
-        const loginDto: authDto = {
-          email: "naoexiste@email.com",
-          password: "qualquerSenha",
-        };
+    });
+    it("should throw error when user does not exist", async () => {
+      const loginDto: authDto = {
+        email: "naoexiste@email.com",
+        password: "qualquerSenha",
+      };
 
-        await expect(authService.login(loginDto)).rejects.toThrow("Esse usuário não foi encontrado!");
-      }),
-      it("should throw error when password is incorrect", async () => {
-        const userDto = createUserDto();
+      await expect(authService.login(loginDto)).rejects.toThrow("Esse usuário não foi encontrado!");
+    });
+    it("should throw error when password is incorrect", async () => {
+      const userDto = createUserDto();
 
-        await authService.register(userDto);
+      await authService.register(userDto);
 
-        const loginDto: authDto = {
-          email: "user@example.com",
-          password: "ValidPass12!",
-        };
+      const loginDto: authDto = {
+        email: "user@example.com",
+        password: "ValidPass12!",
+      };
 
-        await expect(authService.login(loginDto)).rejects.toThrow("Email ou senha incorretos");
-      });
+      await expect(authService.login(loginDto)).rejects.toThrow("Email ou senha incorretos");
+    });
 
     it("should use default secret if JWT_SECRET is not defined", async () => {
       // remove temporariamente a variável de ambiente

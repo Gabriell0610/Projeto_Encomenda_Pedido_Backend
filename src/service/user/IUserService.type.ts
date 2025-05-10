@@ -1,5 +1,3 @@
-import { AuthorizationBodyDto } from "@/utils/helpers/zod/schemas/token";
-import { CreateUserDto } from "../../dto/auth/CreateUserDto";
 import { Usuario } from "@prisma/client";
 import { UpdateUserDto } from "@/dto/user/UpdateUserDto";
 import { AddressDto, AddressUpdateDto } from "@/dto/address/AddressDto";

@@ -1,7 +1,7 @@
 import { CreateCartDto } from "@/dto/cart/CreateCartDto";
 import { prisma } from "@/libs/prisma";
 import { ICartRepository } from "@/repository/interfaces/cart";
-import { Carrinho, CarrinhoItens, StatusCart } from "@prisma/client";
+import { StatusCart } from "@prisma/client";
 import { Decimal } from "@prisma/client/runtime/library";
 
 class CartRepository implements ICartRepository {
@@ -11,10 +11,12 @@ class CartRepository implements ICartRepository {
         status: dto.status,
         dataCriacao: new Date(),
         usuarioId: dto.userId,
+        valorTotal: itemPrice,
       },
     });
 
-    return this.createCartItem(dto, itemPrice, cart.id);
+    const itemsInCart = this.createCartItem(dto, itemPrice, cart.id);
+    return itemsInCart;
   };
 
   createCartItem = async (dto: CreateCartDto, itemPrice: Decimal, cartId: string) => {
@@ -43,44 +45,30 @@ class CartRepository implements ICartRepository {
     });
   };
 
-  listCart = async (userId: string) => {
-    return await prisma.carrinho.findFirst({
-      where: { usuarioId: userId },
-      include: {
-        carrinhoItens: true,
-      },
-    });
-  };
-
   findCartActiveByUser = async (userId: string) => {
     return await prisma.carrinho.findFirst({
       where: {
         usuarioId: userId,
         status: StatusCart.ATIVO,
       },
-      select: {
-        id: true,
-        status: true,
-        dataCriacao: true,
-        usuarioId: true,
-        carrinhoItens: {
-          select: {
-            id: true,
-            quantidade: true,
-            itemId: true,
-            carrinhoId: true,
-            precoAtual: true,
-            Item: {
-              select: {
-                id: true,
-                nome: true,
-                preco: true,
-                image: true,
-              },
-            },
-          },
-        },
-      }
+      select: this.buildSelectList(),
+    });
+  };
+
+  updateTotalValueCart = async (cartId: string, totalValue: number | Decimal) => {
+    return await prisma.carrinho.update({
+      where: { id: cartId },
+      data: { valorTotal: totalValue },
+      select: this.buildSelectList(),
+    });
+  };
+
+  listAllCartByUser = async (userId: string) => {
+    return await prisma.carrinho.findFirst({
+      where: { usuarioId: userId },
+      include: {
+        carrinhoItens: true,
+      },
     });
   };
 
@@ -110,6 +98,33 @@ class CartRepository implements ICartRepository {
     await prisma.carrinhoItens.delete({
       where: { id: cartId, itemId: itemId },
     });
+  };
+
+  private buildSelectList = () => {
+    return {
+      id: true,
+      status: true,
+      dataCriacao: true,
+      usuarioId: true,
+      valorTotal: true,
+      carrinhoItens: {
+        select: {
+          id: true,
+          quantidade: true,
+          itemId: true,
+          carrinhoId: true,
+          precoAtual: true,
+          Item: {
+            select: {
+              id: true,
+              nome: true,
+              preco: true,
+              image: true,
+            },
+          },
+        },
+      },
+    };
   };
 }
 

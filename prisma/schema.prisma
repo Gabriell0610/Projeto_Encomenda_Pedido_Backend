@@ -85,6 +85,7 @@ model Pedido {
   status        status
   precoTotal    Decimal       @db.Decimal(10, 2)
   meioPagamento meioPagamento
+  observacao    String?       @db.VarChar()
 
   dataCriacao     DateTime? @default(now()) @map("data de criacao") @db.Date
   dataAtualizacao DateTime? @default(now()) @map("data de atualizacao") @db.Date
@@ -104,6 +105,7 @@ model Carrinho {
   id          String     @id @default(uuid())
   dataCriacao DateTime?  @default(now()) @map("data de criacao") @db.Date
   status      StatusCart
+  valorTotal  Decimal?   @db.Decimal(10, 2)
 
   usuario   Usuario @relation(fields: [usuarioId], references: [id])
   usuarioId String

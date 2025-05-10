@@ -3,7 +3,6 @@ import { IUserRepository } from "repository/interfaces";
 import { prisma } from "../../../libs/prisma";
 import { UpdateUserDto } from "@/dto/user/UpdateUserDto";
 import { AddressDto, AddressUpdateDto } from "@/dto/address/AddressDto";
-import { Usuario } from "@prisma/client";
 
 class UserRepository implements IUserRepository {
   create = async (data: CreateUserDto) => {

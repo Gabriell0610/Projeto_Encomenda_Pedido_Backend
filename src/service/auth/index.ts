@@ -1,2 +1,2 @@
-export * from "./authService";
-export * from "./IAuthService";
+export * from "./auth.service";
+export * from "./IAuthService.type";

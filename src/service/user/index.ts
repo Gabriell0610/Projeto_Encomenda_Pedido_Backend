@@ -1,2 +1,2 @@
-export * from "./userService";
-export * from "./IUserService";
+export * from "./user.service";
+export * from "./IUserService.type";

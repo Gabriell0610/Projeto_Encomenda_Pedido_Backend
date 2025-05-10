@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { IUserService } from "../../service/user/IUserService";
+import { IUserService } from "../../service/user/IUserService.type";
 import { NextFunction, Request } from "express";
 import { HttpStatus } from "../../core/http";
 import { authorizationBodySchema } from "@/utils/helpers/zod/schemas/token";

@@ -1,4 +1,4 @@
-import { tokenResets, Usuario } from "@prisma/client";
+import { Usuario } from "@prisma/client";
 import { CreateUserDto } from "../../../dto/auth/CreateUserDto";
 import { UpdateUserDto } from "@/dto/user/UpdateUserDto";
 import { AddressDto, AddressUpdateDto } from "@/dto/address/AddressDto";

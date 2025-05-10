@@ -1,6 +1,6 @@
-import { UserRepository } from "../../repository/prisma/user/user.prisma.repository";
+import { UserRepository } from "../../repository/prisma/user/user.prisma";
 import { InMemoryUserRepository } from "../../repository/in-memory/user";
-import { UserService } from "../../service/user/userService";
+import { UserService } from "../../service/user/user.service";
 import { UserController } from "./User.controller";
 
 const userRepository = new UserRepository();

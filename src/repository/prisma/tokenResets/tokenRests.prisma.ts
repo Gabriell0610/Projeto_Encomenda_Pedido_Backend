@@ -1,6 +1,5 @@
 import { ITokenResets } from "@/repository/interfaces/tokenResets/ITokenResets";
 import { prisma } from "@/libs/prisma";
-import { tokenResets } from "@prisma/client";
 import { StatusToken } from "@/utils/constants/statusToken";
 
 class TokenResetsRepository implements ITokenResets {

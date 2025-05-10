@@ -1,4 +1,4 @@
-import { IUserService } from "./IUserService";
+import { IUserService } from "./IUserService.type";
 import { IUserRepository } from "../../repository/interfaces";
 import { BadRequestException } from "../../core/error/exceptions/bad-request-exception";
 import { UpdateUserDto } from "@/dto/user/UpdateUserDto";

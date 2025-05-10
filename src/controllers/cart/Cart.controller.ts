@@ -1,6 +1,6 @@
 import { HttpStatus } from "@/core/http";
 import { createCartSchema } from "@/dto/cart/CreateCartDto";
-import { ICartService } from "@/service/cart/ICartService";
+import { ICartService } from "@/service/cart/ICartService.type";
 import { authorizationBodySchema } from "@/utils/helpers/zod/schemas/token";
 import { NextFunction, Request } from "express";
 
@@ -57,7 +57,7 @@ class CartController {
       await this.cartService.removeItemCart(itemId, userId);
       return res.status(HttpStatus.OK).json({ message: "Item removido do carrinho com sucesso!" });
     } catch (error) {
-      next(error)
+      next(error);
     }
   };
 }
