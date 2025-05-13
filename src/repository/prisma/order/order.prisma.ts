@@ -1,15 +1,16 @@
-import { OrderDto } from "@/dto/order/OrderDto";
+import { OrderDto, UpdateOrderDto } from "@/dto/order/OrderDto";
 import { prisma } from "@/libs/prisma";
 import { IOrderRepository } from "@/repository/interfaces";
+import { status } from "@prisma/client";
 import { Decimal } from "@prisma/client/runtime/library";
 
 class OrderRepository implements IOrderRepository {
   createOrder = async (orderDto: OrderDto, currentPrice: Decimal) => {
-    let allOrder = await prisma.pedido.count();
-    if (allOrder < 0) {
-      allOrder = 1;
+    let numberOrder = await prisma.pedido.count();
+    if (numberOrder < 0) {
+      numberOrder = 1;
     } else {
-      allOrder++;
+      numberOrder++;
     }
     return await prisma.pedido.create({
       data: {
@@ -21,7 +22,8 @@ class OrderRepository implements IOrderRepository {
         horarioDeEntrega: orderDto.deliveryTime,
         enderecoId: orderDto.idAddress,
         precoTotal: currentPrice,
-        numeroPedido: allOrder,
+        observacao: orderDto?.observation,
+        numeroPedido: numberOrder,
         dataCriacao: new Date(),
         dataAtualizacao: new Date(),
       },
@@ -29,6 +31,33 @@ class OrderRepository implements IOrderRepository {
         carrinho: true,
         endereco: true,
         usuario: true,
+      },
+    });
+  };
+
+  updateOrder = async (id: string, order: UpdateOrderDto) => {
+    return await prisma.pedido.update({
+      where: { id: id },
+      data: {
+        dataAgendamento: order?.schedulingDate,
+        enderecoId: order?.idAddress,
+        horarioDeEntrega: order?.deliveryTime,
+        meioPagamento: order?.paymentMethod,
+        observacao: order?.observation,
+        dataAtualizacao: new Date(),
+      },
+    });
+  };
+
+  cancelOrder = async (id: string) => {
+    return await prisma.pedido.update({
+      where: { id: id },
+      data: {
+        status: status.CANCELADO,
+        dataAtualizacao: new Date(),
+      },
+      select: {
+        id: true,
       },
     });
   };

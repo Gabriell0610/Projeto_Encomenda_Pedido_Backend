@@ -100,6 +100,13 @@ class CartRepository implements ICartRepository {
     });
   };
 
+  changeStatusCart = async (cartId: string) => {
+    await prisma.carrinho.update({
+      where: { id: cartId },
+      data: { status: StatusCart.FINALIZADO },
+    });
+  };
+
   private buildSelectList = () => {
     return {
       id: true,

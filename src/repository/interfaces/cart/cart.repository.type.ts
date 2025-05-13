@@ -10,5 +10,6 @@ export interface ICartRepository {
   updateCartItemQuantity: (cartItem: string, quantity: number) => Promise<CarrinhoItens>;
   removeItemCart: (itemId: string, cartId: string) => Promise<void>;
   listAllCartByUser: (userId: string) => Promise<Carrinho | null>;
+  changeStatusCart: (idCart: string) => Promise<void>;
   updateTotalValueCart: (userId: string, totalValue: Decimal | number) => Promise<cartAndCartItens | null>;
 }

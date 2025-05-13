@@ -4,7 +4,7 @@ import { OrderController } from "./order.controller";
 import { CartRepository } from "@/repository/prisma/cart/cart.prisma.repository";
 
 const orderRepository = new OrderRepository();
-const cartRepository = new CartRepository()
+const cartRepository = new CartRepository();
 const orderService = new OrderService(orderRepository, cartRepository);
 const orderController = new OrderController(orderService);
 

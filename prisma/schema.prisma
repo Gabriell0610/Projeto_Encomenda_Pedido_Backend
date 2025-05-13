@@ -103,10 +103,11 @@ model Pedido {
 }
 
 model Carrinho {
-  id          String     @id @default(uuid())
-  dataCriacao DateTime?  @default(now()) @map("data de criacao") @db.Date
-  status      StatusCart
-  valorTotal  Decimal?   @db.Decimal(10, 2)
+  id     String     @id @default(uuid())
+  status StatusCart
+
+  dataCriacao DateTime? @default(now()) @map("data de criacao") @db.Date
+  valorTotal  Decimal?  @db.Decimal(10, 2)
 
   usuario   Usuario @relation(fields: [usuarioId], references: [id])
   usuarioId String

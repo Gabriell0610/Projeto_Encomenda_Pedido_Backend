@@ -38,7 +38,7 @@ class CartService implements ICartService {
     const cartUser = await this.cartRepository.findCartActiveByUser(userId);
 
     if (!cartUser) {
-      throw new BadRequestException("Usuário nao possui um carrinho ativo no momento"); // MUDAR A MENSAGEM DO FRONT PARA: CARRINHO VAZIO
+      return null;
     }
 
     const updatedCart = await this.calculatingTotalValue(cartUser);
