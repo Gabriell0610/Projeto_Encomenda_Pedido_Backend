@@ -1,13 +1,43 @@
 import { orderController } from "@/controllers/order";
+import { jwtAtuhenticator } from "@/middlewares/authentication";
+import { authorization } from "@/middlewares/authorization";
+import { AccessProfile } from "@/shared/constants";
 import { Router } from "express";
 
 const orderRouter = Router();
 
-orderRouter.post("/api/order", orderController.create);
-orderRouter.get("/api/order", orderController.listAllOrders);
+orderRouter.post(
+  "/api/order",
+  jwtAtuhenticator.authenticate,
+  authorization.ofRoles([AccessProfile.CLIENT]).authorize,
+  orderController.create,
+);
 
-orderRouter.get("/api/order/:id", orderController.listOrderByClientId);
-orderRouter.put("/api/order/:id", orderController.update);
-orderRouter.patch("/api/order/:id", orderController.cancelOrder);
+orderRouter.get(
+  "/api/order",
+  jwtAtuhenticator.authenticate,
+  authorization.ofRoles([AccessProfile.ADMIN]).authorize,
+  orderController.listAllOrders,
+);
+
+orderRouter.get(
+  "/api/order/:id",
+  jwtAtuhenticator.authenticate,
+  authorization.ofRoles([AccessProfile.CLIENT]).authorize,
+  orderController.listOrderByClientId,
+);
+orderRouter.put(
+  "/api/order/:id",
+  jwtAtuhenticator.authenticate,
+  authorization.ofRoles([AccessProfile.CLIENT]).authorize,
+  orderController.update,
+);
+
+orderRouter.patch(
+  "/api/order/:id",
+  jwtAtuhenticator.authenticate,
+  authorization.anyRole().authorize,
+  orderController.cancelOrder,
+);
 
 export { orderRouter };

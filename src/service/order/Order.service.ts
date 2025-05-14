@@ -23,6 +23,7 @@ class OrderService implements IOrderService {
   };
 
   updateOrder = async (id: string, order: UpdateOrderDto) => {
+    await this.verifyOrderExists(id);
     const updatedOrder = await this.orderRepository.updateOrder(id, order);
 
     if (!updatedOrder) {
@@ -33,6 +34,7 @@ class OrderService implements IOrderService {
   };
 
   cancelOrder = async (id: string) => {
+    await this.verifyOrderExists(id);
     const canceledOrder = await this.orderRepository.cancelOrder(id);
 
     return canceledOrder;
@@ -52,7 +54,20 @@ class OrderService implements IOrderService {
   listOrderById = async (id: string) => {
     const order = await this.orderRepository.listOrderById(id);
 
+    if (!order) {
+      throw new BadRequestException("Pedido não encontrado");
+    }
+
     return order;
+  };
+
+  private verifyOrderExists = async (id: string) => {
+    const orderExists = await this.orderRepository.listOrderById(id);
+    if (!orderExists) {
+      throw new BadRequestException("Pedido não encontrado");
+    }
+
+    return orderExists;
   };
 }
 
