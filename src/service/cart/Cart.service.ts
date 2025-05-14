@@ -1,8 +1,9 @@
-import { CreateCartDto } from "@/dto/cart/CreateCartDto";
+import { CreateCartDto } from "@/domain/dto/cart/CreateCartDto";
 import { ICartService } from "./ICartService.type";
 import { cartAndCartItens, ICartRepository } from "@/repository/interfaces/cart";
 import { IItensRepository } from "@/repository/interfaces";
 import { BadRequestException } from "@/core/error/exceptions/bad-request-exception";
+import { statusItem } from "@prisma/client";
 
 class CartService implements ICartService {
   constructor(
@@ -12,8 +13,9 @@ class CartService implements ICartService {
 
   createCart = async (dto: CreateCartDto) => {
     const findItem = await this.itensRepository.listById(dto.itemId);
-    if (!findItem) {
-      throw new BadRequestException("Item nao encontrado");
+
+    if (!findItem || findItem.disponivel === statusItem.INATIVO) {
+      throw new BadRequestException("Item não encontrado ou Inativo!");
     }
 
     const cartAlredyExist = await this.cartRepository.findCartActiveByUser(dto.userId);

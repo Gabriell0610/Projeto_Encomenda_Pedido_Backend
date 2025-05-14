@@ -1,4 +1,4 @@
-import { OrderDto, UpdateOrderDto } from "@/dto/order/OrderDto";
+import { OrderDto, UpdateOrderDto } from "@/domain/dto/order/OrderDto";
 import { IOrderService } from "./IOrderService.type";
 import { ICartRepository, IOrderRepository } from "@/repository/interfaces";
 import { BadRequestException } from "@/core/error/exceptions/bad-request-exception";
@@ -11,19 +11,20 @@ class OrderService implements IOrderService {
 
   createOrder = async (orderDto: OrderDto) => {
     const cart = await this.cartRepository.findCartActiveByUser(orderDto.idUser);
-    if (!cart?.valorTotal) {
-      throw new Error("Valor total não encontrado");
+    if (!cart || !cart.valorTotal) {
+      throw new BadRequestException("carrinho não enontrado");
     }
 
-    await this.cartRepository.changeStatusCart(cart.id);
-
     const order = await this.orderRepository.createOrder(orderDto, cart.valorTotal);
+
+    await this.cartRepository.changeStatusCart(cart.id);
 
     return order;
   };
 
   updateOrder = async (id: string, order: UpdateOrderDto) => {
     const updatedOrder = await this.orderRepository.updateOrder(id, order);
+
     if (!updatedOrder) {
       throw new BadRequestException("valor não enviado");
     }
@@ -33,7 +34,25 @@ class OrderService implements IOrderService {
 
   cancelOrder = async (id: string) => {
     const canceledOrder = await this.orderRepository.cancelOrder(id);
+
     return canceledOrder;
+  };
+
+  listOrdersByClientId = async (idClient: string) => {
+    const orderByClient = await this.orderRepository.listOrdersByClientId(idClient);
+
+    return orderByClient;
+  };
+
+  listAllOrders = async () => {
+    const allOrders = await this.orderRepository.listAllOrders();
+    return allOrders;
+  };
+
+  listOrderById = async (id: string) => {
+    const order = await this.orderRepository.listOrderById(id);
+
+    return order;
   };
 }
 

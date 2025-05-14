@@ -1,11 +1,11 @@
 import { InMemoryUserRepository } from "@/repository/in-memory/user";
-import { CreateUserDto } from "@/dto/auth/CreateUserDto";
+import { CreateUserDto } from "@/domain/dto/auth/CreateUserDto";
 import { AuthService } from ".";
 import { AccessProfile } from "@/utils/constants/accessProfile";
 import bcrypt from "bcryptjs";
 import { InMemoryTokenResets } from "@/repository/in-memory/token-resets";
-import { authDto } from "@/dto/auth/LoginDto";
-import { ForgotPasswordDto } from "@/dto/auth/ForgotPasswordDto";
+import { authDto } from "@/domain/dto/auth/LoginDto";
+import { ForgotPasswordDto } from "@/domain/dto/auth/ForgotPasswordDto";
 import { tokenResets, Usuario } from "@prisma/client";
 import { MockEmailService } from "../email/mockNodemailer";
 import "dotenv/config";

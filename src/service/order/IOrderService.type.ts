@@ -1,10 +1,13 @@
-import { OrderDto, UpdateOrderDto } from "@/dto/order/OrderDto";
-import { Pedido } from "@prisma/client";
+import { IPedido } from "@/domain/model/IPedido";
+import { OrderDto, UpdateOrderDto } from "@/domain/dto/order/OrderDto";
 
 interface IOrderService {
-  createOrder: (order: OrderDto) => Promise<Pedido>;
-  updateOrder: (id: string, order: UpdateOrderDto) => Promise<Pedido>;
+  createOrder: (order: OrderDto) => Promise<{ id: string }>;
+  updateOrder: (id: string, order: UpdateOrderDto) => Promise<IPedido>;
   cancelOrder: (id: string) => Promise<{ id: string }>;
+  listOrdersByClientId: (idClient: string) => Promise<IPedido[]>;
+  listAllOrders: () => Promise<IPedido[]>;
+  listOrderById: (id: string) => Promise<IPedido | null>;
 }
 
 export { IOrderService };

@@ -1,4 +1,4 @@
-import { CreateCartDto } from "@/dto/cart/CreateCartDto";
+import { CreateCartDto } from "@/domain/dto/cart/CreateCartDto";
 import { Carrinho, CarrinhoItens } from "@prisma/client";
 import { Decimal } from "@prisma/client/runtime/library";
 

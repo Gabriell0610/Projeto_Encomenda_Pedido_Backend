@@ -1,6 +1,7 @@
 import { HttpStatus } from "@/core/http";
-import { orderSchema, updateOrderSchema } from "@/dto/order/OrderDto";
+import { orderSchema, updateOrderSchema } from "@/domain/dto/order/OrderDto";
 import { IOrderService } from "@/service/order/IOrderService.type";
+import { uuidSchema } from "@/utils/helpers/zod/schemas/id";
 import { NextFunction, Request, Response } from "express";
 
 class OrderController {
@@ -10,7 +11,7 @@ class OrderController {
     try {
       const dto = orderSchema.parse(req.body);
       const payload = await this.oderService.createOrder(dto);
-      res.status(HttpStatus.CREATED).json({ message: "Pedido feito com sucesso!", data: payload });
+      res.status(HttpStatus.CREATED).json({ message: "Pedido criado com sucesso!", data: payload });
     } catch (error) {
       next(error);
     }
@@ -18,7 +19,7 @@ class OrderController {
 
   update = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { id } = req.params;
+      const { id } = uuidSchema.parse(req.params);
       const dto = updateOrderSchema.parse(req.body);
       const payload = await this.oderService.updateOrder(id, dto);
       res.status(HttpStatus.OK).json({ message: "Pedido atualizado com sucesso!", data: payload });
@@ -29,9 +30,38 @@ class OrderController {
 
   cancelOrder = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { id } = req.params;
-      const payload = this.oderService.cancelOrder(id);
+      const { id } = uuidSchema.parse(req.params);
+      const payload = await this.oderService.cancelOrder(id);
       res.status(HttpStatus.OK).json({ message: "Pedido cancelado com suceso", data: payload });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  listOrderByClientId = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id: idClient } = uuidSchema.parse(req.params);
+      const payload = await this.oderService.listOrdersByClientId(idClient);
+      res.status(HttpStatus.OK).json({ message: "Pedidos do cliente listados com sucesso", data: payload });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  listAllOrders = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const payload = await this.oderService.listAllOrders();
+      res.status(HttpStatus.OK).json({ message: "Todos os pedidos listados com sucesso", data: payload });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  listOrderById = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = uuidSchema.parse(req.params);
+      const payload = await this.oderService.listOrderById(id);
+      res.status(HttpStatus.OK).json({ message: "Pedido listado com sucesso", data: payload });
     } catch (error) {
       next(error);
     }

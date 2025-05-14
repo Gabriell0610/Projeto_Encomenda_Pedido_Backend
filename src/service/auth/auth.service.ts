@@ -1,12 +1,12 @@
-import { authDto } from "../../dto/auth/LoginDto";
+import { authDto } from "../../domain/dto/auth/LoginDto";
 import { IAuthService } from "./IAuthService.type";
 import { BadRequestException } from "../../core/error/exceptions/bad-request-exception";
 import bcrypt from "bcryptjs";
 import { sign } from "jsonwebtoken";
 import "dotenv/config";
-import { CreateUserDto } from "../../dto/auth/CreateUserDto";
+import { CreateUserDto } from "../../domain/dto/auth/CreateUserDto";
 import { ITokenResets, IUserRepository } from "../../repository/interfaces";
-import { ForgotPasswordDto } from "@/dto/auth/ForgotPasswordDto";
+import { ForgotPasswordDto } from "@/domain/dto/auth/ForgotPasswordDto";
 import { generateTokenAuth } from "@/utils/generateToken";
 import { IEmailService } from "../email/nodemailer.type";
 import { StatusToken } from "@/utils/constants/statusToken";

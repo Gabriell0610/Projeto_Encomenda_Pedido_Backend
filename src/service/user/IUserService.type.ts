@@ -1,6 +1,6 @@
 import { Usuario } from "@prisma/client";
-import { UpdateUserDto } from "@/dto/user/UpdateUserDto";
-import { AddressDto, AddressUpdateDto } from "@/dto/address/AddressDto";
+import { UpdateUserDto } from "@/domain/dto/user/UpdateUserDto";
+import { AddressDto, AddressUpdateDto } from "@/domain/dto/address/AddressDto";
 
 interface IUserService {
   list: () => Promise<Partial<Usuario>[]>;

@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { UnauthorizedException } from "@/core/error/exceptions/unauthorized-exception";
 import { HttpStatus } from "../../core/http";
 import { formatZodErroMessage, isZodError } from "../../core/zod";
-import { Request, NextFunction } from "express";
+import { Request, NextFunction, Response } from "express";
 import { ZodError } from "zod";
 
 class ErrorHandlerMiddleware {
@@ -23,7 +23,7 @@ class ErrorHandlerMiddleware {
       message: error.message,
     };
   }
-  handle = (error: Error, req: Request, res: any, next: NextFunction) => {
+  handle = (error: Error, req: Request, res: Response, next: NextFunction) => {
     let statusCode: number;
     let message: string;
 

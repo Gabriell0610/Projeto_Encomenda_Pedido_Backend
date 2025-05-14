@@ -1,4 +1,4 @@
-import { OrderDto, UpdateOrderDto } from "@/dto/order/OrderDto";
+import { OrderDto, UpdateOrderDto } from "@/domain/dto/order/OrderDto";
 import { prisma } from "@/libs/prisma";
 import { IOrderRepository } from "@/repository/interfaces";
 import { status } from "@prisma/client";
@@ -27,10 +27,8 @@ class OrderRepository implements IOrderRepository {
         dataCriacao: new Date(),
         dataAtualizacao: new Date(),
       },
-      include: {
-        carrinho: true,
-        endereco: true,
-        usuario: true,
+      select: {
+        id: true,
       },
     });
   };
@@ -60,6 +58,62 @@ class OrderRepository implements IOrderRepository {
         id: true,
       },
     });
+  };
+
+  listOrdersByClientId = async (id: string) => {
+    return await prisma.pedido.findMany({
+      where: { usuarioId: id },
+      select: this.buildSelectList(),
+    });
+  };
+
+  listAllOrders = async () => {
+    return await prisma.pedido.findMany({
+      select: this.buildSelectList(),
+    });
+  };
+
+  listOrderById = async (orderId: string) => {
+    return await prisma.pedido.findUnique({ where: { id: orderId }, select: this.buildSelectList() });
+  };
+
+  private buildSelectList = () => {
+    return {
+      id: true,
+      numeroPedido: true,
+      status: true,
+      dataAgendamento: true,
+      horarioDeEntrega: true,
+      precoTotal: true,
+      observacao: true,
+      endereco: {
+        select: {
+          numero: true,
+          bairro: true,
+          cidade: true,
+          estado: true,
+          complemento: true,
+          rua: true,
+          cep: true,
+        },
+      },
+      usuario: {
+        select: {
+          nome: true,
+          email: true,
+          telefone: true,
+        },
+      },
+      carrinho: {
+        select: {
+          carrinhoItens: {
+            select: {
+              Item: true,
+            },
+          },
+        },
+      },
+    };
   };
 }
 

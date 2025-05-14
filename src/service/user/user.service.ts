@@ -1,8 +1,8 @@
 import { IUserService } from "./IUserService.type";
 import { IUserRepository } from "../../repository/interfaces";
 import { BadRequestException } from "../../core/error/exceptions/bad-request-exception";
-import { UpdateUserDto } from "@/dto/user/UpdateUserDto";
-import { AddressDto, AddressUpdateDto } from "@/dto/address/AddressDto";
+import { UpdateUserDto } from "@/domain/dto/user/UpdateUserDto";
+import { AddressDto, AddressUpdateDto } from "@/domain/dto/address/AddressDto";
 
 class UserService implements IUserService {
   constructor(private userRepository: IUserRepository) {}

@@ -1,4 +1,4 @@
-import { ItemCreateDto, ItemUpdateDto } from "@/dto/itens/ItensDto";
+import { ItemCreateDto, ItemUpdateDto } from "@/domain/dto/itens/ItensDto";
 import { Item } from "@prisma/client";
 
 interface IItensService {

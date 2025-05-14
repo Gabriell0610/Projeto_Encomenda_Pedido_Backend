@@ -1,8 +1,8 @@
-import { CreateUserDto } from "../../../dto/auth/CreateUserDto";
+import { CreateUserDto } from "../../../domain/dto/auth/CreateUserDto";
 import { IUserRepository } from "repository/interfaces";
 import { prisma } from "../../../libs/prisma";
-import { UpdateUserDto } from "@/dto/user/UpdateUserDto";
-import { AddressDto, AddressUpdateDto } from "@/dto/address/AddressDto";
+import { UpdateUserDto } from "@/domain/dto/user/UpdateUserDto";
+import { AddressDto, AddressUpdateDto } from "@/domain/dto/address/AddressDto";
 
 class UserRepository implements IUserRepository {
   create = async (data: CreateUserDto) => {

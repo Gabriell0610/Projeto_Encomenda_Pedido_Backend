@@ -1,4 +1,4 @@
-import { CreateCartDto } from "@/dto/cart/CreateCartDto";
+import { CreateCartDto } from "@/domain/dto/cart/CreateCartDto";
 import { prisma } from "@/libs/prisma";
 import { ICartRepository } from "@/repository/interfaces/cart";
 import { StatusCart } from "@prisma/client";
@@ -117,13 +117,12 @@ class CartRepository implements ICartRepository {
       carrinhoItens: {
         select: {
           id: true,
-          quantidade: true,
           itemId: true,
           carrinhoId: true,
+          quantidade: true,
           precoAtual: true,
           Item: {
             select: {
-              id: true,
               nome: true,
               preco: true,
               image: true,

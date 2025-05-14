@@ -1,5 +1,5 @@
 import express from "express";
-import cors from "cors";
+//import cors from "cors";
 
 import { authRouter, cartRouter, itensRouter, userRouter, orderRouter } from "./routes";
 import { errorHandlerMiddleware } from "../../middlewares/error";

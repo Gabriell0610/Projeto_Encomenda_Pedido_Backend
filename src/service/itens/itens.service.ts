@@ -1,4 +1,4 @@
-import { ItemCreateDto, ItemUpdateDto } from "@/dto/itens/ItensDto";
+import { ItemCreateDto, ItemUpdateDto } from "@/domain/dto/itens/ItensDto";
 import { IItensService } from "./IItensService.type";
 import { IItensRepository } from "@/repository/interfaces";
 import { BadRequestException } from "@/core/error/exceptions/bad-request-exception";

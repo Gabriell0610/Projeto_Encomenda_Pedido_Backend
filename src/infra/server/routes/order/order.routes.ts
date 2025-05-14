@@ -4,6 +4,9 @@ import { Router } from "express";
 const orderRouter = Router();
 
 orderRouter.post("/api/order", orderController.create);
+orderRouter.get("/api/order", orderController.listAllOrders);
+
+orderRouter.get("/api/order/:id", orderController.listOrderByClientId);
 orderRouter.put("/api/order/:id", orderController.update);
 orderRouter.patch("/api/order/:id", orderController.cancelOrder);
 

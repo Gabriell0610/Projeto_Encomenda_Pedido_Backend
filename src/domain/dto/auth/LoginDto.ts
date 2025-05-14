@@ -1,4 +1,4 @@
-import { passwordValidation } from "../../utils/helpers/zod/validations/password";
+import { passwordValidation } from "../../../utils/helpers/zod/validations/password";
 import { z } from "zod";
 
 const loginSchema = z.object({
