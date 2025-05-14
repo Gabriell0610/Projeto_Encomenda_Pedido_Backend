@@ -1,11 +1,11 @@
 import { CreateCartDto } from "@/domain/dto/cart/CreateCartDto";
-import { Carrinho, CarrinhoItens } from "@prisma/client";
+import { CartEntity, CartItemsEntity } from "@/domain/model";
 
 interface ICartService {
-  createCart: (dto: CreateCartDto) => Promise<CarrinhoItens>;
-  changeItemQuantity: (itemId: string, userId: string, act: string) => Promise<CarrinhoItens>;
+  createCart: (dto: CreateCartDto) => Promise<CartItemsEntity>;
+  changeItemQuantity: (itemId: string, userId: string, act: string) => Promise<CartItemsEntity>;
   removeItemCart: (itemId: string, userId: string) => Promise<void>;
-  listCart: (userId: string) => Promise<Carrinho | null>;
+  listCart: (userId: string) => Promise<CartEntity | null>;
 }
 
 export { ICartService };

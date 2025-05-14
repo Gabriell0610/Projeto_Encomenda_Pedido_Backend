@@ -1,6 +1,6 @@
-import { AccessProfile } from "@/utils/constants/accessProfile";
-import { UnauthorizedException } from "@/core/error/exceptions/unauthorized-exception";
-import { authorizationBodySchema } from "@/utils/helpers/zod/schemas/token";
+import { AccessProfile } from "@/shared/constants/accessProfile";
+import { UnauthorizedException } from "@/shared/error/exceptions/unauthorized-exception";
+import { authorizationBodySchema } from "@/utils/zod/schemas/token";
 import { NextFunction, Request, Response } from "express";
 
 class Authorization {

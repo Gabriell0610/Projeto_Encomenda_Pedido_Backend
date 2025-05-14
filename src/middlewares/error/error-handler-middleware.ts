@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import { UnauthorizedException } from "@/core/error/exceptions/unauthorized-exception";
-import { HttpStatus } from "../../core/http";
-import { formatZodErroMessage, isZodError } from "../../core/zod";
+import { HttpStatus } from "@/shared/constants";
+import { formatZodErroMessage, isZodError } from "../../shared/zod";
 import { Request, NextFunction, Response } from "express";
 import { ZodError } from "zod";
 

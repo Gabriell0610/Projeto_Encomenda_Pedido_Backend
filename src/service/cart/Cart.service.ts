@@ -2,7 +2,7 @@ import { CreateCartDto } from "@/domain/dto/cart/CreateCartDto";
 import { ICartService } from "./ICartService.type";
 import { cartAndCartItens, ICartRepository } from "@/repository/interfaces/cart";
 import { IItensRepository } from "@/repository/interfaces";
-import { BadRequestException } from "@/core/error/exceptions/bad-request-exception";
+import { BadRequestException } from "@/shared/error/exceptions/bad-request-exception";
 import { statusItem } from "@prisma/client";
 
 class CartService implements ICartService {
@@ -28,11 +28,11 @@ class CartService implements ICartService {
         return updatedCart;
       }
 
-      const cart = await this.cartRepository.createCartItem(dto, findItem?.preco, cartAlredyExist.id);
+      const cart = await this.cartRepository.createCartItem(dto, findItem.preco, cartAlredyExist.id);
       return cart;
     }
 
-    const cart = await this.cartRepository.createCart(dto, findItem?.preco);
+    const cart = await this.cartRepository.createCart(dto, findItem.preco);
     return cart;
   };
 

@@ -1,12 +1,12 @@
 import { ItemCreateDto, ItemUpdateDto } from "@/domain/dto/itens/ItensDto";
-import { Item } from "@prisma/client";
+import { ItemEntity } from "@/domain/model";
 
 interface IItensService {
-  create: (data: ItemCreateDto) => Promise<Item>;
-  update: (data: ItemUpdateDto, itemId: string) => Promise<Partial<Item>>;
-  listAll: () => Promise<Partial<Item>[]>;
-  inactiveItem: (itemId: string) => Promise<Partial<Item>>;
-  listActiveItens: () => Promise<Item[]>;
+  create: (data: ItemCreateDto) => Promise<ItemEntity>;
+  update: (data: ItemUpdateDto, itemId: string) => Promise<Partial<ItemEntity>>;
+  listAll: () => Promise<Partial<ItemEntity>[]>;
+  inactiveItem: (itemId: string) => Promise<Partial<ItemEntity>>;
+  listActiveItens: () => Promise<ItemEntity[]>;
 }
 
 export { IItensService };

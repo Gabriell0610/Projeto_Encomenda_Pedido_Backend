@@ -1,4 +1,4 @@
-import { StatusToken } from "@/utils/constants/statusToken";
+import { StatusToken } from "@/shared/constants/statusToken";
 import { tokenResets } from "@prisma/client";
 import { randomUUID } from "crypto";
 import { ITokenResets } from "../interfaces";

@@ -1,6 +1,6 @@
 import { ITokenResets } from "@/repository/interfaces/tokenResets/ITokenResets";
 import { prisma } from "@/libs/prisma";
-import { StatusToken } from "@/utils/constants/statusToken";
+import { StatusToken } from "@/shared/constants/statusToken";
 
 class TokenResetsRepository implements ITokenResets {
   createToken = async (token: string, userId: string) => {

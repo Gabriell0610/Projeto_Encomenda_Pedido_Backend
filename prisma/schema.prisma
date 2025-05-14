@@ -13,7 +13,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum status {
+enum StatusPedido {
   ACEITO
   PENDENTE
   PREPARANDO
@@ -82,7 +82,7 @@ model UsuarioEndereco {
 model Pedido {
   id            String        @id @default(uuid())
   numeroPedido  Int           @unique
-  status        status
+  status        StatusPedido
   precoTotal    Decimal       @db.Decimal(10, 2)
   meioPagamento meioPagamento
   observacao    String?       @db.VarChar()

@@ -1,7 +1,7 @@
 import { IUserService } from "../../service/user/IUserService.type";
 import { NextFunction, Request, Response } from "express";
-import { HttpStatus } from "../../core/http";
-import { authorizationBodySchema } from "@/utils/helpers/zod/schemas/token";
+import { HttpStatus } from "@/shared/constants/index";
+import { authorizationBodySchema } from "@/utils/zod/schemas/token";
 import { updateUserBodySchema } from "@/domain/dto/user/UpdateUserDto";
 import { addressBodySchema, updateAddressBodySchema } from "@/domain/dto/address/AddressDto";
 
@@ -69,7 +69,7 @@ export class UserController {
       const dto = updateAddressBodySchema.parse(req.body);
 
       await this.userService.updateUserAddress(dto, userId, idAddress);
-      res.status(HttpStatus.OK).json({ message: "Endereço atualizado com sucesso!" });
+      res.status(HttpStatus.OK).json({ message: "Endereçoo atualizado com sucesso!" });
     } catch (error) {
       next(error);
     }

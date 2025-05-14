@@ -1,13 +1,14 @@
 import { authDto } from "../../domain/dto/auth/LoginDto";
 import { CreateUserDto } from "../../domain/dto/auth/CreateUserDto";
-import { tokenResets, Usuario } from "@prisma/client";
 import { ForgotPasswordDto } from "@/domain/dto/auth/ForgotPasswordDto";
+import { TokenResetsEntity } from "@/domain/model/TokenEntity";
+import { UserEntity } from "@/domain/model";
 
 interface IAuthService {
   login: (dto: authDto) => Promise<string>;
-  register: (data: CreateUserDto) => CreateUserDto | Promise<Partial<Usuario>>;
-  createToken: (dto: ForgotPasswordDto) => Promise<tokenResets | void>;
-  validateToken: (dto: ForgotPasswordDto) => Promise<tokenResets | void>;
+  register: (data: CreateUserDto) => CreateUserDto | Promise<Partial<UserEntity>>;
+  createToken: (dto: ForgotPasswordDto) => Promise<TokenResetsEntity | void>;
+  validateToken: (dto: ForgotPasswordDto) => Promise<TokenResetsEntity | void>;
   resetPassword: (dto: ForgotPasswordDto) => Promise<void>;
 }
 

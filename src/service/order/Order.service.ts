@@ -1,7 +1,7 @@
 import { OrderDto, UpdateOrderDto } from "@/domain/dto/order/OrderDto";
 import { IOrderService } from "./IOrderService.type";
 import { ICartRepository, IOrderRepository } from "@/repository/interfaces";
-import { BadRequestException } from "@/core/error/exceptions/bad-request-exception";
+import { BadRequestException } from "@/shared/error/exceptions/bad-request-exception";
 
 class OrderService implements IOrderService {
   constructor(
@@ -17,7 +17,7 @@ class OrderService implements IOrderService {
 
     const order = await this.orderRepository.createOrder(orderDto, cart.valorTotal);
 
-    await this.cartRepository.changeStatusCart(cart.id);
+    await this.cartRepository.changeStatusCart(cart.id || "");
 
     return order;
   };

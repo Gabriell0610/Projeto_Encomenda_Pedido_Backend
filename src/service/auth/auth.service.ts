@@ -1,6 +1,6 @@
 import { authDto } from "../../domain/dto/auth/LoginDto";
 import { IAuthService } from "./IAuthService.type";
-import { BadRequestException } from "../../core/error/exceptions/bad-request-exception";
+import { BadRequestException } from "../../shared/error/exceptions/bad-request-exception";
 import bcrypt from "bcryptjs";
 import { sign } from "jsonwebtoken";
 import "dotenv/config";
@@ -9,7 +9,7 @@ import { ITokenResets, IUserRepository } from "../../repository/interfaces";
 import { ForgotPasswordDto } from "@/domain/dto/auth/ForgotPasswordDto";
 import { generateTokenAuth } from "@/utils/generateToken";
 import { IEmailService } from "../email/nodemailer.type";
-import { StatusToken } from "@/utils/constants/statusToken";
+import { StatusToken } from "@/shared/constants/statusToken";
 
 class AuthService implements IAuthService {
   constructor(
@@ -88,7 +88,7 @@ class AuthService implements IAuthService {
       throw new BadRequestException("Token inválido. Gere outro token!");
     }
 
-    const isExpired = tokenRecord.expiraEm < new Date();
+    const isExpired = tokenRecord.expiraEm! < new Date();
     if (isExpired) {
       await this.tokenResetsRepository.updateStatus(StatusToken.EXPIRADO, tokenRecord.id!);
       throw new BadRequestException("Token expirado. Gere outro token!");

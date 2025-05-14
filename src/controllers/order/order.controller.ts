@@ -1,7 +1,7 @@
-import { HttpStatus } from "@/core/http";
+import { HttpStatus } from "@/shared/constants/index";
 import { orderSchema, updateOrderSchema } from "@/domain/dto/order/OrderDto";
 import { IOrderService } from "@/service/order/IOrderService.type";
-import { uuidSchema } from "@/utils/helpers/zod/schemas/id";
+import { uuidSchema } from "@/utils/zod/schemas/id";
 import { NextFunction, Request, Response } from "express";
 
 class OrderController {

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { IAuthService } from "../../service/auth/IAuthService.type";
 import { loginSchema } from "@/domain/dto/auth/LoginDto";
-import { HttpStatus } from "../../core/http";
+import { HttpStatus } from "@/shared/constants/index";
 import { CreateUserBodySchema } from "../../domain/dto/auth/CreateUserDto";
 import { forgotPasswordSchema } from "@/domain/dto/auth/ForgotPasswordDto";
 

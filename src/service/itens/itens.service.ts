@@ -1,7 +1,7 @@
 import { ItemCreateDto, ItemUpdateDto } from "@/domain/dto/itens/ItensDto";
 import { IItensService } from "./IItensService.type";
 import { IItensRepository } from "@/repository/interfaces";
-import { BadRequestException } from "@/core/error/exceptions/bad-request-exception";
+import { BadRequestException } from "@/shared/error/exceptions/bad-request-exception";
 
 class ItensService implements IItensService {
   constructor(private itensRepository: IItensRepository) {}

@@ -1,10 +1,10 @@
-import { StatusToken } from "@/utils/constants/statusToken";
-import { tokenResets } from "@prisma/client";
+import { TokenResetsEntity } from "@/domain/model/TokenEntity";
+import { StatusToken } from "@/shared/constants/statusToken";
 
 export interface ITokenResets {
-  createToken: (token: string, userId: string) => Promise<tokenResets>;
-  findByToken: (token: string) => Promise<tokenResets | null>;
-  findTokenByStatus: (userId: string) => Promise<tokenResets | null>;
-  listAllTokens: () => Promise<tokenResets[]>;
+  createToken: (token: string, userId: string) => Promise<TokenResetsEntity>;
+  findByToken: (token: string) => Promise<TokenResetsEntity | null>;
+  findTokenByStatus: (userId: string) => Promise<TokenResetsEntity | null>;
+  listAllTokens: () => Promise<TokenResetsEntity[]>;
   updateStatus: (statusToken: StatusToken, idToken: string) => Promise<void>;
 }

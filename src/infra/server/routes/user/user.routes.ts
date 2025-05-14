@@ -2,7 +2,7 @@ import { Router } from "express";
 import { userController } from "../../../../controllers/user";
 import { jwtAtuhenticator } from "@/middlewares/authentication";
 import { authorization } from "@/middlewares/authorization";
-import { AccessProfile } from "@/utils/constants/accessProfile";
+import { AccessProfile } from "@/shared/constants/accessProfile";
 
 const userRouter = Router();
 

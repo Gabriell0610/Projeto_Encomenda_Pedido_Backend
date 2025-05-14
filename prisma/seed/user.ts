@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import { AccessProfile } from "../../src/utils/constants/accessProfile";
+import { AccessProfile } from "../../src/shared/constants/accessProfile";
 import { prisma } from "../../src/libs/prisma";
 import { randomUUID } from "crypto";
 

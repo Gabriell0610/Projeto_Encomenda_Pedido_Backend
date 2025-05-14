@@ -1,14 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { InMemoryUserRepository } from "@/repository/in-memory/user";
 import { CreateUserDto } from "@/domain/dto/auth/CreateUserDto";
 import { AuthService } from ".";
-import { AccessProfile } from "@/utils/constants/accessProfile";
+import { AccessProfile } from "@/shared/constants/accessProfile";
 import bcrypt from "bcryptjs";
 import { InMemoryTokenResets } from "@/repository/in-memory/token-resets";
 import { authDto } from "@/domain/dto/auth/LoginDto";
 import { ForgotPasswordDto } from "@/domain/dto/auth/ForgotPasswordDto";
-import { tokenResets, Usuario } from "@prisma/client";
+import { UserEntity } from "@/domain/model/UserEntity";
 import { MockEmailService } from "../email/mockNodemailer";
 import "dotenv/config";
+import { TokenResetsEntity } from "@/domain/model/TokenEntity";
 
 let authService: AuthService;
 let userRepositoryInMemory: InMemoryUserRepository;
@@ -129,8 +131,8 @@ describe("Unit Tests - authService", () => {
 
   describe("testing forgot password", () => {
     let userToken: string | undefined;
-    let userExist: Partial<Usuario>;
-    let tokenResets: tokenResets | undefined;
+    let userExist: Partial<UserEntity>;
+    let tokenResets: TokenResetsEntity | undefined;
 
     beforeEach(async () => {
       const userDto = createUserDto();

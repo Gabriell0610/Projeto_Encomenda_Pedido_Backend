@@ -1,6 +1,6 @@
-import { AccessProfile } from "../../../utils/constants/accessProfile";
+import { AccessProfile } from "../../../shared/constants/accessProfile";
 import { z } from "zod";
-import { passwordValidation } from "@/utils/helpers/zod/validations/password";
+import { passwordValidation } from "@/utils/zod/validations/password";
 
 //SCHEMAS
 const CreateUserBodySchema = z.object({

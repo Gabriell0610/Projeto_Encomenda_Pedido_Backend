@@ -1,7 +1,7 @@
 import { cartController } from "@/controllers/cart";
 import { jwtAtuhenticator } from "@/middlewares/authentication";
 import { authorization } from "@/middlewares/authorization";
-import { AccessProfile } from "@/utils/constants/accessProfile";
+import { AccessProfile } from "@/shared/constants/accessProfile";
 import { Router } from "express";
 
 const cartRouter = Router();
