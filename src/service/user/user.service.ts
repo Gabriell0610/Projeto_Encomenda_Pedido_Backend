@@ -6,6 +6,7 @@ import { AddressDto, AddressUpdateDto } from "@/domain/dto/address/AddressDto";
 
 class UserService implements IUserService {
   constructor(private userRepository: IUserRepository) {}
+
   list = async () => {
     const res = this.userRepository.list();
     return res;
@@ -24,7 +25,7 @@ class UserService implements IUserService {
     }
 
     if (userExist?.email !== userEmail) {
-      throw new BadRequestException("Usuário não pode alterar seus dados");
+      throw new BadRequestException("Sem permisão para editar dados");
     }
 
     const updateUser = await this.userRepository.updateUser(dto, userId);
@@ -42,6 +43,11 @@ class UserService implements IUserService {
 
   removeAddress = async (userId: string, addressId: string) => {
     this.userRepository.removeAddress(userId, addressId);
+  };
+
+  listAddressByUserId = async (userId: string) => {
+    const userAddresses = await this.userRepository.listAddressByUserId(userId);
+    return userAddresses;
   };
 }
 

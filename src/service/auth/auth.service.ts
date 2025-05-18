@@ -64,7 +64,7 @@ class AuthService implements IAuthService {
     const createdToken = await this.tokenResetsRepository.createToken(token, userExists.id!);
 
     if (!createdToken) {
-      throw new BadRequestException("Falha ao salvar token!");
+      throw new BadRequestException("Falha ao criar token!");
     }
 
     try {
@@ -101,16 +101,17 @@ class AuthService implements IAuthService {
 
   resetPassword = async (dto: ForgotPasswordDto) => {
     const userExists = await this.verifyUserExistsByEmail(dto.email);
-
-    const hashedPassword = await bcrypt.hash(dto.newPassword!, 8);
-    userExists.senha = hashedPassword;
-    await this.userRepository.updateUser(userExists, userExists.id!);
-
+    
     const tokenRecord = await this.tokenResetsRepository.findByToken(dto.token!);
 
     if (!tokenRecord) {
       throw new BadRequestException("Token inválido");
     }
+
+    const hashedPassword = await bcrypt.hash(dto.newPassword!, 8);
+    userExists.senha = hashedPassword;
+    await this.userRepository.updateUser(userExists, userExists.id!);
+
     await this.tokenResetsRepository.updateStatus(StatusToken.EXPIRADO, tokenRecord.id!);
   };
 

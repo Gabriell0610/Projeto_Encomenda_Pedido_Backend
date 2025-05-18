@@ -1,5 +1,6 @@
-import { Usuario } from "@prisma/client";
+import { Usuario, UsuarioEndereco } from "@prisma/client";
 
 type UserEntity = Usuario;
+type UserAddressEntity = UsuarioEndereco;
 
-export { UserEntity };
+export { UserEntity, UserAddressEntity };

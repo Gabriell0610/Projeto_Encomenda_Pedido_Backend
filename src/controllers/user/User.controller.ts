@@ -50,6 +50,16 @@ export class UserController {
     }
   };
 
+  listAddressByUserId = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { requesterId: userId } = authorizationBodySchema.parse(req.body);
+      const data = await this.userService.listAddressByUserId(userId);
+      res.status(HttpStatus.OK).json({ message: "Listando endereços do usuário com sucesso!", res: data });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   removeAddress = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { requesterId: userId } = authorizationBodySchema.parse(req.body);

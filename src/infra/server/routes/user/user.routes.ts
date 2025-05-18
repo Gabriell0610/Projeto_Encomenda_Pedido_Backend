@@ -30,6 +30,13 @@ userRouter.post(
   userController.addAddress,
 );
 
+userRouter.get(
+  "/api/users/address/me",
+  jwtAtuhenticator.authenticate,
+  authorization.ofRoles([AccessProfile.CLIENT]).authorize,
+  userController.listAddressByUserId,
+);
+
 userRouter.put(
   "/api/users/:idAddress/address",
   jwtAtuhenticator.authenticate,

@@ -139,6 +139,7 @@ class UserRepository implements IUserRepository {
           },
         },
       },
+      select: {},
     });
   };
 
@@ -175,6 +176,28 @@ class UserRepository implements IUserRepository {
         enderecos: {
           delete: { usuarioId_enderecoId: { usuarioId: userId, enderecoId: idAddress } },
         },
+      },
+    });
+  };
+
+  listAddressByUserId = async (userId: string) => {
+    return await prisma.usuarioEndereco.findMany({
+      where: { usuarioId: userId },
+      select: {
+        endereco: {
+          select: {
+            rua: true,
+            numero: true,
+            cidade: true,
+            estado: true,
+            bairro: true,
+            cep: true,
+            complemento: true,
+            id: true,
+          },
+        },
+        usuarioId: true,
+        enderecoId: true,
       },
     });
   };

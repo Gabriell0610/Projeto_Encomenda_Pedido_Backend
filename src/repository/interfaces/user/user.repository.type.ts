@@ -1,7 +1,7 @@
 import { CreateUserDto } from "../../../domain/dto/auth/CreateUserDto";
 import { UpdateUserDto } from "@/domain/dto/user/UpdateUserDto";
 import { AddressDto, AddressUpdateDto } from "@/domain/dto/address/AddressDto";
-import { UserEntity } from "@/domain/model";
+import { UserAddressEntity, UserEntity } from "@/domain/model";
 
 interface IUserRepository {
   create: (dto: CreateUserDto) => Promise<Partial<UserEntity>>;
@@ -11,7 +11,8 @@ interface IUserRepository {
   updateUser: (dto: UpdateUserDto, userId: string) => Promise<Partial<UserEntity>>;
   removeAddress: (userId: string, idAddress: string) => Promise<void>;
   addAddress: (dto: AddressDto, userId: string) => Promise<void>;
-  updateAddress: (dto: AddressUpdateDto, userId: string, addressId: string) => Promise<Partial<void>>;
+  updateAddress: (dto: AddressUpdateDto, userId: string, addressId: string) => Promise<void>;
+  listAddressByUserId: (userId: string) => Promise<UserAddressEntity[]>;
 }
 
 export { IUserRepository };
