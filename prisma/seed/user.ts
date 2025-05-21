@@ -1,7 +1,6 @@
 import bcrypt from "bcryptjs";
 import { AccessProfile } from "../../src/shared/constants/accessProfile";
 import { prisma } from "../../src/libs/prisma";
-import { randomUUID } from "crypto";
 
 // Função para criptografar as senhas
 async function hashPassword() {

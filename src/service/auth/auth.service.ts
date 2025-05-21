@@ -101,7 +101,7 @@ class AuthService implements IAuthService {
 
   resetPassword = async (dto: ForgotPasswordDto) => {
     const userExists = await this.verifyUserExistsByEmail(dto.email);
-    
+
     const tokenRecord = await this.tokenResetsRepository.findByToken(dto.token!);
 
     if (!tokenRecord) {
