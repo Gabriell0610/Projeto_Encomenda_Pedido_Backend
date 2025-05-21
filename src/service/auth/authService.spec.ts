@@ -92,7 +92,7 @@ describe("Unit Tests - authService", () => {
         password: "qualquerSenha",
       };
 
-      await expect(authService.login(loginDto)).rejects.toThrow("Esse usuário não foi encontrado!");
+      await expect(authService.login(loginDto)).rejects.toThrow("Não foi possível processar essa solicitação!");
     });
     it("should throw error when password is incorrect", async () => {
       const userDto = createUserDto();
@@ -154,7 +154,7 @@ describe("Unit Tests - authService", () => {
         jest.spyOn(tokenResetsInMemory, "createToken").mockResolvedValue(null as any);
 
         await expect(authService.createToken({ email: userExist.email as string })).rejects.toThrow(
-          "Falha ao salvar token!",
+          "Falha ao criar token!",
         );
       });
     });
