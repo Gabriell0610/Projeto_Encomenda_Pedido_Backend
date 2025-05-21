@@ -5,6 +5,7 @@ import { IUserRepository } from "../interfaces";
 import { AddressDto, AddressUpdateDto } from "@/domain/dto/address/AddressDto";
 import { UpdateUserDto } from "@/domain/dto/user/UpdateUserDto";
 import { randomUUID } from "crypto";
+import { UserAddressEntity } from "@/domain/model";
 
 class InMemoryUserRepository implements IUserRepository {
   userDatabase: Partial<Usuario>[] = [];
@@ -51,6 +52,7 @@ class InMemoryUserRepository implements IUserRepository {
   updateAddress!: (dto: AddressUpdateDto, userId: string, addressId: string) => Promise<Partial<void>>;
   removeAddress!: (userId: string, idAddress: string) => Promise<void>;
   addAddress!: (dto: AddressDto, userId: string) => Promise<void>;
+  listAddressByUserId!: (userId: string) => Promise<UserAddressEntity[]>;
 }
 
 export { InMemoryUserRepository };
