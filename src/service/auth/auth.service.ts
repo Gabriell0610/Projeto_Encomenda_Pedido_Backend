@@ -50,7 +50,7 @@ class AuthService implements IAuthService {
         role: userExist.role,
       },
       process.env.JWT_SECRET || "secret",
-      { expiresIn: "1d", algorithm: "HS256" },
+      { expiresIn: "1", algorithm: "HS256" },
     );
 
     return token;
@@ -118,7 +118,7 @@ class AuthService implements IAuthService {
   private async verifyUserExistsByEmail(email: string) {
     const userExists = await this.userRepository.userExistsByEmail(email);
     if (!userExists) {
-      throw new BadRequestException("Esse usuário não foi encontrado!");
+      throw new BadRequestException("Não foi possível processar essa solicitação!");
     }
 
     return userExists;
