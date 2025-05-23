@@ -90,16 +90,36 @@ model Pedido {
   dataCriacao      DateTime? @default(now()) @map("data de criacao") @db.Date
   dataAtualizacao  DateTime? @default(now()) @map("data de atualizacao") @db.Date
   dataAgendamento  DateTime? @db.Timestamp()
-  horarioDeEntrega String
+  horarioDeEntrega String?
 
-  usuario    Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
-  endereco   Endereco @relation(fields: [enderecoId], references: [id], onDelete: Cascade)
-  carrinho   Carrinho @relation(fields: [carrinhoId], references: [id], onDelete: Cascade)
-  carrinhoId String   @unique
-  usuarioId  String
-  enderecoId String
+  usuario    Usuario?  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  endereco   Endereco? @relation(fields: [enderecoId], references: [id], onDelete: Cascade)
+  carrinho   Carrinho? @relation(fields: [carrinhoId], references: [id], onDelete: Cascade)
+  carrinhoId String?   @unique
+  usuarioId  String?
+  enderecoId String?
+  Item       Item?     @relation(fields: [itemId], references: [id])
+  itemId     String?
 
   @@map("pedidos")
+}
+
+model PedidoManual {
+  id               String             @id @default(uuid())
+  nomeCliente      String
+  telefoneCliente  String
+  enderecoCliente  String
+  pedidoManualItem PedidoManualItem[]
+}
+
+model PedidoManualItem {
+  id             String       @id @default(uuid())
+  quantidade     Int
+  precoUnitario  Decimal      @db.Decimal(10, 2)
+  itemId         String
+  item           Item?        @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  pedidoManual   PedidoManual @relation(fields: [pedidoManualId], references: [id])
+  pedidoManualId String
 }
 
 model Carrinho {
@@ -126,7 +146,9 @@ model Item {
   dataAtualizacao DateTime?  @default(now()) @map("data de atualizacao") @db.Date
   disponivel      statusItem
 
-  carrinhoItens CarrinhoItens[]
+  carrinhoItens    CarrinhoItens[]
+  Pedido           Pedido[]
+  PedidoManualItem PedidoManualItem[]
 
   @@map("itens")
 }
