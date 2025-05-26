@@ -1,14 +1,14 @@
 import { CreateCartDto } from "@/domain/dto/cart/CreateCartDto";
 import { ICartService } from "./ICartService.type";
-import { cartAndCartItens, ICartRepository } from "@/repository/interfaces/cart";
-import { IItensRepository } from "@/repository/interfaces";
+import { cartAndCartItens, ICartRepository } from "@/repository/interfaces/index";
+import { IItemsRepository } from "@/repository/interfaces";
 import { BadRequestException } from "@/shared/error/exceptions/bad-request-exception";
 import { statusItem } from "@prisma/client";
 
 class CartService implements ICartService {
   constructor(
     private cartRepository: ICartRepository,
-    private itensRepository: IItensRepository,
+    private itensRepository: IItemsRepository,
   ) {}
 
   createCart = async (dto: CreateCartDto) => {

@@ -1,13 +1,17 @@
 import { ItemUpdateDto, ItemCreateDto } from "@/domain/dto/itens/ItensDto";
-import { IItensRepository } from "@/repository/interfaces";
+import { IItemsRepository } from "@/repository/interfaces";
 import { statusItem } from "@prisma/client";
 import { prisma } from "@/libs/prisma";
 
-class ItensRepository implements IItensRepository {
+class ItemRepository implements IItemsRepository {
   create = async (dto: ItemCreateDto) => {
     return await prisma.item.create({
       data: {
-        ...dto,
+        descricao: dto.description,
+        preco: dto.price,
+        image: dto.image,
+        disponivel: dto.disponible,
+        nome: dto.name,
         dataCriacao: new Date(),
         dataAtualizacao: new Date(),
       },
@@ -94,4 +98,4 @@ class ItensRepository implements IItensRepository {
   };
 }
 
-export { ItensRepository };
+export { ItemRepository };

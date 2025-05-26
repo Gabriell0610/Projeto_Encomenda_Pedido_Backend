@@ -1,7 +1,7 @@
 import { StatusToken } from "@/shared/constants/statusToken";
 import { tokenResets } from "@prisma/client";
 import { randomUUID } from "crypto";
-import { ITokenResets } from "../interfaces";
+import { ITokenResets } from "../interfaces/index";
 
 class InMemoryTokenResets implements ITokenResets {
   tokenDb: tokenResets[] = [];

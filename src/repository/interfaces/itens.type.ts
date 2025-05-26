@@ -1,7 +1,7 @@
 import { ItemEntity } from "@/domain/model";
 import { ItemCreateDto, ItemUpdateDto } from "../../../domain/dto/itens/ItensDto";
 
-interface IItensRepository {
+interface IItemsRepository {
   create: (data: ItemCreateDto) => Promise<ItemEntity>;
   update: (data: ItemUpdateDto, itemId: string) => Promise<Partial<ItemEntity>>;
   listAll: () => Promise<Partial<ItemEntity>[]>;
@@ -10,4 +10,4 @@ interface IItensRepository {
   listActiveItens: () => Promise<ItemEntity[]>;
 }
 
-export { IItensRepository };
+export { IItemsRepository };

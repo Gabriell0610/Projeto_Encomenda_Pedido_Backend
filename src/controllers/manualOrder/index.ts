@@ -1,9 +1,12 @@
+
+import { ItemRepository } from "@/repository/prisma/itens/itens.prisma";
+import { ManualOrderController } from "./ManualOrder.controller";
 import { ManualOrderRepository } from "@/repository/prisma/manualOrder/ManualOrder.prisma";
 import { ManualOrderService } from "@/service/manualOrder/ManualOrder.service";
-import { ManualOrderController } from "./ManualOrder.controller";
 
-const manualOrderRepository = new ManualOrderRepository()
-const manualOrderService = new ManualOrderService(manualOrderRepository)
-const manualOrderController = new ManualOrderController(manualOrderService)
+const manualOrderRepository = new ManualOrderRepository();
+const itemRepository = new ItemRepository();
+const orderService = new ManualOrderService(manualOrderRepository, itemRepository);
+const manualOrderController = new ManualOrderController(orderService);
 
-export {manualOrderController}
+export { manualOrderController };

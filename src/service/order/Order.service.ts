@@ -1,14 +1,17 @@
 import { OrderDto, UpdateOrderDto } from "@/domain/dto/order/OrderDto";
 import { IOrderService } from "./IOrderService.type";
-import { ICartRepository, IOrderRepository } from "@/repository/interfaces";
+import { ICartRepository, IItemsRepository, IOrderRepository } from "@/repository/interfaces/index";
 import { BadRequestException } from "@/shared/error/exceptions/bad-request-exception";
+import { status } from "@prisma/client";
+
 
 class OrderService implements IOrderService {
   constructor(
     private readonly orderRepository: IOrderRepository,
     private readonly cartRepository: ICartRepository,
+    private readonly itemRepository: IItemsRepository,
   ) {}
-
+  
   createOrder = async (orderDto: OrderDto) => {
     const cart = await this.cartRepository.findCartActiveByUser(orderDto.idUser);
     if (!cart || !cart.valorTotal) {
@@ -18,10 +21,11 @@ class OrderService implements IOrderService {
     const order = await this.orderRepository.createOrder(orderDto, cart.valorTotal);
 
     await this.cartRepository.changeStatusCart(cart.id || "");
-
+    
     return order;
   };
-
+  
+  
   updateOrder = async (id: string, order: UpdateOrderDto) => {
     await this.verifyOrderExists(id);
     const updatedOrder = await this.orderRepository.updateOrder(id, order);
@@ -39,13 +43,13 @@ class OrderService implements IOrderService {
 
     return canceledOrder;
   };
-
+  
   listOrdersByClientId = async (idClient: string) => {
     const orderByClient = await this.orderRepository.listOrdersByClientId(idClient);
-
+    
     return orderByClient;
   };
-
+  
   listAllOrders = async () => {
     const allOrders = await this.orderRepository.listAllOrders();
     return allOrders;
@@ -61,13 +65,23 @@ class OrderService implements IOrderService {
     return order;
   };
 
+  changeStatusOrder = async (id: string, status: status) => {
+    await this.verifyOrderExists(id)
+
+    const data = this.orderRepository.changeStatusOrder(id, status)
+
+    return data
+  }
+
   private verifyOrderExists = async (id: string) => {
     const orderExists = await this.orderRepository.listOrderById(id);
     if (!orderExists) {
       throw new BadRequestException("Pedido não encontrado");
     }
 
-    return orderExists;
+    console.log("@@@",orderExists)
+
+    return orderExists
   };
 }
 

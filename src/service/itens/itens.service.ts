@@ -1,10 +1,10 @@
 import { ItemCreateDto, ItemUpdateDto } from "@/domain/dto/itens/ItensDto";
-import { IItensService } from "./IItensService.type";
-import { IItensRepository } from "@/repository/interfaces";
+import { IItensService } from "./IItemsService.type";
+import { IItemsRepository } from "@/repository/interfaces";
 import { BadRequestException } from "@/shared/error/exceptions/bad-request-exception";
 
 class ItensService implements IItensService {
-  constructor(private itensRepository: IItensRepository) {}
+  constructor(private itensRepository: IItemsRepository) {}
 
   create = async (dto: ItemCreateDto) => {
     const data = await this.itensRepository.create(dto);

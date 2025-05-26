@@ -1,17 +1,12 @@
 import { OrderDto, UpdateOrderDto } from "@/domain/dto/order/OrderDto";
 import { prisma } from "@/libs/prisma";
-import { IOrderRepository } from "@/repository/interfaces";
-import { status } from "@prisma/client";
+import { IOrderRepository } from "@/repository/interfaces/order.type";
+import { Prisma, status } from "@prisma/client";
 import { Decimal } from "@prisma/client/runtime/library";
 
 class OrderRepository implements IOrderRepository {
   createOrder = async (orderDto: OrderDto, currentPrice: Decimal) => {
-    let numberOrder = await prisma.pedido.count();
-    if (numberOrder < 0) {
-      numberOrder = 1;
-    } else {
-      numberOrder++;
-    }
+    
     return await prisma.pedido.create({
       data: {
         carrinhoId: orderDto.idCart,
@@ -23,7 +18,7 @@ class OrderRepository implements IOrderRepository {
         enderecoId: orderDto.idAddress,
         precoTotal: currentPrice,
         observacao: orderDto?.observation,
-        numeroPedido: numberOrder,
+        numeroPedido: await this.controllNumberOrder(),
         dataCriacao: new Date(),
         dataAtualizacao: new Date(),
       },
@@ -32,6 +27,20 @@ class OrderRepository implements IOrderRepository {
       },
     });
   };
+
+
+  changeStatusOrder = async (id: string, status: status) => {
+    return await prisma.pedido.update({
+      where: {id: id},
+      data: {
+        status: status,
+        dataAtualizacao: new Date(),
+      },
+      select: {
+        id: true
+      }
+    })
+  }
 
   updateOrder = async (id: string, order: UpdateOrderDto) => {
     return await prisma.pedido.update({
@@ -74,10 +83,11 @@ class OrderRepository implements IOrderRepository {
   };
 
   listOrderById = async (orderId: string) => {
-    return await prisma.pedido.findUnique({ where: { id: orderId }, select: this.buildSelectList() });
+    return await prisma.pedido.findUnique({ where: { id: orderId }, select: this.buildSelectList()});
   };
 
-  private buildSelectList = () => {
+
+  private buildSelectList = (): Prisma.PedidoSelect => {
     return {
       id: true,
       numeroPedido: true,
@@ -112,9 +122,19 @@ class OrderRepository implements IOrderRepository {
             },
           },
         },
-      },
+      }
     };
   };
+
+  private async controllNumberOrder() {
+    let numberOrder = await prisma.pedido.count();
+    if (numberOrder <= 0) {
+       numberOrder = 1;
+    } else {
+       numberOrder++;
+    }
+    return numberOrder;
+  }
 }
 
 export { OrderRepository };

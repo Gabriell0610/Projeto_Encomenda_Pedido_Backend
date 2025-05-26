@@ -40,4 +40,12 @@ orderRouter.patch(
   orderController.cancelOrder,
 );
 
+
+orderRouter.patch(
+  "/api/changeStatus/order/:id",
+  jwtAtuhenticator.authenticate,
+  authorization.ofRoles([AccessProfile.ADMIN]).authorize,
+  orderController.changeStatusOrder,
+);
+
 export { orderRouter };

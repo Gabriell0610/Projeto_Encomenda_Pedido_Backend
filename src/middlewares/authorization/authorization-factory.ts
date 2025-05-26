@@ -21,9 +21,7 @@ class AuthorizationFactory {
   }
 
   ofRoles = (roles: AccessProfile[]): Authorization => {
-    console.log(roles);
     const formartInstanceName = roles.sort().join("-");
-    console.log(formartInstanceName);
     return this.getInstance(formartInstanceName).ofRoles(roles);
   };
 

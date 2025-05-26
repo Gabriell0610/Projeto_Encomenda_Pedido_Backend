@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Usuario } from "@prisma/client";
 import { CreateUserDto } from "../../domain/dto/auth/CreateUserDto";
-import { IUserRepository } from "../interfaces";
+import { IUserRepository } from "../interfaces/index";
 import { AddressDto, AddressUpdateDto } from "@/domain/dto/address/AddressDto";
 import { UpdateUserDto } from "@/domain/dto/user/UpdateUserDto";
 import { randomUUID } from "crypto";

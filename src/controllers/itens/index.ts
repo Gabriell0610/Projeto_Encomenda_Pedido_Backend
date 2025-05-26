@@ -1,8 +1,8 @@
 import { ItensService } from "@/service/itens/itens.service";
 import { ItensController } from "./Itens.controller";
-import { ItensRepository } from "@/repository/prisma/itens/itens.prisma";
+import { ItemRepository } from "@/repository/prisma/itens/itens.prisma";
 
-const itensRepository = new ItensRepository();
+const itensRepository = new ItemRepository();
 
 const itensService = new ItensService(itensRepository);
 

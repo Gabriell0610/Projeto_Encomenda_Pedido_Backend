@@ -1,4 +1,4 @@
-import { ITokenResets } from "@/repository/interfaces/tokenResets/ITokenResets";
+import { ITokenResets } from "@/repository/interfaces/tokenResets.type";
 import { prisma } from "@/libs/prisma";
 import { StatusToken } from "@/shared/constants/statusToken";
 

@@ -8,10 +8,10 @@ class UserRepository implements IUserRepository {
   create = async (data: CreateUserDto) => {
     return await prisma.usuario.create({
       data: {
-        nome: data?.nome,
+        nome: data?.name,
         email: data?.email,
-        senha: data?.senha,
-        telefone: data?.telefone,
+        senha: data?.password,
+        telefone: data?.cellphone,
         role: data?.role,
       },
       select: {
@@ -104,10 +104,10 @@ class UserRepository implements IUserRepository {
     return await prisma.usuario.update({
       where: { id: userId },
       data: {
-        nome: data?.nome,
-        telefone: data?.telefone,
+        nome: data?.name,
+        telefone: data?.cellphone,
         dataAtualizacao: new Date(),
-        senha: data?.senha,
+        senha: data?.password,
       },
       select: {
         id: true,
@@ -127,13 +127,13 @@ class UserRepository implements IUserRepository {
           create: {
             endereco: {
               create: {
-                rua: dto.rua,
-                numero: dto.numero,
-                cidade: dto.cidade,
-                estado: dto.estado,
-                bairro: dto.bairro,
+                rua: dto.street,
+                numero: dto.number,
+                cidade: dto.city,
+                estado: dto.state,
+                bairro: dto.neighborhood,
                 cep: dto.cep,
-                complemento: dto.complemento,
+                complemento: dto.complement,
               },
             },
           },
@@ -153,13 +153,13 @@ class UserRepository implements IUserRepository {
             data: {
               endereco: {
                 update: {
-                  rua: dto.rua,
+                  rua: dto.street,
                   numero: dto.numero,
-                  cidade: dto.cidade,
-                  estado: dto.estado,
-                  bairro: dto.bairro,
+                  cidade: dto.city,
+                  estado: dto.state,
+                  bairro: dto.neighborhood,
                   cep: dto.cep,
-                  complemento: dto.complemento,
+                  complemento: dto.complement,
                 },
               },
             },

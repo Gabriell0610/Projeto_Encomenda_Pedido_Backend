@@ -4,7 +4,7 @@ import { CreateUserDto } from "@/domain/dto/auth/CreateUserDto";
 import { AuthService } from ".";
 import { AccessProfile } from "@/shared/constants/accessProfile";
 import bcrypt from "bcryptjs";
-import { InMemoryTokenResets } from "@/repository/in-memory/token-resets";
+import { InMemoryTokenResets } from "@/repository/in-memory/tokenResets";
 import { authDto } from "@/domain/dto/auth/LoginDto";
 import { ForgotPasswordDto } from "@/domain/dto/auth/ForgotPasswordDto";
 import { UserEntity } from "@/domain/model/UserEntity";

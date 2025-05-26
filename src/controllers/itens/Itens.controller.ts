@@ -1,6 +1,6 @@
 import { HttpStatus } from "@/shared/constants/index";
 import { itemCreateBodySchema, itemUpdateBodySchema } from "@/domain/dto/itens/ItensDto";
-import { IItensService } from "@/service/itens/IItensService.type";
+import { IItensService } from "@/service/itens/IItemsService.type";
 import { NextFunction, Request, Response } from "express";
 
 class ItensController {

@@ -11,7 +11,7 @@ const formatZodErroMessage = (error: ZodError) => {
     .map((issue) => {
       const { path, message } = issue;
       const messageError = formatMessage(message);
-      return `${path.join(".")}${messageError}`;
+      return `${path.join(".")}${':' + messageError }`;
     })
     .join(", ");
 };

@@ -1,6 +1,6 @@
 import { CreateCartDto } from "@/domain/dto/cart/CreateCartDto";
 import { prisma } from "@/libs/prisma";
-import { ICartRepository } from "@/repository/interfaces/cart";
+import { ICartRepository } from "@/repository/interfaces/index";
 import { StatusCart } from "@prisma/client";
 import { Decimal } from "@prisma/client/runtime/library";
 

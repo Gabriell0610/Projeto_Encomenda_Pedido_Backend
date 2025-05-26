@@ -53,18 +53,20 @@ model Usuario {
 }
 
 model Endereco {
-  id              String            @id @default(uuid())
-  cep             String            @db.VarChar()
-  rua             String            @db.VarChar()
-  bairro          String            @db.VarChar()
-  numero          String            @db.VarChar()
-  cidade          String            @db.VarChar()
-  estado          String            @db.VarChar()
-  complemento     String?           @db.VarChar()
-  dataCriacao     DateTime?         @default(now()) @map("data de criacao") @db.Date
-  dataAtualizacao DateTime?         @default(now()) @map("data de atualizacao") @db.Date
-  pedidos         Pedido[]
-  usuarios        UsuarioEndereco[]
+  id          String  @id @default(uuid())
+  cep         String  @db.VarChar()
+  rua         String  @db.VarChar()
+  bairro      String  @db.VarChar()
+  numero      String  @db.VarChar()
+  cidade      String  @db.VarChar()
+  estado      String  @db.VarChar()
+  complemento String? @db.VarChar()
+
+  dataCriacao     DateTime? @default(now()) @map("data de criacao") @db.Date
+  dataAtualizacao DateTime? @default(now()) @map("data de atualizacao") @db.Date
+
+  pedidos  Pedido[]
+  usuarios UsuarioEndereco[]
 
   @@map("enderecos")
 }
@@ -87,10 +89,11 @@ model Pedido {
   meioPagamento meioPagamento
   observacao    String?       @db.VarChar()
 
-  dataCriacao      DateTime? @default(now()) @map("data de criacao") @db.Date
-  dataAtualizacao  DateTime? @default(now()) @map("data de atualizacao") @db.Date
   dataAgendamento  DateTime? @db.Timestamp()
   horarioDeEntrega String?
+
+  dataCriacao     DateTime? @default(now()) @map("data de criacao") @db.Date
+  dataAtualizacao DateTime? @default(now()) @map("data de atualizacao") @db.Date
 
   usuario    Usuario?  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
   endereco   Endereco? @relation(fields: [enderecoId], references: [id], onDelete: Cascade)
@@ -98,27 +101,35 @@ model Pedido {
   carrinhoId String?   @unique
   usuarioId  String?
   enderecoId String?
-  Item       Item?     @relation(fields: [itemId], references: [id])
-  itemId     String?
 
   @@map("pedidos")
 }
 
 model PedidoManual {
-  id               String             @id @default(uuid())
+  id               String        @id @default(uuid())
   nomeCliente      String
   telefoneCliente  String
   enderecoCliente  String
+  numeroPedido     Int           @unique
+  status           status
+  precoTotal       Decimal       @db.Decimal(10, 2)
+  meioPagamento    meioPagamento
+  observacao       String?       @db.VarChar()
+  dataAgendamento  DateTime?     @db.Timestamp()
+  horarioDeEntrega String?
+
+  dataCriacao     DateTime? @default(now()) @map("data de criacao") @db.Date
+  dataAtualizacao DateTime? @default(now()) @map("data de atualizacao") @db.Date
+
   pedidoManualItem PedidoManualItem[]
 }
 
 model PedidoManualItem {
   id             String       @id @default(uuid())
   quantidade     Int
-  precoUnitario  Decimal      @db.Decimal(10, 2)
+  Item           Item         @relation(fields: [itemId], references: [id])
   itemId         String
-  item           Item?        @relation(fields: [itemId], references: [id], onDelete: Cascade)
-  pedidoManual   PedidoManual @relation(fields: [pedidoManualId], references: [id])
+  PedidoManual   PedidoManual @relation(fields: [pedidoManualId], references: [id])
   pedidoManualId String
 }
 
@@ -147,7 +158,6 @@ model Item {
   disponivel      statusItem
 
   carrinhoItens    CarrinhoItens[]
-  Pedido           Pedido[]
   PedidoManualItem PedidoManualItem[]
 
   @@map("itens")

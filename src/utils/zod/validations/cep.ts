@@ -6,7 +6,7 @@ const cepRegex = /^[0-9]{8}$/;
 
 export const cepValidation = z
   .string()
-  .min(1, "O CEP é obrigatório")
+  .min(1, " O CEP é obrigatório")
   .refine(
     (value) => {
       return cepRegex.test(value) && isValidCEP(value);

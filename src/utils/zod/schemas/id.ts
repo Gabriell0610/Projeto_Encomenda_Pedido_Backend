@@ -4,4 +4,6 @@ const uuidSchema = z.object({
   id: z.string(),
 });
 
-export { uuidSchema };
+type uuidDto = z.infer<typeof uuidSchema>
+
+export { uuidSchema,uuidDto };

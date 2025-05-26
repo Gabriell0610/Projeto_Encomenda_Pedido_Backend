@@ -1,8 +1,8 @@
 import { ItemCreateDto, ItemUpdateDto } from "@/domain/dto/itens/ItensDto";
-import { IItensRepository } from "../interfaces";
+import { IItemsRepository } from "../interfaces/index";
 import { Item } from "@prisma/client";
 
-class InMemoryItensRepository implements IItensRepository {
+class InMemoryItensRepository implements IItemsRepository {
   itensDb: ItemCreateDto[] = [];
 
   create!: (data: ItemCreateDto) => Promise<Item>;

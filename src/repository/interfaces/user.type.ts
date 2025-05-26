@@ -1,7 +1,8 @@
-import { CreateUserDto } from "../../../domain/dto/auth/CreateUserDto";
+
 import { UpdateUserDto } from "@/domain/dto/user/UpdateUserDto";
 import { AddressDto, AddressUpdateDto } from "@/domain/dto/address/AddressDto";
 import { UserAddressEntity, UserEntity } from "@/domain/model";
+import { CreateUserDto } from "@/domain/dto/auth/CreateUserDto";
 
 interface IUserRepository {
   create: (dto: CreateUserDto) => Promise<Partial<UserEntity>>;
