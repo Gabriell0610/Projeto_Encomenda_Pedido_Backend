@@ -39,9 +39,9 @@ class InMemoryUserRepository implements IUserRepository {
 
     if (!findUser) throw new Error("usuário nao encontrado");
 
-    findUser.senha = dto?.senha;
-    findUser.nome = dto?.nome;
-    findUser.telefone = dto?.telefone;
+    findUser.senha = dto?.password;
+    findUser.nome = dto?.name;
+    findUser.telefone = dto?.cellphone;
     findUser.dataAtualizacao = new Date();
 
     return findUser;

@@ -25,9 +25,9 @@ class AuthService implements IAuthService {
       throw new BadRequestException("Já existe conta cadastrada com esse email!");
     }
 
-    const hashedPassword = await bcrypt.hash(dto.senha, 8);
+    const hashedPassword = await bcrypt.hash(dto.password, 8);
 
-    dto.senha = hashedPassword;
+    dto.password = hashedPassword;
 
     const userCreated = await this.userRepository.create(dto);
 
@@ -110,7 +110,13 @@ class AuthService implements IAuthService {
 
     const hashedPassword = await bcrypt.hash(dto.newPassword!, 8);
     userExists.senha = hashedPassword;
-    await this.userRepository.updateUser(userExists, userExists.id!);
+
+    const mapUser = {
+      ...userExists,
+      password: userExists.senha,
+    };
+
+    await this.userRepository.updateUser(mapUser, userExists.id!);
 
     await this.tokenResetsRepository.updateStatus(StatusToken.EXPIRADO, tokenRecord.id!);
   };

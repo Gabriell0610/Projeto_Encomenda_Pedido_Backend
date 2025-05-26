@@ -1,5 +1,5 @@
+import { ItemCreateDto, ItemUpdateDto } from "@/domain/dto/itens/ItensDto";
 import { ItemEntity } from "@/domain/model";
-import { ItemCreateDto, ItemUpdateDto } from "../../../domain/dto/itens/ItensDto";
 
 interface IItemsRepository {
   create: (data: ItemCreateDto) => Promise<ItemEntity>;

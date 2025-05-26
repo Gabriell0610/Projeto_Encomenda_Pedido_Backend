@@ -20,10 +20,10 @@ describe("Unit Tests - authService", () => {
   const testUserPassword = "ValidPass123!";
 
   const createUserDto = (overrides: Partial<CreateUserDto> = {}) => ({
-    nome: "Gabriel",
+    name: "Gabriel",
     email: "user@example.com",
-    senha: testUserPassword,
-    telefone: "00000000000",
+    password: testUserPassword,
+    cellphone: "00000000000",
     role: AccessProfile.CLIENT,
     ...overrides,
   });
@@ -45,9 +45,9 @@ describe("Unit Tests - authService", () => {
 
       //Assert
       expect(response).toMatchObject({
-        nome: userDto.nome,
+        nome: userDto.name,
         email: userDto.email,
-        telefone: userDto.telefone,
+        telefone: userDto.cellphone,
         role: userDto.role,
       });
     });
