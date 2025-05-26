@@ -6,7 +6,7 @@ import { UserEntity } from "@/domain/model";
 
 interface IAuthService {
   login: (dto: authDto) => Promise<string>;
-  register: (data: CreateUserDto) => CreateUserDto | Promise<Partial<UserEntity>>;
+  register: (data: CreateUserDto) => Promise<Partial<UserEntity>>;
   createToken: (dto: ForgotPasswordDto) => Promise<TokenResetsEntity | void>;
   validateToken: (dto: ForgotPasswordDto) => Promise<TokenResetsEntity | void>;
   resetPassword: (dto: ForgotPasswordDto) => Promise<void>;

@@ -4,7 +4,7 @@ import { z } from "zod";
 
 const updateUserBodySchema = z.object({
   name: z.string().optional(),
-  cellphone: cellphoneValidaton.optional(),
+  cellphone: cellphoneValidaton,
   password: passwordValidation.optional(),
 });
 

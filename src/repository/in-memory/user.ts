@@ -13,9 +13,12 @@ class InMemoryUserRepository implements IUserRepository {
   create = async (data: CreateUserDto) => {
     const user: Partial<Usuario> = {
       id: randomUUID(),
+      nome: data.name,
+      email: data.email,
+      senha: data.password,
+      telefone: data.cellphone,
+      role: data.role,
       dataCriacao: new Date(),
-
-      ...data,
     };
     this.userDatabase.push(user);
     return user;

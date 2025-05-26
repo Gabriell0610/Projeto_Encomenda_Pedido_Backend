@@ -114,6 +114,7 @@ class AuthService implements IAuthService {
     const mapUser = {
       ...userExists,
       password: userExists.senha,
+      cellphone: userExists.telefone || "",
     };
 
     await this.userRepository.updateUser(mapUser, userExists.id!);
