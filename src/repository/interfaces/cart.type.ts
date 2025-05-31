@@ -7,9 +7,9 @@ export interface ICartRepository {
   createCart: (dto: CreateCartDto, priceItem: Decimal) => Promise<CartItemsEntity>;
   findCartActiveByUser: (userId: string) => Promise<cartAndCartItens | null>;
   createCartItem: (dto: CreateCartDto, priceItem: Decimal, cartId: string) => Promise<CartItemsEntity>;
-  updateCartItemQuantity: (cartItem: string, quantity: number) => Promise<CartItemsEntity>;
-  removeItemCart: (itemId: string, cartId: string) => Promise<void>;
+  updateCartItemQuantity: (cartId: string, quantity: number) => Promise<CartItemsEntity>;
+  removeItemCart: (itemId: string, cartItemId: string) => Promise<void>;
   listAllCartByUser: (userId: string) => Promise<CartEntity | null>;
   changeStatusCart: (idCart: string) => Promise<void>;
-  updateTotalValueCart: (userId: string, totalValue: Decimal | number) => Promise<cartAndCartItens | null>;
+  updateTotalValueCart: (cartId: string, totalValue: Decimal | number) => Promise<CartEntity | null>;
 }

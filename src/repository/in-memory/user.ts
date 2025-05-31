@@ -51,7 +51,6 @@ class InMemoryUserRepository implements IUserRepository {
   };
 
   findUserById!: (id: string) => Promise<Partial<Usuario> | null>;
-
   updateAddress!: (dto: AddressUpdateDto, userId: string, addressId: string) => Promise<Partial<void>>;
   removeAddress!: (userId: string, idAddress: string) => Promise<void>;
   addAddress!: (dto: AddressDto, userId: string) => Promise<void>;

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { InMemoryUserRepository } from "@/repository/in-memory/user";
 import { CreateUserDto } from "@/domain/dto/auth/CreateUserDto";
-import { AuthService } from ".";
+import { AuthService } from "@/service/auth/auth.service";
 import { AccessProfile } from "@/shared/constants/accessProfile";
 import bcrypt from "bcryptjs";
 import { InMemoryTokenResets } from "@/repository/in-memory/tokenResets";
@@ -11,12 +11,13 @@ import { UserEntity } from "@/domain/model/UserEntity";
 import { MockEmailService } from "../email/mockNodemailer";
 import "dotenv/config";
 import { TokenResetsEntity } from "@/domain/model/TokenEntity";
+import { BadRequestException } from "@/shared/error/exceptions/badRequest-exception";
 
-let authService: AuthService;
-let userRepositoryInMemory: InMemoryUserRepository;
-let tokenResetsInMemory: InMemoryTokenResets;
-let mockNodemailer: MockEmailService;
 describe("Unit Tests - authService", () => {
+  let authService: AuthService;
+  let userRepositoryInMemory: InMemoryUserRepository;
+  let tokenResetsInMemory: InMemoryTokenResets;
+  let mockNodemailer: MockEmailService;
   const testUserPassword = "ValidPass123!";
 
   const createUserDto = (overrides: Partial<CreateUserDto> = {}) => ({
@@ -155,6 +156,16 @@ describe("Unit Tests - authService", () => {
 
         await expect(authService.createToken({ email: userExist.email as string })).rejects.toThrow(
           "Falha ao criar token!",
+        );
+      });
+
+      it("should NOT be able send email by user with invalid email", async () => {
+        jest
+          .spyOn(mockNodemailer, "sendEmail")
+          .mockRejectedValue(new BadRequestException("Não foi possível enviar o e-mail"));
+
+        await expect(authService.createToken({ email: userExist.email! })).rejects.toThrow(
+          "Não foi possível enviar o e-mail",
         );
       });
     });

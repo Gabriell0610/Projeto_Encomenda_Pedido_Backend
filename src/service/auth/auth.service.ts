@@ -1,6 +1,6 @@
 import { authDto } from "../../domain/dto/auth/LoginDto";
 import { IAuthService } from "./IAuthService.type";
-import { BadRequestException } from "../../shared/error/exceptions/bad-request-exception";
+import { BadRequestException } from "../../shared/error/exceptions/badRequest-exception";
 import bcrypt from "bcryptjs";
 import { sign } from "jsonwebtoken";
 import "dotenv/config";
@@ -114,7 +114,7 @@ class AuthService implements IAuthService {
     const mapUser = {
       ...userExists,
       password: userExists.senha,
-      cellphone: userExists.telefone || "",
+      cellphone: userExists.telefone!,
     };
 
     await this.userRepository.updateUser(mapUser, userExists.id!);

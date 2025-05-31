@@ -2,7 +2,7 @@ import { UnauthorizedException } from "@/shared/error/exceptions/unauthorized-ex
 import { NextFunction, Request, Response } from "express";
 import { verify, decode, JwtPayload, TokenExpiredError } from "jsonwebtoken";
 import "dotenv/config";
-import { InternalServerException } from "@/shared/error/exceptions/internal-server-exception";
+import { InternalServerException } from "@/shared/error/exceptions/internalServer-exception";
 import { AccessProfile } from "@/shared/constants/accessProfile";
 
 class JWTAuthenticator {

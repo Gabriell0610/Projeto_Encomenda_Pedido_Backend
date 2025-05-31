@@ -2,7 +2,7 @@ import { CreateCartDto } from "@/domain/dto/cart/CreateCartDto";
 import { ICartService } from "./ICartService.type";
 import { cartAndCartItens, ICartRepository } from "@/repository/interfaces/index";
 import { IItemsRepository } from "@/repository/interfaces";
-import { BadRequestException } from "@/shared/error/exceptions/bad-request-exception";
+import { BadRequestException } from "@/shared/error/exceptions/badRequest-exception";
 import { statusItem } from "@prisma/client";
 
 class CartService implements ICartService {
@@ -14,17 +14,17 @@ class CartService implements ICartService {
   createCart = async (dto: CreateCartDto) => {
     const findItem = await this.itensRepository.listById(dto.itemId);
 
-    if (!findItem || findItem.disponivel === statusItem.INATIVO) {
+    if (!findItem || findItem.disponivel === statusItem.INATIVO || !findItem.preco) {
       throw new BadRequestException("Item não encontrado ou Inativo!");
     }
 
     const cartAlredyExist = await this.cartRepository.findCartActiveByUser(dto.userId);
 
     if (cartAlredyExist) {
-      const itemExistInCartItens = cartAlredyExist.carrinhoItens.find((item) => item.itemId === dto.itemId);
-      if (itemExistInCartItens) {
-        const newQuantity = itemExistInCartItens.quantidade + dto.quantity;
-        const updatedCart = await this.cartRepository.updateCartItemQuantity(itemExistInCartItens.id, newQuantity);
+      const cartWithItem = cartAlredyExist.carrinhoItens.find((item) => item.itemId === dto.itemId);
+      if (cartWithItem) {
+        const newQuantity = cartWithItem.quantidade + dto.quantity;
+        const updatedCart = await this.cartRepository.updateCartItemQuantity(cartWithItem.id, newQuantity);
         return updatedCart;
       }
 
@@ -36,28 +36,28 @@ class CartService implements ICartService {
     return cart;
   };
 
-  listCart = async (userId: string) => {
+  listCartWithTotalPrice = async (userId: string) => {
     const cartUser = await this.cartRepository.findCartActiveByUser(userId);
 
     if (!cartUser) {
-      return null;
+      throw new BadRequestException("Usuário não possui um carrinho ativo");
     }
 
-    const updatedCart = await this.calculatingTotalValue(cartUser);
+    const cartWithTotalPrice = await this.calculatingTotalValue(cartUser);
 
-    return updatedCart;
+    return cartWithTotalPrice;
   };
 
   changeItemQuantity = async (itemId: string, userId: string, act: string) => {
-    const itemExistInCartItens = await this.findItemAlredyExistInCart(userId, itemId);
+    const cartWithItem = await this.findItemAlredyExistInCart(userId, itemId);
 
-    let newQuantity = act === "increment" ? itemExistInCartItens?.quantidade + 1 : itemExistInCartItens?.quantidade - 1;
+    let newQuantity = act === "increment" ? cartWithItem?.quantidade + 1 : cartWithItem?.quantidade - 1;
 
     if (newQuantity <= 0) {
       newQuantity = 1; // bem provável que depois eu tenha que remover o item chamando o removeItemCart
     }
 
-    return await this.cartRepository.updateCartItemQuantity(itemExistInCartItens?.id, newQuantity);
+    return await this.cartRepository.updateCartItemQuantity(cartWithItem?.id, newQuantity);
   };
 
   removeItemCart = async (itemId: string, userId: string) => {
@@ -68,22 +68,23 @@ class CartService implements ICartService {
   listAllCartByUser = async (userId: string) => {
     const cartUser = await this.cartRepository.listAllCartByUser(userId);
     if (!cartUser) {
-      throw new BadRequestException("Usuário nao possui carrinho nenhum");
+      throw new BadRequestException("Usuário nao possui carrinho ativo no momento");
     }
 
     return cartUser;
   };
+
   private async findItemAlredyExistInCart(userId: string, itemId: string) {
     const cartAlredyActive = await this.cartRepository.findCartActiveByUser(userId);
     if (!cartAlredyActive) {
-      throw new BadRequestException("Usuário nao possui um carrinho ativo no momento");
+      throw new BadRequestException("Usuário nao possui carrinho ativo no momento");
     }
 
-    const itemExistInCartItens = cartAlredyActive?.carrinhoItens.find((item) => item.itemId === itemId);
-    if (!itemExistInCartItens) {
+    const cartWithItem = cartAlredyActive?.carrinhoItens.find((item) => item.itemId === itemId);
+    if (!cartWithItem) {
       throw new BadRequestException("Item nao encontrado no carrinho ativo");
     }
-    return itemExistInCartItens;
+    return cartWithItem;
   }
 
   private async calculatingTotalValue(cartUser: cartAndCartItens) {

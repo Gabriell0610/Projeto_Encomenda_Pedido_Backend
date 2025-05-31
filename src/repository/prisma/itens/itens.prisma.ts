@@ -10,7 +10,7 @@ class ItemRepository implements IItemsRepository {
         descricao: dto.description,
         preco: dto.price,
         image: dto.image,
-        disponivel: dto.disponible,
+        disponivel: dto.available,
         nome: dto.name,
         dataCriacao: new Date(),
         dataAtualizacao: new Date(),
@@ -21,8 +21,6 @@ class ItemRepository implements IItemsRepository {
         descricao: true,
         preco: true,
         image: true,
-        dataCriacao: true,
-        dataAtualizacao: true,
         disponivel: true,
       },
     });
@@ -41,8 +39,6 @@ class ItemRepository implements IItemsRepository {
         descricao: true,
         preco: true,
         image: true,
-        dataCriacao: true,
-        dataAtualizacao: true,
         disponivel: true,
       },
     });
@@ -59,8 +55,6 @@ class ItemRepository implements IItemsRepository {
         descricao: true,
         preco: true,
         image: true,
-        dataCriacao: true,
-        dataAtualizacao: true,
         disponivel: true,
       },
     });
