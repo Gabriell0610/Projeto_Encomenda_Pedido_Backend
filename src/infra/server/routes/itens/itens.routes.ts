@@ -22,10 +22,12 @@ itensRouter.get(
 
 itensRouter.get(
   "/api/itens/active",
-  jwtAtuhenticator.authenticate,
-  authorization.anyRole().authorize,
+  //jwtAtuhenticator.authenticate,
+  //authorization.anyRole().authorize,
   itensController.listActiveItens,
 );
+
+itensRouter.get("/api/itens/:id", itensController.listItemById);
 
 itensRouter.put(
   "/api/itens/:id",

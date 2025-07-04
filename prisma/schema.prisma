@@ -37,6 +37,13 @@ enum StatusCart {
   FINALIZADO
 }
 
+enum ItemSize {
+  P
+  M
+  G
+  GG
+}
+
 model Usuario {
   id              String            @id @default(uuid())
   nome            String            @db.VarChar()
@@ -156,6 +163,7 @@ model Item {
   dataCriacao     DateTime?  @default(now()) @map("data de criacao") @db.Date
   dataAtualizacao DateTime?  @default(now()) @map("data de atualizacao") @db.Date
   disponivel      statusItem
+  tamanho         ItemSize?
 
   carrinhoItens    CarrinhoItens[]
   PedidoManualItem PedidoManualItem[]

@@ -1,4 +1,4 @@
-import { statusItem } from "@prisma/client";
+import { ItemSize, statusItem } from "@prisma/client";
 import { Decimal } from "@prisma/client/runtime/library";
 import { z } from "zod";
 
@@ -11,6 +11,7 @@ const itemCreateBodySchema = z.object({
   description: z.string().min(1, "A descrião do item é obrigatório"),
   image: z.string(),
   available: z.nativeEnum(statusItem).default(statusItem.ATIVO),
+  size: z.nativeEnum(ItemSize),
 });
 
 const itemUpdateBodySchema = z.object({
@@ -22,6 +23,7 @@ const itemUpdateBodySchema = z.object({
   description: z.string().optional(),
   image: z.string().optional(),
   available: z.nativeEnum(statusItem).optional(),
+  size: z.nativeEnum(ItemSize).optional(),
 });
 
 type ItemCreateDto = z.infer<typeof itemCreateBodySchema>;

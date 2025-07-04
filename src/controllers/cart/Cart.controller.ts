@@ -21,7 +21,7 @@ class CartController {
     try {
       const { requesterId } = authorizationBodySchema.parse(req.body);
       const data = await this.cartService.listCartWithTotalPrice(requesterId);
-      res.status(HttpStatus.OK).json({ message: "Listando carrinho com sucesso!", res: data });
+      res.status(HttpStatus.OK).json({ message: "Listando carrinho com sucesso!", data: data });
     } catch (error) {
       next(error);
     }

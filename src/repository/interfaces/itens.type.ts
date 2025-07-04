@@ -8,6 +8,7 @@ interface IItemsRepository {
   listById: (id: string) => Promise<Partial<ItemEntity | null>>;
   inactiveItem: (idItem: string) => Promise<Partial<ItemEntity>>;
   listActiveItens: () => Promise<Partial<ItemEntity>[]>;
+  listActiveItemById: (itemId: string) => Promise<Partial<ItemEntity | null>>;
 }
 
 export { IItemsRepository };

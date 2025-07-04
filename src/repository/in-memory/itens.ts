@@ -3,8 +3,10 @@ import { IItemsRepository } from "../interfaces/index";
 import { Item, StatusCart, statusItem } from "@prisma/client";
 import { randomUUID } from "crypto";
 import { Decimal } from "@prisma/client/runtime/library";
+import { ItemEntity } from "@/domain/model";
 
 class InMemoryItensRepository implements IItemsRepository {
+  listActiveItemById!: (itemId: string) => Promise<Partial<ItemEntity | null>>;
   itensDb: Partial<Item>[] = [];
 
   create = async (dto: ItemCreateDto) => {
@@ -17,6 +19,7 @@ class InMemoryItensRepository implements IItemsRepository {
       dataCriacao: new Date(),
       dataAtualizacao: new Date(),
       disponivel: dto.available,
+      tamanho: dto.size,
     };
 
     this.itensDb.push(item);

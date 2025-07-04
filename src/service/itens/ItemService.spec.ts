@@ -3,7 +3,7 @@ import { InMemoryItensRepository } from "@/repository/in-memory/itens";
 import { ItensService } from "./itens.service";
 import { ItemCreateDto } from "@/domain/dto/itens/ItensDto";
 import { Decimal } from "@prisma/client/runtime/library";
-import { StatusCart, statusItem } from "@prisma/client";
+import { ItemSize, StatusCart, statusItem } from "@prisma/client";
 
 describe.only("Units Test - Item", () => {
   let itemMemoryRepository: InMemoryItensRepository;
@@ -21,6 +21,7 @@ describe.only("Units Test - Item", () => {
       description: "Delicioso empadão de frango",
       image: "https://exemplo.com/imagem.jpg",
       available: statusItem.ATIVO,
+      size: ItemSize.M,
       ...overrides,
     };
   };

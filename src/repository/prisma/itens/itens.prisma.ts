@@ -4,6 +4,20 @@ import { statusItem } from "@prisma/client";
 import { prisma } from "@/libs/prisma";
 
 class ItemRepository implements IItemsRepository {
+  listActiveItemById = async (itemId: string) => {
+    return await prisma.item.findFirst({
+      where: { id: itemId, disponivel: statusItem.ATIVO },
+      select: {
+        descricao: true,
+        id: true,
+        disponivel: true,
+        image: true,
+        nome: true,
+        preco: true,
+        tamanho: true,
+      },
+    });
+  };
   create = async (dto: ItemCreateDto) => {
     return await prisma.item.create({
       data: {
@@ -11,6 +25,7 @@ class ItemRepository implements IItemsRepository {
         preco: dto.price,
         image: dto.image,
         disponivel: dto.available,
+        tamanho: dto.size,
         nome: dto.name,
         dataCriacao: new Date(),
         dataAtualizacao: new Date(),
@@ -40,6 +55,7 @@ class ItemRepository implements IItemsRepository {
         preco: true,
         image: true,
         disponivel: true,
+        tamanho: true,
       },
     });
 
@@ -56,6 +72,7 @@ class ItemRepository implements IItemsRepository {
         preco: true,
         image: true,
         disponivel: true,
+        tamanho: true,
       },
     });
   };
